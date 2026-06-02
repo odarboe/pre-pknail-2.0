@@ -13,7 +13,6 @@
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
-docs/point_cloud/full_test_file.las
 
 # Mono auto generated files
 mono_crash.*
@@ -428,4 +427,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# PKNAIL files
 docs/point_cloud/full_test_fille.las
