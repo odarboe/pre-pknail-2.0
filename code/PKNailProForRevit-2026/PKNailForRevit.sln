@@ -1,0 +1,662 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F50C8573-843F-4F19-88DE-E9586791CA6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKNailForRevit", "PKNailForRevit\PKNailForRevit.csproj", "{EB0835DD-2B0A-42DC-B64D-909938BDC421}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKNailForRevit.UnitTests", "PKNailForRevit.UnitTests\PKNailForRevit.UnitTests.csproj", "{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json", "Json\Json.csproj", "{6086EE56-9863-4445-91F5-B423FE6D4C71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json.UnitTests", "Json.UnitTests\Json.UnitTests.csproj", "{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKNailForRevit.TestCore", "PKNailForRevit.TestCore\PKNailForRevit.TestCore.csproj", "{B831DA4A-860B-444D-BE5E-CC3602428FF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKNailForRevit.TestRunner", "PKNailForRevit.TestRunner\PKNailForRevit.TestRunner.csproj", "{0084F08D-C92A-45E0-AD9E-A56368BA0437}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestScriptFixer", "TestScriptFixer\TestScriptFixer.csproj", "{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistoCommTester", "DistoCommTester\DistoCommTester.csproj", "{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VersionInfo", "VersionInfo", "{AD710D39-1C0D-4224-A3F4-25519432AE0C}"
+	ProjectSection(SolutionItems) = preProject
+		VersionInfo\AssemblyVersionInfo.template = VersionInfo\AssemblyVersionInfo.template
+		VersionInfo\ProductInfo.xml = VersionInfo\ProductInfo.xml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RevitLookup", "RevitLookup\RevitLookup.csproj", "{05C77115-2277-4DFC-8F95-BE37E5F1130F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{0A40C210-D083-4CD0-9EDD-FCB96DF083B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RevitAPI", "RevitAPI", "{EBE4BEB6-BC71-4397-980E-66FB4DBDCB23}"
+	ProjectSection(SolutionItems) = preProject
+		RevitAPI\RevitAddInUtility.dll = RevitAPI\RevitAddInUtility.dll
+		RevitAPI\RevitAPI.dll = RevitAPI\RevitAPI.dll
+		RevitAPI\RevitAPIUI.dll = RevitAPI\RevitAPIUI.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NUnit", "NUnit", "{EB44B06B-F4FB-4B7A-BA0C-203EB5C4440E}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\NUnit\nunit-agent-x86.exe = Tools\NUnit\nunit-agent-x86.exe
+		Tools\NUnit\nunit-agent-x86.exe.config = Tools\NUnit\nunit-agent-x86.exe.config
+		Tools\NUnit\nunit-agent.exe = Tools\NUnit\nunit-agent.exe
+		Tools\NUnit\nunit-agent.exe.config = Tools\NUnit\nunit-agent.exe.config
+		Tools\NUnit\nunit-console-x86.exe = Tools\NUnit\nunit-console-x86.exe
+		Tools\NUnit\nunit-console-x86.exe.config = Tools\NUnit\nunit-console-x86.exe.config
+		Tools\NUnit\nunit-console.exe = Tools\NUnit\nunit-console.exe
+		Tools\NUnit\nunit-console.exe.config = Tools\NUnit\nunit-console.exe.config
+		Tools\NUnit\nunit-x86.exe = Tools\NUnit\nunit-x86.exe
+		Tools\NUnit\nunit-x86.exe.config = Tools\NUnit\nunit-x86.exe.config
+		Tools\NUnit\nunit.exe = Tools\NUnit\nunit.exe
+		Tools\NUnit\nunit.exe.config = Tools\NUnit\nunit.exe.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuildCommunityTasks", "MSBuildCommunityTasks", "{52ABAC93-4736-417F-BF21-1715451988DA}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\MSBuildCommunityTasks\ICSharpCode.SharpZipLib.dll = Tools\MSBuildCommunityTasks\ICSharpCode.SharpZipLib.dll
+		Tools\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll = Tools\MSBuildCommunityTasks\MSBuild.Community.Tasks.dll
+		Tools\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets = Tools\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets
+		Tools\MSBuildCommunityTasks\MSBuild.Community.Tasks.xml = Tools\MSBuildCommunityTasks\MSBuild.Community.Tasks.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{7C947B20-CBB4-48BE-A316-4095033C56B2}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\NUnit\lib\failure.png = Tools\NUnit\lib\failure.png
+		Tools\NUnit\lib\ignored.png = Tools\NUnit\lib\ignored.png
+		Tools\NUnit\lib\inconclusive.png = Tools\NUnit\lib\inconclusive.png
+		Tools\NUnit\lib\nunit-console-runner.dll = Tools\NUnit\lib\nunit-console-runner.dll
+		Tools\NUnit\lib\nunit-gui-runner.dll = Tools\NUnit\lib\nunit-gui-runner.dll
+		Tools\NUnit\lib\nunit.core.dll = Tools\NUnit\lib\nunit.core.dll
+		Tools\NUnit\lib\nunit.core.interfaces.dll = Tools\NUnit\lib\nunit.core.interfaces.dll
+		Tools\NUnit\lib\nunit.uiexception.dll = Tools\NUnit\lib\nunit.uiexception.dll
+		Tools\NUnit\lib\nunit.uikit.dll = Tools\NUnit\lib\nunit.uikit.dll
+		Tools\NUnit\lib\nunit.util.dll = Tools\NUnit\lib\nunit.util.dll
+		Tools\NUnit\lib\skipped.png = Tools\NUnit\lib\skipped.png
+		Tools\NUnit\lib\success.png = Tools\NUnit\lib\success.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "framework", "framework", "{78ABFEAA-2B7D-422B-BEAA-02501BA75A68}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\NUnit\framework\nunit.framework.dll = Tools\NUnit\framework\nunit.framework.dll
+		Tools\NUnit\framework\nunit.framework.xml = Tools\NUnit\framework\nunit.framework.xml
+		Tools\NUnit\framework\nunit.mocks.dll = Tools\NUnit\framework\nunit.mocks.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "addins", "addins", "{60099155-1558-49B9-BC3C-4F696B8F920E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SoftwareKey", "SoftwareKey", "{E72911B9-0EA7-4666-A14F-BF5C5C8409FA}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\SoftwareKey\PLUSManaged.dll = Tools\SoftwareKey\PLUSManaged.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetupCA", "SetupCA\SetupCA.csproj", "{156A68D0-4A66-4171-BC70-8C2D56273A16}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setup", "Setup\Setup.wixproj", "{186154F0-0756-4228-8F8E-D628995E5616}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6086EE56-9863-4445-91F5-B423FE6D4C71} = {6086EE56-9863-4445-91F5-B423FE6D4C71}
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421} = {EB0835DD-2B0A-42DC-B64D-909938BDC421}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Subversion", "Subversion", "{2EB3B447-8D27-45A8-8A9A-4DF2C3FDF876}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Subversion\intl3_tsvn.dll = Tools\Subversion\intl3_tsvn.dll
+		Tools\Subversion\libapr_tsvn.dll = Tools\Subversion\libapr_tsvn.dll
+		Tools\Subversion\libaprutil_tsvn.dll = Tools\Subversion\libaprutil_tsvn.dll
+		Tools\Subversion\SubWCRev.exe = Tools\Subversion\SubWCRev.exe
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wix", "Wix", "{0FA666F1-85DC-4E45-A6DA-585AF77252F8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bin", "bin", "{C01862EB-EA32-46DA-BD05-59A6F58B40BD}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Wix\bin\candle.exe = Tools\Wix\bin\candle.exe
+		Tools\Wix\bin\candle.exe.config = Tools\Wix\bin\candle.exe.config
+		Tools\Wix\bin\darice.cub = Tools\Wix\bin\darice.cub
+		Tools\Wix\bin\dark.exe = Tools\Wix\bin\dark.exe
+		Tools\Wix\bin\dark.exe.config = Tools\Wix\bin\dark.exe.config
+		Tools\Wix\bin\difxapp_x64.wixlib = Tools\Wix\bin\difxapp_x64.wixlib
+		Tools\Wix\bin\difxapp_x86.wixlib = Tools\Wix\bin\difxapp_x86.wixlib
+		Tools\Wix\bin\heat.exe = Tools\Wix\bin\heat.exe
+		Tools\Wix\bin\heat.exe.config = Tools\Wix\bin\heat.exe.config
+		Tools\Wix\bin\insignia.exe = Tools\Wix\bin\insignia.exe
+		Tools\Wix\bin\insignia.exe.config = Tools\Wix\bin\insignia.exe.config
+		Tools\Wix\bin\light.exe = Tools\Wix\bin\light.exe
+		Tools\Wix\bin\light.exe.config = Tools\Wix\bin\light.exe.config
+		Tools\Wix\bin\lit.exe = Tools\Wix\bin\lit.exe
+		Tools\Wix\bin\lit.exe.config = Tools\Wix\bin\lit.exe.config
+		Tools\Wix\bin\LocalizationFile.ico = Tools\Wix\bin\LocalizationFile.ico
+		Tools\Wix\bin\lux.exe = Tools\Wix\bin\lux.exe
+		Tools\Wix\bin\lux.exe.config = Tools\Wix\bin\lux.exe.config
+		Tools\Wix\bin\lux.targets = Tools\Wix\bin\lux.targets
+		Tools\Wix\bin\LuxTasks.dll = Tools\Wix\bin\LuxTasks.dll
+		Tools\Wix\bin\melt.exe = Tools\Wix\bin\melt.exe
+		Tools\Wix\bin\melt.exe.config = Tools\Wix\bin\melt.exe.config
+		Tools\Wix\bin\mergemod.cub = Tools\Wix\bin\mergemod.cub
+		Tools\Wix\bin\mergemod.dll = Tools\Wix\bin\mergemod.dll
+		Tools\Wix\bin\Microsoft.Deployment.Compression.Cab.dll = Tools\Wix\bin\Microsoft.Deployment.Compression.Cab.dll
+		Tools\Wix\bin\Microsoft.Deployment.Compression.dll = Tools\Wix\bin\Microsoft.Deployment.Compression.dll
+		Tools\Wix\bin\Microsoft.Deployment.Resources.dll = Tools\Wix\bin\Microsoft.Deployment.Resources.dll
+		Tools\Wix\bin\Microsoft.Deployment.WindowsInstaller.dll = Tools\Wix\bin\Microsoft.Deployment.WindowsInstaller.dll
+		Tools\Wix\bin\Microsoft.Deployment.WindowsInstaller.Package.dll = Tools\Wix\bin\Microsoft.Deployment.WindowsInstaller.Package.dll
+		Tools\Wix\bin\mspatchc.dll = Tools\Wix\bin\mspatchc.dll
+		Tools\Wix\bin\nit.exe = Tools\Wix\bin\nit.exe
+		Tools\Wix\bin\nit.exe.config = Tools\Wix\bin\nit.exe.config
+		Tools\Wix\bin\pyro.exe = Tools\Wix\bin\pyro.exe
+		Tools\Wix\bin\pyro.exe.config = Tools\Wix\bin\pyro.exe.config
+		Tools\Wix\bin\retina.exe = Tools\Wix\bin\retina.exe
+		Tools\Wix\bin\retina.exe.config = Tools\Wix\bin\retina.exe.config
+		Tools\Wix\bin\shine.exe = Tools\Wix\bin\shine.exe
+		Tools\Wix\bin\shine.exe.config = Tools\Wix\bin\shine.exe.config
+		Tools\Wix\bin\smoke.exe = Tools\Wix\bin\smoke.exe
+		Tools\Wix\bin\smoke.exe.config = Tools\Wix\bin\smoke.exe.config
+		Tools\Wix\bin\ThmViewer.exe = Tools\Wix\bin\ThmViewer.exe
+		Tools\Wix\bin\torch.exe = Tools\Wix\bin\torch.exe
+		Tools\Wix\bin\torch.exe.config = Tools\Wix\bin\torch.exe.config
+		Tools\Wix\bin\votive2010.dll = Tools\Wix\bin\votive2010.dll
+		Tools\Wix\bin\wconsole.dll = Tools\Wix\bin\wconsole.dll
+		Tools\Wix\bin\winterop.dll = Tools\Wix\bin\winterop.dll
+		Tools\Wix\bin\wix.dll = Tools\Wix\bin\wix.dll
+		Tools\Wix\bin\wix.targets = Tools\Wix\bin\wix.targets
+		Tools\Wix\bin\wix200x.targets = Tools\Wix\bin\wix200x.targets
+		Tools\Wix\bin\wix2010.targets = Tools\Wix\bin\wix2010.targets
+		Tools\Wix\bin\WixBalExtension.dll = Tools\Wix\bin\WixBalExtension.dll
+		Tools\Wix\bin\WixComPlusExtension.dll = Tools\Wix\bin\WixComPlusExtension.dll
+		Tools\Wix\bin\WixCop.exe = Tools\Wix\bin\WixCop.exe
+		Tools\Wix\bin\WixDifxAppExtension.dll = Tools\Wix\bin\WixDifxAppExtension.dll
+		Tools\Wix\bin\WixDirectXExtension.dll = Tools\Wix\bin\WixDirectXExtension.dll
+		Tools\Wix\bin\WixFirewallExtension.dll = Tools\Wix\bin\WixFirewallExtension.dll
+		Tools\Wix\bin\WixGamingExtension.dll = Tools\Wix\bin\WixGamingExtension.dll
+		Tools\Wix\bin\WixIIsExtension.dll = Tools\Wix\bin\WixIIsExtension.dll
+		Tools\Wix\bin\WixLuxExtension.dll = Tools\Wix\bin\WixLuxExtension.dll
+		Tools\Wix\bin\WixMsmqExtension.dll = Tools\Wix\bin\WixMsmqExtension.dll
+		Tools\Wix\bin\WixNetFxExtension.dll = Tools\Wix\bin\WixNetFxExtension.dll
+		Tools\Wix\bin\WixPSExtension.dll = Tools\Wix\bin\WixPSExtension.dll
+		Tools\Wix\bin\WixSqlExtension.dll = Tools\Wix\bin\WixSqlExtension.dll
+		Tools\Wix\bin\WixTagExtension.dll = Tools\Wix\bin\WixTagExtension.dll
+		Tools\Wix\bin\WixTasks.dll = Tools\Wix\bin\WixTasks.dll
+		Tools\Wix\bin\WixUIExtension.dll = Tools\Wix\bin\WixUIExtension.dll
+		Tools\Wix\bin\WixUtilExtension.dll = Tools\Wix\bin\WixUtilExtension.dll
+		Tools\Wix\bin\WixVSExtension.dll = Tools\Wix\bin\WixVSExtension.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDK", "SDK", "{D7FD2295-A0B3-48E1-B60E-37B82223D086}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Wix\SDK\BootstrapperCore.config = Tools\Wix\SDK\BootstrapperCore.config
+		Tools\Wix\SDK\BootstrapperCore.dll = Tools\Wix\SDK\BootstrapperCore.dll
+		Tools\Wix\SDK\BootstrapperCore.xml = Tools\Wix\SDK\BootstrapperCore.xml
+		Tools\Wix\SDK\DocCompiler.exe = Tools\Wix\SDK\DocCompiler.exe
+		Tools\Wix\SDK\MakeSfxCA.exe = Tools\Wix\SDK\MakeSfxCA.exe
+		Tools\Wix\SDK\MakeSfxCA.exe.config = Tools\Wix\SDK\MakeSfxCA.exe.config
+		Tools\Wix\SDK\Microsoft.Deployment.Compression.Cab.dll = Tools\Wix\SDK\Microsoft.Deployment.Compression.Cab.dll
+		Tools\Wix\SDK\Microsoft.Deployment.Compression.Cab.xml = Tools\Wix\SDK\Microsoft.Deployment.Compression.Cab.xml
+		Tools\Wix\SDK\Microsoft.Deployment.Compression.dll = Tools\Wix\SDK\Microsoft.Deployment.Compression.dll
+		Tools\Wix\SDK\Microsoft.Deployment.Compression.xml = Tools\Wix\SDK\Microsoft.Deployment.Compression.xml
+		Tools\Wix\SDK\Microsoft.Deployment.Compression.Zip.dll = Tools\Wix\SDK\Microsoft.Deployment.Compression.Zip.dll
+		Tools\Wix\SDK\Microsoft.Deployment.Compression.Zip.xml = Tools\Wix\SDK\Microsoft.Deployment.Compression.Zip.xml
+		Tools\Wix\SDK\Microsoft.Deployment.Resources.dll = Tools\Wix\SDK\Microsoft.Deployment.Resources.dll
+		Tools\Wix\SDK\Microsoft.Deployment.Resources.xml = Tools\Wix\SDK\Microsoft.Deployment.Resources.xml
+		Tools\Wix\SDK\Microsoft.Deployment.WindowsInstaller.dll = Tools\Wix\SDK\Microsoft.Deployment.WindowsInstaller.dll
+		Tools\Wix\SDK\Microsoft.Deployment.WindowsInstaller.Linq.dll = Tools\Wix\SDK\Microsoft.Deployment.WindowsInstaller.Linq.dll
+		Tools\Wix\SDK\Microsoft.Deployment.WindowsInstaller.Linq.xml = Tools\Wix\SDK\Microsoft.Deployment.WindowsInstaller.Linq.xml
+		Tools\Wix\SDK\Microsoft.Deployment.WindowsInstaller.Package.dll = Tools\Wix\SDK\Microsoft.Deployment.WindowsInstaller.Package.dll
+		Tools\Wix\SDK\Microsoft.Deployment.WindowsInstaller.Package.xml = Tools\Wix\SDK\Microsoft.Deployment.WindowsInstaller.Package.xml
+		Tools\Wix\SDK\Microsoft.Deployment.WindowsInstaller.xml = Tools\Wix\SDK\Microsoft.Deployment.WindowsInstaller.xml
+		Tools\Wix\SDK\MsgGen.exe = Tools\Wix\SDK\MsgGen.exe
+		Tools\Wix\SDK\wix.ca.targets = Tools\Wix\SDK\wix.ca.targets
+		Tools\Wix\SDK\XsdGen.exe = Tools\Wix\SDK\XsdGen.exe
+		Tools\Wix\SDK\XsdStitch.exe = Tools\Wix\SDK\XsdStitch.exe
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x86", "x86", "{AB1EF593-16EC-41CD-9321-8AF8A035C32C}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Wix\SDK\x86\sfxca.dll = Tools\Wix\SDK\x86\sfxca.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x64", "x64", "{D5751D46-1E05-4BC0-BA5B-28F8990CB4A3}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Wix\SDK\x64\sfxca.dll = Tools\Wix\SDK\x64\sfxca.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Eazfuscator.NET", "Eazfuscator.NET", "{94D4B88A-935E-4AED-8838-7E651B17C79C}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Eazfuscator.NET\Eazfuscator.NET Assistant.exe = Tools\Eazfuscator.NET\Eazfuscator.NET Assistant.exe
+		Tools\Eazfuscator.NET\Eazfuscator.NET Assistant.exe.config = Tools\Eazfuscator.NET\Eazfuscator.NET Assistant.exe.config
+		Tools\Eazfuscator.NET\Eazfuscator.NET.exe = Tools\Eazfuscator.NET\Eazfuscator.NET.exe
+		Tools\Eazfuscator.NET\Eazfuscator.NET.exe.config = Tools\Eazfuscator.NET\Eazfuscator.NET.exe.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{9D6FB83D-722D-4490-BD95-30CAD37BAF13}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Eazfuscator.NET\Components\AG.Configuration.SettingsProviders.dll = Tools\Eazfuscator.NET\Components\AG.Configuration.SettingsProviders.dll
+		Tools\Eazfuscator.NET\Components\AG.Deployment.Updating.dll = Tools\Eazfuscator.NET\Components\AG.Deployment.Updating.dll
+		Tools\Eazfuscator.NET\Components\AG.Eazfuscator.NET.Settings.dll = Tools\Eazfuscator.NET\Components\AG.Eazfuscator.NET.Settings.dll
+		Tools\Eazfuscator.NET\Components\AG.Eazfuscator.NET.Updating.dll = Tools\Eazfuscator.NET\Components\AG.Eazfuscator.NET.Updating.dll
+		Tools\Eazfuscator.NET\Components\Eazfuscator.NET CEIP.exe = Tools\Eazfuscator.NET\Components\Eazfuscator.NET CEIP.exe
+		Tools\Eazfuscator.NET\Components\Eazfuscator.NET CEIP.exe.config = Tools\Eazfuscator.NET\Components\Eazfuscator.NET CEIP.exe.config
+		Tools\Eazfuscator.NET\Components\Eazfuscator.NET.Ceip.dll = Tools\Eazfuscator.NET\Components\Eazfuscator.NET.Ceip.dll
+		Tools\Eazfuscator.NET\Components\Eazfuscator.NET.Ceip.dll.config = Tools\Eazfuscator.NET\Components\Eazfuscator.NET.Ceip.dll.config
+		Tools\Eazfuscator.NET\Components\Eazfuscator.NET.Installer.dll = Tools\Eazfuscator.NET\Components\Eazfuscator.NET.Installer.dll
+		Tools\Eazfuscator.NET\Components\Eazfuscator.NET.Resources.dll = Tools\Eazfuscator.NET\Components\Eazfuscator.NET.Resources.dll
+		Tools\Eazfuscator.NET\Components\ICSharpCode.SharpZipLib.dll = Tools\Eazfuscator.NET\Components\ICSharpCode.SharpZipLib.dll
+		Tools\Eazfuscator.NET\Components\Irony.dll = Tools\Eazfuscator.NET\Components\Irony.dll
+		Tools\Eazfuscator.NET\Components\Microsoft.Cci.MetadataHelper.dll = Tools\Eazfuscator.NET\Components\Microsoft.Cci.MetadataHelper.dll
+		Tools\Eazfuscator.NET\Components\Microsoft.Cci.MetadataModel.dll = Tools\Eazfuscator.NET\Components\Microsoft.Cci.MetadataModel.dll
+		Tools\Eazfuscator.NET\Components\Microsoft.Cci.MutableMetadataModel.dll = Tools\Eazfuscator.NET\Components\Microsoft.Cci.MutableMetadataModel.dll
+		Tools\Eazfuscator.NET\Components\Microsoft.Cci.PeReader.dll = Tools\Eazfuscator.NET\Components\Microsoft.Cci.PeReader.dll
+		Tools\Eazfuscator.NET\Components\Microsoft.Cci.PeWriter.dll = Tools\Eazfuscator.NET\Components\Microsoft.Cci.PeWriter.dll
+		Tools\Eazfuscator.NET\Components\Microsoft.Cci.SourceModel.dll = Tools\Eazfuscator.NET\Components\Microsoft.Cci.SourceModel.dll
+		Tools\Eazfuscator.NET\Components\Mono.Cecil.dll = Tools\Eazfuscator.NET\Components\Mono.Cecil.dll
+		Tools\Eazfuscator.NET\Components\Mono.Cecil.Pdb.dll = Tools\Eazfuscator.NET\Components\Mono.Cecil.Pdb.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotNetInstaller", "dotNetInstaller", "{A35CB597-4B70-431C-901D-0E57319C144B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bin", "bin", "{8752FBE3-6D5B-4616-AE34-61B4363BAA4D}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\dotNetInstaller\bin\CabLib.dll = Tools\dotNetInstaller\bin\CabLib.dll
+		Tools\dotNetInstaller\bin\dotNetInstaller.exe = Tools\dotNetInstaller\bin\dotNetInstaller.exe
+		Tools\dotNetInstaller\bin\htmlInstaller.exe = Tools\dotNetInstaller\bin\htmlInstaller.exe
+		Tools\dotNetInstaller\bin\InstallerEditor.exe = Tools\dotNetInstaller\bin\InstallerEditor.exe
+		Tools\dotNetInstaller\bin\InstallerLib.dll = Tools\dotNetInstaller\bin\InstallerLib.dll
+		Tools\dotNetInstaller\bin\InstallerLinker.exe = Tools\dotNetInstaller\bin\InstallerLinker.exe
+		Tools\dotNetInstaller\bin\Microsoft.VC80.CRT.manifest = Tools\dotNetInstaller\bin\Microsoft.VC80.CRT.manifest
+		Tools\dotNetInstaller\bin\msvcm80.dll = Tools\dotNetInstaller\bin\msvcm80.dll
+		Tools\dotNetInstaller\bin\msvcp80.dll = Tools\dotNetInstaller\bin\msvcp80.dll
+		Tools\dotNetInstaller\bin\msvcr80.dll = Tools\dotNetInstaller\bin\msvcr80.dll
+		Tools\dotNetInstaller\bin\SourceGrid2.dll = Tools\dotNetInstaller\bin\SourceGrid2.dll
+		Tools\dotNetInstaller\bin\SourceLibrary.dll = Tools\dotNetInstaller\bin\SourceLibrary.dll
+		Tools\dotNetInstaller\bin\unicows.dll = Tools\dotNetInstaller\bin\unicows.dll
+		Tools\dotNetInstaller\bin\Vestris.ResourceLib.dll = Tools\dotNetInstaller\bin\Vestris.ResourceLib.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevDoc", "DevDoc", "{A51D20FD-BCEC-4BEA-9FA3-AD27C9C08403}"
+	ProjectSection(SolutionItems) = preProject
+		DevDoc\ManualTests.rtf = DevDoc\ManualTests.rtf
+		DevDoc\ReleaseProcedure.rtf = DevDoc\ReleaseProcedure.rtf
+		DevDoc\UpgradeRevitVersionProcedure.rtf = DevDoc\UpgradeRevitVersionProcedure.rtf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x86", "x86", "{5A966A82-BCC0-4972-9A02-0EFE10747111}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Wix\bin\x86\burn.exe = Tools\Wix\bin\x86\burn.exe
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PKLicenseSrc", "PKLicenseSrc", "{79355E27-E7E6-42FC-9AA8-973271446BA5}"
+	ProjectSection(SolutionItems) = preProject
+		PKLicenseSrc\ConsumedUsageData.cs = PKLicenseSrc\ConsumedUsageData.cs
+		PKLicenseSrc\PKLicense.cs = PKLicenseSrc\PKLicense.cs
+		PKLicenseSrc\PKLicenseData.cs = PKLicenseSrc\PKLicenseData.cs
+		PKLicenseSrc\StringEncryption.cs = PKLicenseSrc\StringEncryption.cs
+		PKLicenseSrc\UsageRecord.cs = PKLicenseSrc\UsageRecord.cs
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKLicense", "PKLicense\PKLicense.csproj", "{30BE7FBA-4702-4362-9CE5-E091AA926486}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PKLicense.UnitTests", "PKLicense.UnitTests\PKLicense.UnitTests.csproj", "{FA9AE881-0F37-4829-884B-A0666FB97E18}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Json.NET", "Json.NET", "{BDF40FCA-CA7D-4085-B74E-60CFC3F15297}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Net40", "Net40", "{CC22B382-A4CD-4FFD-AFBC-D14B677009A0}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Json.NET\Net40\Newtonsoft.Json.dll = Tools\Json.NET\Net40\Newtonsoft.Json.dll
+		Tools\Json.NET\Net40\Newtonsoft.Json.xml = Tools\Json.NET\Net40\Newtonsoft.Json.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Net45", "Net45", "{9ABC34F7-A675-4DDB-A2CF-D6BF27F3DDEB}"
+	ProjectSection(SolutionItems) = preProject
+		Tools\Json.NET\Net45\Newtonsoft.Json.dll = Tools\Json.NET\Net45\Newtonsoft.Json.dll
+		Tools\Json.NET\Net45\Newtonsoft.Json.xml = Tools\Json.NET\Net45\Newtonsoft.Json.xml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Deploy|Any CPU = Deploy|Any CPU
+		Deploy|Mixed Platforms = Deploy|Mixed Platforms
+		Deploy|x64 = Deploy|x64
+		Deploy|x86 = Deploy|x86
+		Deploy64|Any CPU = Deploy64|Any CPU
+		Deploy64|Mixed Platforms = Deploy64|Mixed Platforms
+		Deploy64|x64 = Deploy64|x64
+		Deploy64|x86 = Deploy64|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Deploy|Mixed Platforms.ActiveCfg = Deploy|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Deploy|Mixed Platforms.Build.0 = Deploy|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Deploy|x64.ActiveCfg = Deploy|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Deploy|x86.ActiveCfg = Deploy|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Deploy64|Any CPU.ActiveCfg = Deploy64|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Deploy64|Any CPU.Build.0 = Deploy64|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Deploy64|Mixed Platforms.ActiveCfg = Deploy64|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Deploy64|Mixed Platforms.Build.0 = Deploy64|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Deploy64|x64.ActiveCfg = Deploy64|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Deploy64|x86.ActiveCfg = Deploy64|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Release|x64.ActiveCfg = Release|Any CPU
+		{EB0835DD-2B0A-42DC-B64D-909938BDC421}.Release|x86.ActiveCfg = Release|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Deploy|Mixed Platforms.ActiveCfg = Deploy|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Deploy|Mixed Platforms.Build.0 = Deploy|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Deploy|x64.ActiveCfg = Deploy|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Deploy|x86.ActiveCfg = Deploy|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Deploy64|Any CPU.ActiveCfg = Deploy64|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Deploy64|Any CPU.Build.0 = Deploy64|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Deploy64|Mixed Platforms.ActiveCfg = Deploy64|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Deploy64|Mixed Platforms.Build.0 = Deploy64|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Deploy64|x64.ActiveCfg = Deploy64|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Deploy64|x86.ActiveCfg = Deploy64|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Release|x64.ActiveCfg = Release|Any CPU
+		{85DBBC2D-49CB-469F-81E0-FF47A6989E8A}.Release|x86.ActiveCfg = Release|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Deploy|Mixed Platforms.ActiveCfg = Deploy|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Deploy|Mixed Platforms.Build.0 = Deploy|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Deploy|x64.ActiveCfg = Deploy|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Deploy|x86.ActiveCfg = Deploy|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Deploy64|Any CPU.ActiveCfg = Deploy64|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Deploy64|Any CPU.Build.0 = Deploy64|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Deploy64|Mixed Platforms.ActiveCfg = Deploy64|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Deploy64|Mixed Platforms.Build.0 = Deploy64|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Deploy64|x64.ActiveCfg = Deploy64|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Deploy64|x86.ActiveCfg = Deploy64|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Release|x64.ActiveCfg = Release|Any CPU
+		{6086EE56-9863-4445-91F5-B423FE6D4C71}.Release|x86.ActiveCfg = Release|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Deploy|Mixed Platforms.ActiveCfg = Deploy|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Deploy|Mixed Platforms.Build.0 = Deploy|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Deploy|x64.ActiveCfg = Deploy|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Deploy|x86.ActiveCfg = Deploy|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Deploy64|Any CPU.ActiveCfg = Deploy64|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Deploy64|Any CPU.Build.0 = Deploy64|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Deploy64|Mixed Platforms.ActiveCfg = Deploy64|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Deploy64|Mixed Platforms.Build.0 = Deploy64|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Deploy64|x64.ActiveCfg = Deploy64|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Deploy64|x86.ActiveCfg = Deploy64|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Release|x64.ActiveCfg = Release|Any CPU
+		{B82B153C-968E-4F08-AEF3-EBA4D9E527D5}.Release|x86.ActiveCfg = Release|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Deploy|Mixed Platforms.ActiveCfg = Deploy|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Deploy|Mixed Platforms.Build.0 = Deploy|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Deploy|x64.ActiveCfg = Deploy|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Deploy|x86.ActiveCfg = Deploy|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Deploy64|Any CPU.ActiveCfg = Deploy64|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Deploy64|Any CPU.Build.0 = Deploy64|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Deploy64|Mixed Platforms.ActiveCfg = Deploy64|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Deploy64|Mixed Platforms.Build.0 = Deploy64|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Deploy64|x64.ActiveCfg = Deploy64|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Deploy64|x86.ActiveCfg = Deploy64|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Release|x64.ActiveCfg = Release|Any CPU
+		{B831DA4A-860B-444D-BE5E-CC3602428FF6}.Release|x86.ActiveCfg = Release|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Deploy|Mixed Platforms.ActiveCfg = Deploy|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Deploy|Mixed Platforms.Build.0 = Deploy|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Deploy|x64.ActiveCfg = Deploy|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Deploy|x86.ActiveCfg = Deploy|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Deploy64|Any CPU.ActiveCfg = Deploy64|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Deploy64|Any CPU.Build.0 = Deploy64|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Deploy64|Mixed Platforms.ActiveCfg = Deploy64|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Deploy64|Mixed Platforms.Build.0 = Deploy64|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Deploy64|x64.ActiveCfg = Deploy64|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Deploy64|x86.ActiveCfg = Deploy64|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Release|x64.ActiveCfg = Release|Any CPU
+		{0084F08D-C92A-45E0-AD9E-A56368BA0437}.Release|x86.ActiveCfg = Release|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Deploy|Mixed Platforms.ActiveCfg = Deploy|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Deploy|x64.ActiveCfg = Deploy|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Deploy|x86.ActiveCfg = Deploy|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Deploy64|Any CPU.ActiveCfg = Deploy|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Deploy64|Mixed Platforms.ActiveCfg = Deploy|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Deploy64|x64.ActiveCfg = Deploy|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Deploy64|x86.ActiveCfg = Deploy|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Release|x64.ActiveCfg = Release|Any CPU
+		{35F7EEE7-79CE-4C1E-91FD-16E26AD18A76}.Release|x86.ActiveCfg = Release|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Deploy|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Deploy|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Deploy|x64.ActiveCfg = Debug|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Deploy|x86.ActiveCfg = Debug|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Deploy64|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Deploy64|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Deploy64|x64.ActiveCfg = Debug|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Deploy64|x86.ActiveCfg = Debug|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Release|x64.ActiveCfg = Release|Any CPU
+		{DA5CA03F-A6D6-489F-8B2D-0B47E5BD2067}.Release|x86.ActiveCfg = Release|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Deploy|Any CPU.ActiveCfg = Debug (For Release build of Revit)|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Deploy|Mixed Platforms.ActiveCfg = Debug (For Release build of Revit)|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Deploy|x64.ActiveCfg = Debug (For Release build of Revit)|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Deploy|x86.ActiveCfg = Debug (For Release build of Revit)|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Deploy64|Any CPU.ActiveCfg = Debug (For Release build of Revit)|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Deploy64|Mixed Platforms.ActiveCfg = Debug (For Release build of Revit)|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Deploy64|x64.ActiveCfg = Debug (For Release build of Revit)|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Deploy64|x86.ActiveCfg = Debug (For Release build of Revit)|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Release|x64.ActiveCfg = Release|Any CPU
+		{05C77115-2277-4DFC-8F95-BE37E5F1130F}.Release|x86.ActiveCfg = Release|Any CPU
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Debug|Mixed Platforms.Build.0 = Debug|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Debug|x64.ActiveCfg = Debug|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Debug|x64.Build.0 = Debug|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Debug|x86.ActiveCfg = Debug|x86
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Debug|x86.Build.0 = Debug|x86
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy|Any CPU.ActiveCfg = Deploy|x86
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy|Any CPU.Build.0 = Deploy|x86
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy|Mixed Platforms.ActiveCfg = Deploy|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy|Mixed Platforms.Build.0 = Deploy|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy|x64.ActiveCfg = Deploy|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy|x64.Build.0 = Deploy|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy|x86.ActiveCfg = Deploy|x86
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy|x86.Build.0 = Deploy|x86
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy64|Any CPU.ActiveCfg = Deploy64|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy64|Any CPU.Build.0 = Deploy64|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy64|Mixed Platforms.ActiveCfg = Deploy64|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy64|Mixed Platforms.Build.0 = Deploy64|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy64|x64.ActiveCfg = Deploy64|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy64|x64.Build.0 = Deploy64|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy64|x86.ActiveCfg = Deploy64|x86
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Deploy64|x86.Build.0 = Deploy64|x86
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Release|Any CPU.ActiveCfg = Release|x86
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Release|Mixed Platforms.ActiveCfg = Release|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Release|Mixed Platforms.Build.0 = Release|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Release|x64.ActiveCfg = Release|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Release|x64.Build.0 = Release|x64
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Release|x86.ActiveCfg = Release|x86
+		{156A68D0-4A66-4171-BC70-8C2D56273A16}.Release|x86.Build.0 = Release|x86
+		{186154F0-0756-4228-8F8E-D628995E5616}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Debug|Mixed Platforms.Build.0 = Debug|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Debug|x64.ActiveCfg = Debug|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Debug|x64.Build.0 = Debug|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Debug|x86.ActiveCfg = Debug|x86
+		{186154F0-0756-4228-8F8E-D628995E5616}.Debug|x86.Build.0 = Debug|x86
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy|Any CPU.ActiveCfg = Deploy|x86
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy|Any CPU.Build.0 = Deploy|x86
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy|Mixed Platforms.ActiveCfg = Deploy|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy|Mixed Platforms.Build.0 = Deploy|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy|x64.ActiveCfg = Deploy|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy|x64.Build.0 = Deploy|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy|x86.ActiveCfg = Deploy|x86
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy|x86.Build.0 = Deploy|x86
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy64|Any CPU.ActiveCfg = Deploy64|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy64|Any CPU.Build.0 = Deploy64|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy64|Mixed Platforms.ActiveCfg = Deploy64|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy64|Mixed Platforms.Build.0 = Deploy64|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy64|x64.ActiveCfg = Deploy64|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy64|x64.Build.0 = Deploy64|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy64|x86.ActiveCfg = Deploy64|x86
+		{186154F0-0756-4228-8F8E-D628995E5616}.Deploy64|x86.Build.0 = Deploy64|x86
+		{186154F0-0756-4228-8F8E-D628995E5616}.Release|Any CPU.ActiveCfg = Release|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Release|Mixed Platforms.ActiveCfg = Release|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Release|Mixed Platforms.Build.0 = Release|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Release|x64.ActiveCfg = Release|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Release|x64.Build.0 = Release|x64
+		{186154F0-0756-4228-8F8E-D628995E5616}.Release|x86.ActiveCfg = Release|x86
+		{186154F0-0756-4228-8F8E-D628995E5616}.Release|x86.Build.0 = Release|x86
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Deploy|Mixed Platforms.ActiveCfg = Deploy|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Deploy|Mixed Platforms.Build.0 = Deploy|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Deploy|x64.ActiveCfg = Deploy|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Deploy|x86.ActiveCfg = Deploy|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Deploy64|Any CPU.ActiveCfg = Deploy64|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Deploy64|Any CPU.Build.0 = Deploy64|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Deploy64|Mixed Platforms.ActiveCfg = Deploy64|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Deploy64|Mixed Platforms.Build.0 = Deploy64|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Deploy64|x64.ActiveCfg = Deploy64|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Deploy64|x86.ActiveCfg = Deploy64|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Release|x64.ActiveCfg = Release|Any CPU
+		{30BE7FBA-4702-4362-9CE5-E091AA926486}.Release|x86.ActiveCfg = Release|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Deploy|Any CPU.ActiveCfg = Deploy64|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Deploy|Any CPU.Build.0 = Deploy64|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Deploy|Mixed Platforms.ActiveCfg = Deploy64|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Deploy|Mixed Platforms.Build.0 = Deploy64|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Deploy|x64.ActiveCfg = Deploy64|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Deploy|x86.ActiveCfg = Deploy64|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Deploy64|Any CPU.ActiveCfg = Deploy64|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Deploy64|Any CPU.Build.0 = Deploy64|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Deploy64|Mixed Platforms.ActiveCfg = Deploy64|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Deploy64|Mixed Platforms.Build.0 = Deploy64|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Deploy64|x64.ActiveCfg = Deploy64|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Deploy64|x86.ActiveCfg = Deploy64|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Release|x64.ActiveCfg = Release|Any CPU
+		{FA9AE881-0F37-4829-884B-A0666FB97E18}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AD710D39-1C0D-4224-A3F4-25519432AE0C} = {F50C8573-843F-4F19-88DE-E9586791CA6D}
+		{0A40C210-D083-4CD0-9EDD-FCB96DF083B8} = {F50C8573-843F-4F19-88DE-E9586791CA6D}
+		{EBE4BEB6-BC71-4397-980E-66FB4DBDCB23} = {F50C8573-843F-4F19-88DE-E9586791CA6D}
+		{EB44B06B-F4FB-4B7A-BA0C-203EB5C4440E} = {0A40C210-D083-4CD0-9EDD-FCB96DF083B8}
+		{52ABAC93-4736-417F-BF21-1715451988DA} = {0A40C210-D083-4CD0-9EDD-FCB96DF083B8}
+		{7C947B20-CBB4-48BE-A316-4095033C56B2} = {EB44B06B-F4FB-4B7A-BA0C-203EB5C4440E}
+		{78ABFEAA-2B7D-422B-BEAA-02501BA75A68} = {EB44B06B-F4FB-4B7A-BA0C-203EB5C4440E}
+		{60099155-1558-49B9-BC3C-4F696B8F920E} = {EB44B06B-F4FB-4B7A-BA0C-203EB5C4440E}
+		{E72911B9-0EA7-4666-A14F-BF5C5C8409FA} = {0A40C210-D083-4CD0-9EDD-FCB96DF083B8}
+		{2EB3B447-8D27-45A8-8A9A-4DF2C3FDF876} = {0A40C210-D083-4CD0-9EDD-FCB96DF083B8}
+		{0FA666F1-85DC-4E45-A6DA-585AF77252F8} = {0A40C210-D083-4CD0-9EDD-FCB96DF083B8}
+		{C01862EB-EA32-46DA-BD05-59A6F58B40BD} = {0FA666F1-85DC-4E45-A6DA-585AF77252F8}
+		{D7FD2295-A0B3-48E1-B60E-37B82223D086} = {0FA666F1-85DC-4E45-A6DA-585AF77252F8}
+		{AB1EF593-16EC-41CD-9321-8AF8A035C32C} = {D7FD2295-A0B3-48E1-B60E-37B82223D086}
+		{D5751D46-1E05-4BC0-BA5B-28F8990CB4A3} = {D7FD2295-A0B3-48E1-B60E-37B82223D086}
+		{94D4B88A-935E-4AED-8838-7E651B17C79C} = {0A40C210-D083-4CD0-9EDD-FCB96DF083B8}
+		{9D6FB83D-722D-4490-BD95-30CAD37BAF13} = {94D4B88A-935E-4AED-8838-7E651B17C79C}
+		{A35CB597-4B70-431C-901D-0E57319C144B} = {0A40C210-D083-4CD0-9EDD-FCB96DF083B8}
+		{8752FBE3-6D5B-4616-AE34-61B4363BAA4D} = {A35CB597-4B70-431C-901D-0E57319C144B}
+		{A51D20FD-BCEC-4BEA-9FA3-AD27C9C08403} = {F50C8573-843F-4F19-88DE-E9586791CA6D}
+		{5A966A82-BCC0-4972-9A02-0EFE10747111} = {C01862EB-EA32-46DA-BD05-59A6F58B40BD}
+		{79355E27-E7E6-42FC-9AA8-973271446BA5} = {F50C8573-843F-4F19-88DE-E9586791CA6D}
+		{BDF40FCA-CA7D-4085-B74E-60CFC3F15297} = {0A40C210-D083-4CD0-9EDD-FCB96DF083B8}
+		{CC22B382-A4CD-4FFD-AFBC-D14B677009A0} = {BDF40FCA-CA7D-4085-B74E-60CFC3F15297}
+		{9ABC34F7-A675-4DDB-A2CF-D6BF27F3DDEB} = {BDF40FCA-CA7D-4085-B74E-60CFC3F15297}
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+EndGlobal

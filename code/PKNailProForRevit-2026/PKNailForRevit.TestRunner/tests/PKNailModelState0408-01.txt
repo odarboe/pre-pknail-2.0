@@ -1,0 +1,255 @@
+
+{
+    "Walls" : [
+        {
+            "TypeName" : "PKNail Unknown Width",
+            "LocationEndPt0" : [
+                0.0,
+                0.0,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                5.25,
+                0.0,
+                1.5
+            ],
+            "Width"          : 0.0833333333333334,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 3,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    true,
+                    false
+                ],
+                "m_LevelOffset"    : [
+                    -10000001.0001,
+                    -10000001.0001
+                ],
+                "m_LevelOffsetDetailIdValue" : [
+                    -1,
+                    -1
+                ],
+                "m_RefPtOffset"              : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        },
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                5.25,
+                0.041666666666665,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                5.25,
+                -5.04166666666667,
+                1.5
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 3,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    true,
+                    true
+                ],
+                "m_LevelOffset"    : [
+                    -10000001.0001,
+                    -10000001.0001
+                ],
+                "m_LevelOffsetDetailIdValue" : [
+                    -1,
+                    -1
+                ],
+                "m_RefPtOffset"              : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        },
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                5.25,
+                0.291666666666665,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                5.25,
+                0.0,
+                1.5
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 3,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    false,
+                    true
+                ],
+                "m_LevelOffset"    : [
+                    -10000001.0001,
+                    -10000001.0001
+                ],
+                "m_LevelOffsetDetailIdValue" : [
+                    -1,
+                    -1
+                ],
+                "m_RefPtOffset"              : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        },
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                -4.75,
+                0.0416666666666656,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                5.25,
+                0.041666666666665,
+                1.5
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 2,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    false,
+                    true
+                ],
+                "m_LevelOffset"    : [
+                    -10000001.0001,
+                    -10000001.0001
+                ],
+                "m_LevelOffsetDetailIdValue" : [
+                    -1,
+                    -1
+                ],
+                "m_RefPtOffset"              : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        },
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                -4.75,
+                5.29166666666667,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                -4.75,
+                0.0416666666666652,
+                1.5
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 2,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    false,
+                    true
+                ],
+                "m_LevelOffset"    : [
+                    -10000001.0001,
+                    -10000001.0001
+                ],
+                "m_LevelOffsetDetailIdValue" : [
+                    -1,
+                    -1
+                ],
+                "m_RefPtOffset"              : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        }
+    ],
+    "DetailCurves" : [
+    ],
+    "FamilyInstances" : [
+        {
+            "TypeName" : "Generic Models:PKNail Survey Sprite LR:PKNail Survey Sprite LR",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -3.49604806229098,
+                1.72504746281621,
+                1.49999999999999
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 1.5707963267949,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 0.0
+        }
+    ]
+}

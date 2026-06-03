@@ -1,0 +1,382 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0084F08D-C92A-45E0-AD9E-A56368BA0437}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PKNailForRevit.TestRunner</RootNamespace>
+    <AssemblyName>PKNailForRevit.TestRunner</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Deploy|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Deploy\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Deploy64|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Deploy64\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Tools\NUnit\framework\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="TestFixture.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FunctionalTests.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FunctionalTests.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Json\Json.csproj">
+      <Project>{6086EE56-9863-4445-91F5-B423FE6D4C71}</Project>
+      <Name>Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PKNailForRevit.TestCore\PKNailForRevit.TestCore.csproj">
+      <Project>{B831DA4A-860B-444D-BE5E-CC3602428FF6}</Project>
+      <Name>PKNailForRevit.TestCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PKNailForRevit\PKNailForRevit.csproj">
+      <Project>{EB0835DD-2B0A-42DC-B64D-909938BDC421}</Project>
+      <Name>PKNailForRevit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FunctionalTests.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="tests\KeyboardShortcuts.xml" />
+    <Content Include="tests\PKNailModelState0077-01.txt" />
+    <Content Include="tests\PKNailModelState0077-02.txt" />
+    <Content Include="tests\PKNailModelState0077-03.txt" />
+    <Content Include="tests\PKNailModelState0077-04.txt" />
+    <Content Include="tests\PKNailModelState0077-05.txt" />
+    <Content Include="tests\PKNailModelState0077-06.txt" />
+    <Content Include="tests\PKNailModelState0077-07.txt" />
+    <Content Include="tests\PKNailModelState0077-08.txt" />
+    <Content Include="tests\PKNailModelState0104-01.txt" />
+    <Content Include="tests\PKNailModelState0115-01.txt" />
+    <Content Include="tests\PKNailModelState0115-02.txt" />
+    <Content Include="tests\PKNailModelState0128-01.txt" />
+    <Content Include="tests\PKNailModelState0139-01.txt" />
+    <Content Include="tests\PKNailModelState0155-01.txt" />
+    <Content Include="tests\PKNailModelState0168.txt" />
+    <Content Include="tests\PKNailModelState0176-01.txt" />
+    <Content Include="tests\PKNailModelState0176-02.txt" />
+    <Content Include="tests\PKNailModelState0176-03.txt" />
+    <Content Include="tests\PKNailModelState0176-04.txt" />
+    <Content Include="tests\PKNailModelState0177-01.txt" />
+    <Content Include="tests\PKNailModelState0179-01.txt" />
+    <Content Include="tests\PKNailModelState0179-02.txt" />
+    <Content Include="tests\PKNailModelState0181-01.txt" />
+    <Content Include="tests\PKNailModelState0181-02.txt" />
+    <Content Include="tests\PKNailModelState0183-01.txt" />
+    <Content Include="tests\PKNailModelState0183-02.txt" />
+    <Content Include="tests\PKNailModelState0183-03.txt" />
+    <Content Include="tests\PKNailModelState0183-04.txt" />
+    <Content Include="tests\PKNailModelState0183-05.txt" />
+    <Content Include="tests\PKNailModelState0183-06.txt" />
+    <Content Include="tests\PKNailModelState0183-07.txt" />
+    <Content Include="tests\PKNailModelState0183-08.txt" />
+    <Content Include="tests\PKNailModelState0186-01.txt" />
+    <Content Include="tests\PKNailModelState0189-01.txt" />
+    <Content Include="tests\PKNailModelState0189-02.txt" />
+    <Content Include="tests\PKNailModelState0189-03.txt" />
+    <Content Include="tests\PKNailModelState0189-04.txt" />
+    <Content Include="tests\PKNailModelState0191-01.txt" />
+    <Content Include="tests\PKNailModelState0192-01.txt" />
+    <Content Include="tests\PKNailModelState0193-01.txt" />
+    <Content Include="tests\PKNailModelState0193-02.txt" />
+    <Content Include="tests\PKNailModelState0193-03.txt" />
+    <Content Include="tests\PKNailModelState0193-04.txt" />
+    <Content Include="tests\PKNailModelState0193-05.txt" />
+    <Content Include="tests\PKNailModelState0200-01.txt" />
+    <Content Include="tests\PKNailModelState0206-01.txt" />
+    <Content Include="tests\PKNailModelState0206-02.txt" />
+    <Content Include="tests\PKNailModelState0206-03.txt" />
+    <Content Include="tests\PKNailModelState0206-04.txt" />
+    <Content Include="tests\PKNailModelState0208-01.txt" />
+    <Content Include="tests\PKNailModelState0212-01.txt" />
+    <Content Include="tests\PKNailModelState0212-02.txt" />
+    <Content Include="tests\PKNailModelState0212-03.txt" />
+    <Content Include="tests\PKNailModelState0212-04.txt" />
+    <Content Include="tests\PKNailModelState0214-01.txt" />
+    <Content Include="tests\PKNailModelState0226-01.txt" />
+    <Content Include="tests\PKNailModelState0235-01.txt" />
+    <Content Include="tests\PKNailModelState0239-01.txt" />
+    <Content Include="tests\PKNailModelState0240-01.txt" />
+    <Content Include="tests\PKNailModelState0243-01.txt" />
+    <Content Include="tests\PKNailModelState0249-01.txt" />
+    <Content Include="tests\PKNailModelState0249-02.txt" />
+    <Content Include="tests\PKNailModelState0249-03.txt" />
+    <Content Include="tests\PKNailModelState0249-04.txt" />
+    <Content Include="tests\PKNailModelState0251-01.txt" />
+    <Content Include="tests\PKNailModelState0259-01.txt" />
+    <Content Include="tests\PKNailModelState0259-02.txt" />
+    <Content Include="tests\PKNailModelState0260-01.txt" />
+    <Content Include="tests\PKNailModelState0261-01.txt" />
+    <Content Include="tests\PKNailModelState0261-02.txt" />
+    <Content Include="tests\PKNailModelState0261-03.txt" />
+    <Content Include="tests\PKNailModelState0264-01.txt" />
+    <Content Include="tests\PKNailModelState0276-01.txt" />
+    <Content Include="tests\PKNailModelState0277-01.txt" />
+    <Content Include="tests\PKNailModelState0278-01.txt" />
+    <Content Include="tests\PKNailModelState0281-01.txt" />
+    <Content Include="tests\PKNailModelState0282-01.txt" />
+    <Content Include="tests\PKNailModelState0284-01.txt" />
+    <Content Include="tests\PKNailModelState0287-01.txt" />
+    <Content Include="tests\PKNailModelState0288-01.txt" />
+    <Content Include="tests\PKNailModelState0289-01.txt" />
+    <Content Include="tests\PKNailModelState0289-02.txt" />
+    <Content Include="tests\PKNailModelState0289-03.txt" />
+    <Content Include="tests\PKNailModelState0290-01.txt" />
+    <Content Include="tests\PKNailModelState0291-01.txt" />
+    <Content Include="tests\PKNailModelState0291-02.txt" />
+    <Content Include="tests\PKNailModelState0292-01.txt" />
+    <Content Include="tests\PKNailModelState0298-01.txt" />
+    <Content Include="tests\PKNailModelState0299-01.txt" />
+    <Content Include="tests\PKNailModelState0302-01.txt" />
+    <Content Include="tests\PKNailModelState0318-01.txt" />
+    <Content Include="tests\PKNailModelState0327-01.txt" />
+    <Content Include="tests\PKNailModelState0330-01.txt" />
+    <Content Include="tests\PKNailModelState0332-01.txt" />
+    <Content Include="tests\PKNailModelState0332-02.txt" />
+    <Content Include="tests\PKNailModelState0332-03.txt" />
+    <Content Include="tests\PKNailModelState0338-01.txt" />
+    <Content Include="tests\PKNailModelState0344-01.txt" />
+    <Content Include="tests\PKNailModelState0361-01.txt" />
+    <Content Include="tests\PKNailModelState0364-01.txt" />
+    <Content Include="tests\PKNailModelState0373-01.txt" />
+    <Content Include="tests\PKNailModelState0374-01.txt" />
+    <Content Include="tests\PKNailModelState0374-02.txt" />
+    <Content Include="tests\PKNailModelState0380-01.txt" />
+    <Content Include="tests\PKNailModelState0383-01.txt" />
+    <Content Include="tests\PKNailModelState0384-01.txt" />
+    <Content Include="tests\PKNailModelState0386-01.txt" />
+    <Content Include="tests\PKNailModelState0387-01.txt" />
+    <Content Include="tests\PKNailModelState0396-01.txt" />
+    <Content Include="tests\PKNailModelState0402-01.txt" />
+    <Content Include="tests\PKNailModelState0404-01.txt" />
+    <Content Include="tests\PKNailModelState0408-01.txt" />
+    <Content Include="tests\PKNailModelState0410-01.txt" />
+    <Content Include="tests\PKNailModelState0411-01.txt" />
+    <Content Include="tests\PKNailModelState0412-01.txt" />
+    <Content Include="tests\PKNailModelState0448-01.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tests\0077-01.au3" />
+    <None Include="tests\0077-02.au3" />
+    <None Include="tests\0077-03.au3" />
+    <None Include="tests\0077-04.au3" />
+    <None Include="tests\0077-05.au3" />
+    <None Include="tests\0077-06.au3" />
+    <None Include="tests\0077-07.au3" />
+    <None Include="tests\0077-08.au3" />
+    <None Include="tests\0104-01.au3" />
+    <None Include="tests\0115-01.au3" />
+    <None Include="tests\0115-02.au3" />
+    <None Include="tests\0128-01.au3" />
+    <None Include="tests\0139-01.au3" />
+    <None Include="tests\0155-01.au3" />
+    <None Include="tests\0168.au3" />
+    <None Include="tests\0176-01.au3" />
+    <None Include="tests\0176-02.au3" />
+    <None Include="tests\0176-03.au3" />
+    <None Include="tests\0176-04.au3" />
+    <None Include="tests\0177-01.au3" />
+    <None Include="tests\0179-01.au3" />
+    <None Include="tests\0179-02.au3" />
+    <None Include="tests\0181-01.au3" />
+    <None Include="tests\0181-02.au3" />
+    <None Include="tests\0183-01.au3" />
+    <None Include="tests\0183-02.au3" />
+    <None Include="tests\0183-03.au3" />
+    <None Include="tests\0183-04.au3" />
+    <None Include="tests\0183-05.au3" />
+    <None Include="tests\0183-06.au3" />
+    <None Include="tests\0183-07.au3" />
+    <None Include="tests\0183-08.au3" />
+    <None Include="tests\0186-01.au3" />
+    <None Include="tests\0189-01.au3" />
+    <None Include="tests\0189-02.au3" />
+    <None Include="tests\0189-03.au3" />
+    <None Include="tests\0189-04.au3" />
+    <None Include="tests\0191-01.au3" />
+    <None Include="tests\0192-01.au3" />
+    <None Include="tests\0193-01.au3" />
+    <None Include="tests\0193-02.au3" />
+    <None Include="tests\0193-03.au3" />
+    <None Include="tests\0193-04.au3" />
+    <None Include="tests\0193-05.au3" />
+    <None Include="tests\0200-01.au3" />
+    <None Include="tests\0206-01.au3" />
+    <None Include="tests\0206-02.au3" />
+    <None Include="tests\0206-03.au3" />
+    <None Include="tests\0206-04.au3" />
+    <None Include="tests\0208-01.au3" />
+    <None Include="tests\0212-01.au3" />
+    <None Include="tests\0212-02.au3" />
+    <None Include="tests\0212-03.au3" />
+    <None Include="tests\0212-04.au3" />
+    <None Include="tests\0214-01.au3" />
+    <None Include="tests\0226-01.au3" />
+    <None Include="tests\0235-01.au3" />
+    <None Include="tests\0239-01.au3" />
+    <None Include="tests\0240-01.au3" />
+    <None Include="tests\0243-01.au3" />
+    <None Include="tests\0249-01.au3" />
+    <None Include="tests\0249-02.au3" />
+    <None Include="tests\0249-03.au3" />
+    <None Include="tests\0249-04.au3" />
+    <None Include="tests\0251-01.au3" />
+    <None Include="tests\0259-01.au3" />
+    <None Include="tests\0259-02.au3" />
+    <None Include="tests\0260-01.au3" />
+    <None Include="tests\0261-01.au3" />
+    <None Include="tests\0261-02.au3" />
+    <None Include="tests\0261-03.au3" />
+    <None Include="tests\0264-01.au3" />
+    <None Include="tests\0276-01.au3" />
+    <None Include="tests\0277-01.au3" />
+    <None Include="tests\0278-01.au3" />
+    <None Include="tests\0281-01.au3" />
+    <None Include="tests\0282-01.au3" />
+    <None Include="tests\0284-01.au3" />
+    <None Include="tests\0287-01.au3" />
+    <None Include="tests\0288-01.au3" />
+    <None Include="tests\0289-01.au3" />
+    <None Include="tests\0289-02.au3" />
+    <None Include="tests\0289-03.au3" />
+    <None Include="tests\0290-01.au3" />
+    <None Include="tests\0291-01.au3" />
+    <None Include="tests\0291-02.au3" />
+    <None Include="tests\0292-01.au3" />
+    <None Include="tests\0298-01.au3" />
+    <None Include="tests\0299-01.au3" />
+    <None Include="tests\0302-01.au3" />
+    <None Include="tests\0318-01.au3" />
+    <None Include="tests\0327-01.au3" />
+    <None Include="tests\0330-01.au3" />
+    <None Include="tests\0332-01.au3" />
+    <None Include="tests\0332-02.au3" />
+    <None Include="tests\0332-03.au3" />
+    <None Include="tests\0338-01.au3" />
+    <None Include="tests\0344-01.au3" />
+    <None Include="tests\0361-01.au3" />
+    <None Include="tests\0364-01.au3" />
+    <None Include="tests\0373-01.au3" />
+    <None Include="tests\0374-01.au3" />
+    <None Include="tests\0374-02.au3" />
+    <None Include="tests\0380-01.au3" />
+    <None Include="tests\0383-01.au3" />
+    <None Include="tests\0384-01.au3" />
+    <None Include="tests\0386-01.au3" />
+    <None Include="tests\0387-01.au3" />
+    <None Include="tests\0396-01.au3" />
+    <None Include="tests\0402-01.au3" />
+    <None Include="tests\0404-01.au3" />
+    <None Include="tests\0408-01.au3" />
+    <None Include="tests\0410-01.au3" />
+    <None Include="tests\0411-01.au3" />
+    <None Include="tests\0412-01.au3" />
+    <None Include="tests\0448-01.au3" />
+    <None Include="tests\functions.au3" />
+    <None Include="tests\globals.au3" />
+    <None Include="tests\PKNailPro.rte" />
+    <None Include="tests\test0193-02.rvt" />
+    <None Include="tests\test0200-01.rvt" />
+    <None Include="tests\test0226-01.rvt" />
+    <None Include="tests\test0235-01.rvt" />
+    <None Include="tests\test0278-01.rvt" />
+    <None Include="tests\test0281-01.rvt" />
+    <None Include="tests\test0284-01.rvt" />
+    <None Include="tests\test0287-01.rvt" />
+    <None Include="tests\test0292-01.rvt" />
+    <None Include="tests\test0318-01.rvt" />
+    <None Include="tests\test0327-01.rvt" />
+    <None Include="tests\test0330-01.rvt" />
+    <None Include="tests\test0332-03.rvt" />
+    <None Include="tests\test0338-01.rvt" />
+    <None Include="tests\test0361-01.rvt" />
+    <None Include="tests\test0364-01.rvt" />
+    <None Include="tests\test0412-01.rvt" />
+    <None Include="tests\test0448-01.rvt" />
+    <None Include="tests\testEmpty.rvt" />
+    <None Include="tests\testEmptyLevels.rvt" />
+    <None Include="FunctionalTests.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FunctionalTests.cs</LastGenOutput>
+    </None>
+    <None Include="tests\testEmptyMetric.rvt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <MSBuildCommunityTasksPath>..\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+  <Import Project="..\Tools\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
+  <Target Name="RunTests">
+    <NUnit Assemblies=".\bin\Debug\PKNailForRevit.TestRunner.dll" ToolPath="..\Tools\Nunit" WorkingDirectory="." DisableShadowCopy="true" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,110 @@
+
+{
+    "Walls" : [
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                0.0,
+                0.0,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                20.0,
+                0.0,
+                1.5
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 3,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    true,
+                    false
+                ],
+                "m_RefPtOffset"    : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        }
+    ],
+    "DetailCurves" : [
+    ],
+    "FamilyInstances" : [
+        {
+            "TypeName" : "Generic Models:PKNail Survey Sprite LR:PKNail Survey Sprite LR",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                1.43338079614954,
+                -1.25395193770902,
+                1.49999999999999
+            ],
+            "Rotation"       : 0.0,
+            "IsFacingFlipped" : false,
+            "IsHandFlipped"   : false,
+            "Width"           : 0.0,
+            "Height"          : 0.0,
+            "SillHeight"      : 0.0
+        },
+        {
+            "TypeName" : "Doors:PKNail Single:36\" x 84\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                3.5,
+                0.0,
+                2.08333333333333
+            ],
+            "Rotation"       : 3.14159265358979,
+            "IsFacingFlipped" : false,
+            "IsHandFlipped"   : true,
+            "Width"           : 3.0,
+            "Height"          : 7.0,
+            "SillHeight"      : 0.583333333333333
+        },
+        {
+            "TypeName" : "Doors:PKNail Double:60\" x 72\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                10.5,
+                0.0,
+                2.75
+            ],
+            "Rotation"        : 3.14159265358979,
+            "IsFacingFlipped" : false,
+            "IsHandFlipped"   : true,
+            "Width"           : 5.0,
+            "Height"          : 6.0,
+            "SillHeight"      : 1.25
+        },
+        {
+            "TypeName" : "Doors:PKNail Single:36\" x 84\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                16.5,
+                0.0,
+                2.08333333333333
+            ],
+            "Rotation"       : 3.14159265358979,
+            "IsFacingFlipped" : false,
+            "IsHandFlipped"   : true,
+            "Width"           : 3.0,
+            "Height"          : 7.0,
+            "SillHeight"      : 0.583333333333333
+        }
+    ]
+}

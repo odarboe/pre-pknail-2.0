@@ -429,4 +429,27 @@ FodyWeavers.xsd
 *.msp
 
 # PKNAIL files
-docs/point_cloud/full_test_fille.las
+docs/point_cloud/full_test_file.las
+
+# Explicit C#/.NET Build Outputs & Artifacts
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+.vs/
+*.userprefs
+TestResults/
+packages/
+.idea/
+.vscode/
+
+# Executables and libraries
+*.exe
+*.dll
+*.pdb
+*.class
+
+# Mercurial VCS metadata (never belongs in git)
+.hg/

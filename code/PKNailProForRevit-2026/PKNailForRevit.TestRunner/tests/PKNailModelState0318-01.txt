@@ -1,0 +1,370 @@
+
+{
+    "Walls" : [
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "LocationEndPt1" : [
+                -20.0,
+                1.22460635382238E-15,
+                0.0
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 0.0,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 2,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    false,
+                    true
+                ],
+                "m_RefPtOffset"    : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        },
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                0.0,
+                0.0,
+                -15.0
+            ],
+            "LocationEndPt1" : [
+                -20.0,
+                1.22460635382238E-15,
+                -15.0
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 0",
+            "LevelElevation" : -15.0,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 15.0,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 1",
+            "WALL_BASE_CONSTRAINT"   : "Level 0",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 2,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    false,
+                    false
+                ],
+                "m_RefPtOffset"    : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        },
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                0.0,
+                0.0,
+                9.99999999999844
+            ],
+            "LocationEndPt1" : [
+                -20.0,
+                1.22460635382238E-15,
+                9.99999999999844
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 2",
+            "LevelElevation" : 9.99999999999844,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 12.0000000000006,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 3",
+            "WALL_BASE_CONSTRAINT"   : "Level 2",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 2,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    false,
+                    false
+                ],
+                "m_RefPtOffset"    : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        },
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                0.0,
+                0.0,
+                21.999999999999
+            ],
+            "LocationEndPt1" : [
+                -20.0,
+                1.22460635382238E-15,
+                21.999999999999
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 3",
+            "LevelElevation" : 21.999999999999,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.0,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 4",
+            "WALL_BASE_CONSTRAINT"   : "Level 3",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 2,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    false,
+                    false
+                ],
+                "m_RefPtOffset"    : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        },
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                0.0,
+                0.0,
+                30.999999999999
+            ],
+            "LocationEndPt1" : [
+                -20.0,
+                1.22460635382238E-15,
+                30.999999999999
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 4",
+            "LevelElevation" : 30.999999999999,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.0,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 5",
+            "WALL_BASE_CONSTRAINT"   : "Level 4",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 2,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    false,
+                    false
+                ],
+                "m_RefPtOffset"    : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        }
+    ],
+    "DetailCurves" : [
+    ],
+    "FamilyInstances" : [
+        {
+            "TypeName" : "Generic Models:PKNail Survey Sprite LR:PKNail Survey Sprite LR",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 0.0,
+            "Location"       : [
+                -18.5666192038505,
+                -1.25395193770902,
+                -6.13749126968969E-15
+            ],
+            "Rotation"       : 0.0,
+            "IsFacingFlipped" : false,
+            "IsHandFlipped"   : false,
+            "Width"           : 0.0,
+            "Height"          : 0.0,
+            "SillHeight"      : 0.0
+        },
+        {
+            "TypeName" : "Windows:PKNail Fixed:39\" x 54\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 0.0,
+            "Location"       : [
+                -16.375,
+                1.00264645219207E-15,
+                2.0
+            ],
+            "Rotation"       : 3.14159265358979,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : false,
+            "Width"           : 3.25,
+            "Height"          : 4.5,
+            "SillHeight"      : 2.0
+        },
+        {
+            "TypeName" : "Windows:PKNail Fixed:65 5/8\" x 58\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 0.0,
+            "Location"       : [
+                -6.265625,
+                3.83646209283417E-16,
+                1.0
+            ],
+            "Rotation"       : 3.14159265358979,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : false,
+            "Width"           : 5.46875,
+            "Height"          : 4.83333333333333,
+            "SillHeight"      : 1.0
+        },
+        {
+            "TypeName" : "Windows:PKNail Fixed:39\" x 54\"",
+            "LevelName" : "Level 0",
+            "LevelElevation" : -15.0,
+            "Location"       : [
+                -16.375,
+                1.00264645219207E-15,
+                -13.0
+            ],
+            "Rotation"       : 3.14159265358979,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : false,
+            "Width"           : 3.25,
+            "Height"          : 4.5,
+            "SillHeight"      : 2.0
+        },
+        {
+            "TypeName" : "Windows:PKNail Fixed:65 5/8\" x 58\"",
+            "LevelName" : "Level 0",
+            "LevelElevation" : -15.0,
+            "Location"       : [
+                -6.265625,
+                3.83646209283417E-16,
+                -14.0
+            ],
+            "Rotation"       : 3.14159265358979,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : false,
+            "Width"           : 5.46875,
+            "Height"          : 4.83333333333333,
+            "SillHeight"      : 1.0
+        },
+        {
+            "TypeName" : "Windows:PKNail Fixed:39\" x 52 3/4\"",
+            "LevelName" : "Level 2",
+            "LevelElevation" : 9.99999999999844,
+            "Location"       : [
+                -16.375,
+                1.00264645219207E-15,
+                11.8333333333318
+            ],
+            "Rotation"       : 3.14159265358979,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : false,
+            "Width"           : 3.25,
+            "Height"          : 4.39583333333333,
+            "SillHeight"      : 1.83333333333333
+        },
+        {
+            "TypeName" : "Windows:PKNail Fixed:65 5/8\" x 52 3/4\"",
+            "LevelName" : "Level 2",
+            "LevelElevation" : 9.99999999999844,
+            "Location"       : [
+                -6.265625,
+                3.83646209283417E-16,
+                11.8333333333318
+            ],
+            "Rotation"       : 3.14159265358979,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : false,
+            "Width"           : 5.46875,
+            "Height"          : 4.39583333333333,
+            "SillHeight"      : 1.83333333333333
+        },
+        {
+            "TypeName" : "Windows:PKNail Fixed:39\" x 54\"",
+            "LevelName" : "Level 3",
+            "LevelElevation" : 21.999999999999,
+            "Location"       : [
+                -16.375,
+                1.00264645219207E-15,
+                23.999999999999
+            ],
+            "Rotation"       : 3.14159265358979,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : false,
+            "Width"           : 3.25,
+            "Height"          : 4.5,
+            "SillHeight"      : 2.0
+        },
+        {
+            "TypeName" : "Windows:PKNail Fixed:65 5/8\" x 58\"",
+            "LevelName" : "Level 3",
+            "LevelElevation" : 21.999999999999,
+            "Location"       : [
+                -6.265625,
+                3.83646209283417E-16,
+                22.999999999999
+            ],
+            "Rotation"       : 3.14159265358979,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : false,
+            "Width"           : 5.46875,
+            "Height"          : 4.83333333333333,
+            "SillHeight"      : 1.0
+        },
+        {
+            "TypeName" : "Windows:PKNail Fixed:39\" x 90\"",
+            "LevelName" : "Level 4",
+            "LevelElevation" : 30.999999999999,
+            "Location"       : [
+                -16.375,
+                1.00264645219207E-15,
+                30.999999999999
+            ],
+            "Rotation"       : 3.14159265358979,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : false,
+            "Width"           : 3.25,
+            "Height"          : 7.5,
+            "SillHeight"      : 0.0
+        },
+        {
+            "TypeName" : "Windows:PKNail Fixed:65 5/8\" x 90\"",
+            "LevelName" : "Level 4",
+            "LevelElevation" : 30.999999999999,
+            "Location"       : [
+                -6.265625,
+                3.83646209283417E-16,
+                30.999999999999
+            ],
+            "Rotation"       : 3.14159265358979,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : false,
+            "Width"           : 5.46875,
+            "Height"          : 7.5,
+            "SillHeight"      : 0.0
+        }
+    ]
+}

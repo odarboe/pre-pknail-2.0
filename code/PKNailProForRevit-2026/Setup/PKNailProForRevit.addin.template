@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>PKNail Pro</Name>
+    <Assembly>DLL_LOCATION</Assembly>
+    <AddInId>604B1052-F742-4951-8576-C261D1893108</AddInId>
+    <FullClassName>PKNailForRevit.PKNailForRevitApp</FullClassName>
+    <VendorId>PKWN</VendorId>
+  </AddIn>
+</RevitAddIns>

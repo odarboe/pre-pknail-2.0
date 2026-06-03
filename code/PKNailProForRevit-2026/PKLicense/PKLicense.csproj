@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{30BE7FBA-4702-4362-9CE5-E091AA926486}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PKLicense</RootNamespace>
+    <AssemblyName>PKLicense</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Deploy|AnyCPU'">
+    <OutputPath>bin\Deploy\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Deploy64|AnyCPU'">
+    <OutputPath>bin\Deploy64\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Tools\Json.NET\Net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PLUSManaged">
+      <HintPath>..\Tools\SoftwareKey\PLUSManaged.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\PKLicenseSrc\ConsumedUsageData.cs">
+      <Link>ConsumedUsageData.cs</Link>
+    </Compile>
+    <Compile Include="..\PKLicenseSrc\PKLicense.cs">
+      <Link>PKLicense.cs</Link>
+    </Compile>
+    <Compile Include="..\PKLicenseSrc\PKLicenseData.cs">
+      <Link>PKLicenseData.cs</Link>
+    </Compile>
+    <Compile Include="..\PKLicenseSrc\StringEncryption.cs">
+      <Link>StringEncryption.cs</Link>
+    </Compile>
+    <Compile Include="..\PKLicenseSrc\UsageRecord.cs">
+      <Link>UsageRecord.cs</Link>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AssemblyVersionInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\..\Tools\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+  <PropertyGroup>
+    <BUILD_NUMBER Condition=" '$(BUILD_NUMBER)' == '' ">0</BUILD_NUMBER>
+    <BUILD_VCS_NUMBER Condition=" '$(BUILD_VCS_NUMBER)' == '' ">0</BUILD_VCS_NUMBER>
+  </PropertyGroup>
+  <Target Name="BeforeBuild">
+    <Message Text="Setting build and vcs revision numbers in AssemblyVersionInfo.cs" />
+    <Copy SourceFiles="..\VersionInfo\AssemblyVersionInfo.template" DestinationFiles="AssemblyVersionInfo.cs" />
+    <FileUpdate Files="AssemblyVersionInfo.cs" Regex="{BUILD_NUMBER}" ReplacementText="$(BUILD_NUMBER)" />
+    <FileUpdate Files="AssemblyVersionInfo.cs" Regex="{BUILD_VCS_NUMBER}" ReplacementText="$(BUILD_VCS_NUMBER)" />
+  </Target>
+  <Choose>
+    <When Condition="$(Configuration) == Deploy">
+      <PropertyGroup>
+        <PostBuildEvent>
+          $(SolutionDir)Tools\Eazfuscator.NET\Eazfuscator.NET.exe "$(TargetPath)" --msbuild-project-path "$(ProjectPath)" --msbuild-project-configuration "$(ConfigurationName)" --msbuild-project-platform "$(PlatformName)" --msbuild-solution-path "$(SolutionPath)" -n --newline-flush -v 3.2
+        </PostBuildEvent>
+      </PropertyGroup>
+    </When>
+    <When Condition="$(Configuration) == Deploy64">
+      <PropertyGroup>
+        <PostBuildEvent>
+          $(SolutionDir)Tools\Eazfuscator.NET\Eazfuscator.NET.exe "$(TargetPath)" --msbuild-project-path "$(ProjectPath)" --msbuild-project-configuration "$(ConfigurationName)" --msbuild-project-platform "$(PlatformName)" --msbuild-solution-path "$(SolutionPath)" -n --newline-flush -v 3.2
+        </PostBuildEvent>
+      </PropertyGroup>
+    </When>
+    <When Condition="$(Configuration) == Release">
+      <PropertyGroup>
+        <PostBuildEvent>
+          $(SolutionDir)Tools\Eazfuscator.NET\Eazfuscator.NET.exe "$(TargetPath)" --msbuild-project-path "$(ProjectPath)" --msbuild-project-configuration "$(ConfigurationName)" --msbuild-project-platform "$(PlatformName)" --msbuild-solution-path "$(SolutionPath)" -n --newline-flush -v 3.2
+        </PostBuildEvent>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <PostBuildEvent />
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+</Project>

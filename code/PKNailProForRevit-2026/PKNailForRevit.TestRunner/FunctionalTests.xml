@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<FunctionalTests>
+  <Test name="0077_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0077-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0077-01.txt</ReferenceModelStateFile>
+  </Test>
+  <Test name="0077_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0077-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0077-02.txt</ReferenceModelStateFile>
+  </Test>
+  <Test name="0077_03">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0077-03.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0077-03.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0077_04">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0077-04.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0077-04.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0077_05">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0077-05.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0077-05.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0077_06">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0077-06.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0077-06.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0077_07">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0077-07.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0077-07.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0077_08">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0077-08.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0077-08.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0104_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0104-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0104-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0128_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0128-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0128-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0139_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0139-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0139-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0115_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0115-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0115-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0115_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0115-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0115-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0155_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0155-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0155-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0168_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0168.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0168.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0176_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0176-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0176-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0176_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0176-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0176-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0176_03">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0176-03.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0176-03.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0176_04">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0176-04.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0176-04.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0177_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0177-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0177-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0179_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0179-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0179-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0179_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0179-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0179-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0181_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0181-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0181-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0181_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0181-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0181-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0183_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0183-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0183-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0183_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0183-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0183-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0183_03">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0183-03.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0183-03.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0183_04">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0183-04.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0183-04.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0183_05">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0183-05.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0183-05.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0183_06">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0183-06.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0183-06.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0183_07">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0183-07.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0183-07.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0183_08">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0183-08.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0183-08.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0186_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0186-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0186-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0189_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0189-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0189-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0189_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0189-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0189-02.txt</ReferenceModelStateFile>
+  </Test>
+  <Test name="0189_03">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0189-03.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0189-03.txt</ReferenceModelStateFile>
+  </Test>
+  <Test name="0189_04">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0189-04.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0189-04.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0191_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0191-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0191-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0192_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0192-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0192-01.txt</ReferenceModelStateFile>
+  </Test>
+  <Test name="0193_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0193-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmptyLevels.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0193-01.txt</ReferenceModelStateFile>
+  </Test>
+  <Test name="0193_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0193-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0193-02.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0193-02.txt</ReferenceModelStateFile>
+  </Test>
+  <Test name="0193_03">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0193-03.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmptyLevels.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0193-03.txt</ReferenceModelStateFile>
+  </Test>
+  <Test name="0193_04">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0193-04.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmptyLevels.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0193-04.txt</ReferenceModelStateFile>
+  </Test>
+  <Test name="0193_05">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0193-05.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmptyLevels.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0193-05.txt</ReferenceModelStateFile>
+  </Test>
+  <Test name="0200_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0200-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0200-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0200-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0206_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0206-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0206-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0206_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0206-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0206-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0206_03">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0206-03.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0206-03.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0206_04">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0206-04.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0206-04.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0208_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0208-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0208-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0212_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0212-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0212-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0212_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0212-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0212-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0212_03">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0212-03.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0212-03.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0212_04">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0212-04.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0212-04.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0214_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0214-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0214-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0226_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0226-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0226-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0226-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0235_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0235-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0235-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0235-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0239_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0239-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0239-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0240_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0240-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0240-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0243_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0243-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0243-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0249_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0249-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0249-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0249_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0249-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0249-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0249_03">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0249-03.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0249-03.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0249_04">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0249-04.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0249-04.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0251_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0251-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0251-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0259_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0259-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0259-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0259_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0259-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0259-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0260_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0260-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0260-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0261_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0261-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmptyMetric.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0261-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0261_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0261-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmptyMetric.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0261-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0261_03">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0261-03.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmptyMetric.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0261-03.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0264_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0264-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0200-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0264-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0276_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0276-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0276-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0277_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0277-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0277-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0278_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0278-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0278-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0278-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0281_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0281-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0281-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0281-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0282_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0282-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0282-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0284_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0284-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0284-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0284-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0287_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0287-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0287-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0287-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0288_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0288-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0288-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0289_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0289-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0289-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0289_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0289-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0289-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0289_03">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0289-03.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0289-03.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0290_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0290-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0290-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0291_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0291-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0291-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0291_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0291-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0291-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0292_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0292-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0292-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0292-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0298_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0298-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0298-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0299_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0299-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0299-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0302_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0302-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0302-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0318_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0318-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0318-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0318-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0330_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0330-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0330-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0330-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0327_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0327-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0327-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0327-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0332_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0332-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0332-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0332_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0332-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0318-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0332-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0332_03">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0332-03.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0332-03.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0332-03.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0338_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0338-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0338-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0338-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0344_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0344-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0344-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0361_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0361-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0361-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0361-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0364_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0364-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0364-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0364-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0373_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0373-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0318-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0373-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0374_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0374-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0374-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0374_02">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0374-02.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0374-02.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0380_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0380-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmptyLevels.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0380-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0383_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0383-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0383-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0384_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0384-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0384-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0386_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0386-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0386-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0387_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0387-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmptyLevels.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0387-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0396_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0396-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0396-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0402_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0402-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0402-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0404_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0404-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0404-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0408_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0408-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0408-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0410_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0410-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0410-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0411_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0411-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\testEmpty.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0411-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0412_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0412-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0412-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0412-01.txt</ReferenceModelStateFile>    
+  </Test>
+  <Test name="0448_01">
+    <AutomationScriptFile>PKNailForRevit.TestRunner\tests\0448-01.au3</AutomationScriptFile>
+    <RevitProjectFile>PKNailForRevit.TestRunner\tests\test0448-01.rvt</RevitProjectFile>
+    <ReferenceModelStateFile>PKNailForRevit.TestRunner\tests\PKNailModelState0448-01.txt</ReferenceModelStateFile>    
+  </Test>
+</FunctionalTests>

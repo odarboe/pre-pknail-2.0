@@ -1,0 +1,270 @@
+
+{
+    "Walls" : [
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                0.0,
+                0.0,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                -2.29166666666667,
+                1.40319478042147E-16,
+                1.5
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 2,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    true,
+                    true
+                ],
+                "m_LevelOffset"    : [
+                    -10000001.0001,
+                    -10000001.0001
+                ],
+                "m_LevelOffsetDetailIdValue" : [
+                    -1,
+                    -1
+                ],
+                "m_RefPtOffset"              : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        },
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                -2.29166666666667,
+                1.40319478042147E-16,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                -10.0,
+                6.12303176911189E-16,
+                1.5
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 2,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    true,
+                    true
+                ],
+                "m_LevelOffset"    : [
+                    -10000001.0001,
+                    -10000001.0001
+                ],
+                "m_LevelOffsetDetailIdValue" : [
+                    -1,
+                    -1
+                ],
+                "m_RefPtOffset"              : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        },
+        {
+            "TypeName" : "PKNail 7\"",
+            "LocationEndPt0" : [
+                -2.29166666666667,
+                1.38777878078145E-16,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                -2.29166666666667,
+                20.25,
+                1.5
+            ],
+            "Width"          : 0.583333333333332,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 3,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    true,
+                    true
+                ],
+                "m_LevelOffset"    : [
+                    -10000001.0001,
+                    -10000001.0001
+                ],
+                "m_LevelOffsetDetailIdValue" : [
+                    -1,
+                    -1
+                ],
+                "m_RefPtOffset"              : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        }
+    ],
+    "DetailCurves" : [
+    ],
+    "FamilyInstances" : [
+        {
+            "TypeName" : "Windows:PKNail Fixed:24\" x 48\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -2.29166666666667,
+                2.25,
+                4.0
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 1.5707963267949,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 2.0,
+            "Height"                      : 4.0,
+            "SillHeight"                  : 2.5
+        },
+        {
+            "TypeName" : "Windows:PKNail Fixed:24\" x 48\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -2.29166666666667,
+                5.25,
+                4.0
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 1.5707963267949,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 2.0,
+            "Height"                      : 4.0,
+            "SillHeight"                  : 2.5
+        },
+        {
+            "TypeName" : "Plumbing Fixtures:PKNail Wall Sink:PKNail Wall Sink",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -2.29166666666667,
+                8.25,
+                4.66666666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 1.5707963267949,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 1.16666666666667,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 3.16666666666667
+        },
+        {
+            "TypeName" : "Plumbing Fixtures:PKNail Wall Sink:PKNail Wall Sink",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -2.29166666666667,
+                11.25,
+                4.66666666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 1.5707963267949,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 1.16666666666667,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 3.16666666666667
+        },
+        {
+            "TypeName" : "Doors:PKNail Single:24\" x 84\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -2.29166666666667,
+                14.75,
+                1.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 1.5707963267949,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 2.0,
+            "Height"                      : 7.0,
+            "SillHeight"                  : 0.0
+        },
+        {
+            "TypeName" : "Doors:PKNail Single:24\" x 84\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -2.29166666666667,
+                17.75,
+                1.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 4.71238898038468,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : true,
+            "Width"                       : 2.0,
+            "Height"                      : 7.0,
+            "SillHeight"                  : 0.0
+        }
+    ]
+}

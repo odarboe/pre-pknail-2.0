@@ -1,0 +1,333 @@
+
+{
+    "Walls" : [
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                -0.249999999999999,
+                0.0,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                20.25,
+                0.0,
+                1.5
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 3,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    true,
+                    false
+                ],
+                "m_RefPtOffset"    : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        },
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                20.25,
+                0.0,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                20.25,
+                -20.5,
+                1.5
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 3,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    true,
+                    false
+                ],
+                "m_RefPtOffset"    : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        },
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                20.25,
+                -20.5,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                -0.25,
+                -20.5,
+                1.5
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 3,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    true,
+                    false
+                ],
+                "m_RefPtOffset"    : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        },
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                -0.25,
+                -20.5,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                -0.249999999999999,
+                0.0,
+                1.5
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 3,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    true,
+                    false
+                ],
+                "m_RefPtOffset"    : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        }
+    ],
+    "DetailCurves" : [
+    ],
+    "FamilyInstances" : [
+        {
+            "TypeName" : "Doors:PKNail Double:60\" x 90\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                5.5,
+                0.0,
+                1.5
+            ],
+            "Rotation"        : 3.14159265358979,
+            "IsFacingFlipped" : false,
+            "IsHandFlipped"   : true,
+            "Width"           : 5.0,
+            "Height"          : 7.5,
+            "SillHeight"      : 0.0
+        },
+        {
+            "TypeName" : "Doors:PKNail Opening:42 1/4\" x 96\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                11.7604166666667,
+                0.0,
+                1.5
+            ],
+            "Rotation"        : 3.14159265358979,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : true,
+            "Width"           : 3.52083333333333,
+            "Height"          : 8.0,
+            "SillHeight"      : 0.0
+        },
+        {
+            "TypeName" : "Doors:PKNail Sliding:54\" x 90\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                20.25,
+                -5.5,
+                1.5
+            ],
+            "Rotation"       : 1.5707963267949,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : true,
+            "Width"           : 4.5,
+            "Height"          : 7.5,
+            "SillHeight"      : 0.0
+        },
+        {
+            "TypeName" : "Doors:PKNail Double:60\" x 90\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                20.25,
+                -12.75,
+                1.5
+            ],
+            "Rotation"        : 1.5707963267949,
+            "IsFacingFlipped" : false,
+            "IsHandFlipped"   : true,
+            "Width"           : 5.0,
+            "Height"          : 7.5,
+            "SillHeight"      : 0.0
+        },
+        {
+            "TypeName" : "Doors:PKNail Pocket:24\" x 78\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                16.5,
+                -20.5,
+                1.5
+            ],
+            "Rotation"       : 0.0,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : true,
+            "Width"           : 2.0,
+            "Height"          : 6.5,
+            "SillHeight"      : 0.0
+        },
+        {
+            "TypeName" : "Doors:PKNail Double:60\" x 90\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                9.5,
+                -20.5,
+                1.5
+            ],
+            "Rotation"        : 0.0,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : true,
+            "Width"           : 5.0,
+            "Height"          : 7.5,
+            "SillHeight"      : 0.0
+        },
+        {
+            "TypeName" : "Doors:PKNail Sliding Glass:39\" x 90\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                2.375,
+                -20.5,
+                1.5
+            ],
+            "Rotation"       : 0.0,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : true,
+            "Width"           : 3.25,
+            "Height"          : 7.5,
+            "SillHeight"      : 0.0
+        },
+        {
+            "TypeName" : "Generic Models:PKNail Survey Sprite LR:PKNail Survey Sprite LR",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                1.00395193770902,
+                -18.8166192038505,
+                1.49999999999999
+            ],
+            "Rotation"       : 1.5707963267949,
+            "IsFacingFlipped" : false,
+            "IsHandFlipped"   : false,
+            "Width"           : 0.0,
+            "Height"          : 0.0,
+            "SillHeight"      : 0.0
+        },
+        {
+            "TypeName" : "Doors:PKNail Single:32\" x 90\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -0.25,
+                -15.9166666666667,
+                1.5
+            ],
+            "Rotation"       : 1.5707963267949,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : false,
+            "Width"           : 2.66666666666667,
+            "Height"          : 7.5,
+            "SillHeight"      : 0.0
+        },
+        {
+            "TypeName" : "Doors:PKNail Double:42\" x 90\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -0.249999999999999,
+                -10.5,
+                1.5
+            ],
+            "Rotation"        : 4.71238898038468,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : true,
+            "Width"           : 3.5,
+            "Height"          : 7.5,
+            "SillHeight"      : 0.0
+        },
+        {
+            "TypeName" : "Doors:PKNail Double:42\" x 90\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -0.249999999999999,
+                -4.5,
+                1.5
+            ],
+            "Rotation"        : 4.71238898038468,
+            "IsFacingFlipped" : true,
+            "IsHandFlipped"   : true,
+            "Width"           : 3.5,
+            "Height"          : 7.5,
+            "SillHeight"      : 0.0
+        }
+    ]
+}

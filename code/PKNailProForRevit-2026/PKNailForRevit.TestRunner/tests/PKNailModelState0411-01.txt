@@ -1,0 +1,285 @@
+
+{
+    "Walls" : [
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                0.0,
+                0.0,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                -20.0,
+                1.22460635382238E-15,
+                1.5
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 2,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    true,
+                    true
+                ],
+                "m_LevelOffset"    : [
+                    -10000001.0001,
+                    -10000001.0001
+                ],
+                "m_LevelOffsetDetailIdValue" : [
+                    -1,
+                    -1
+                ],
+                "m_RefPtOffset"              : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        }
+    ],
+    "DetailCurves" : [
+    ],
+    "FamilyInstances" : [
+        {
+            "TypeName" : "Lighting Fixtures:PKNail Emergency Wall Light:Emergency Wall Light",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -18.0,
+                1.09634523681734E-15,
+                8.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 7.0
+        },
+        {
+            "TypeName" : "Fire Alarm Devices:PKNail Exit Sign:Exit Sign",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -15.0,
+                9.18454765366783E-16,
+                9.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 8.0
+        },
+        {
+            "TypeName" : "Fire Alarm Devices:PKNail Fire Alarm Horn:Fire Alarm Horn",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -12.0,
+                7.34763812293426E-16,
+                7.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 6.0
+        },
+        {
+            "TypeName" : "Fire Alarm Devices:PKNail Fire Alarm Pull Box:Fire Alarm Pull Box",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -8.0,
+                4.89842541528951E-16,
+                5.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 4.0
+        },
+        {
+            "TypeName" : "Specialty Equipment:PKNail Fire Extinguisher Cabinet:Fire Extinguisher Cabinet",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -5.0,
+                3.06151588455594E-16,
+                4.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 1.0,
+            "Height"                      : 2.5,
+            "SillHeight"                  : 3.0
+        },
+        {
+            "TypeName" : "Generic Models:PKNail Survey Sprite LR:PKNail Survey Sprite LR",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -1.43338079614954,
+                1.25395193770902,
+                1.49999999999999
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 0.0
+        },
+        {
+            "TypeName" : "Lighting Fixtures:PKNail Emergency Wall Light:Emergency Wall Light",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -2.0,
+                1.2490009027033E-16,
+                8.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : -6.21724893790088E-15,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : true,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 7.0
+        },
+        {
+            "TypeName" : "Fire Alarm Devices:PKNail Exit Sign:Exit Sign",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -5.0,
+                3.06151588455594E-16,
+                9.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : -6.21724893790088E-15,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : true,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 8.0
+        },
+        {
+            "TypeName" : "Fire Alarm Devices:PKNail Fire Alarm Horn:Fire Alarm Horn",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -8.0,
+                4.89842541528951E-16,
+                7.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : -6.21724893790088E-15,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : true,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 6.0
+        },
+        {
+            "TypeName" : "Fire Alarm Devices:PKNail Fire Alarm Pull Box:Fire Alarm Pull Box",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -12.0,
+                7.34763812293426E-16,
+                5.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : -6.21724893790088E-15,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : true,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 4.0
+        },
+        {
+            "TypeName" : "Specialty Equipment:PKNail Fire Extinguisher Cabinet:Fire Extinguisher Cabinet",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -15.0,
+                9.18454765366783E-16,
+                4.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 1.0,
+            "Height"                      : 2.5,
+            "SillHeight"                  : 3.0
+        }
+    ]
+}

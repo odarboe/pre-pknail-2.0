@@ -1,0 +1,35 @@
+
+#include "globals.au3"
+#include "functions.au3"
+
+_InitRevitWindow()
+
+_EditRoundingSettings("0.25", "0.25", "", "")
+_SurveyWall("25", "", "", "Idx:3", "", "Idx:1", "")
+_SurveyWallHostedObject("4", "", "7", "", "", "", "", "", "3", "2", "", "")
+_SurveyWallHostedObject("6", "", "6", "0", "", "", "", "", "", "14", "", "")
+_SurveyWallHostedObject("7", "", "6", "1", "", "", "", "", "5", "6", "", "")
+_SurveyWallHostedObject("8", "", "6", "0", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("9", "", "6", "1", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("11", "", "9", "0", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("13", "", "6", "2", "", "", "", "", "", "14", "", "")
+_SurveyWallHostedObject("14", "6", "9", "1", "", "", "", "", "2", "3", "", "")
+_SurveyWallHostedObject("16", "", "8", "", "", "", "", "", "", "42", "", "")
+_SurveyWallHostedObject("17", "", "8", "1", "", "", "", "", "", "42", "", "")
+_SurveyWallHostedObject("20", "", "0", "", "5", "", "2", "2", "", "", "2", "4")
+_SurveyWindow("20", "6", "", "2", "", "1", "8", "5", "", "")
+_SurveyWallHostedObject("23", "8", "10", "", "", "", "", "", "5", "8", "", "")
+_ActivateWallRefOpeningWithLevelOffset(279, 345, 635, 345, "20", "6", "25", "", "", "9 1/2")
+_SurveyWallHostedObject("4", "", "7", "", "", "", "", "", "3", "2", "", "")
+_SurveyWallHostedObject("5", "8", "0", "", "4", "9", "", "", "", "", "", "")
+_SurveyWallHostedObject("Center", "", "9", "0", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("14", "", "6", "0", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("15", "", "6", "1", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("16", "", "6", "3", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("17", "6", "9", "1", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("17", "6", "10", "", "", "", "", "", "6", "", "", "")
+_SurveyWallHostedObject("20", "", "8", "0", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("20", "", "8", "1", "", "", "", "", "6", "", "", "")
+
+_ExportModel()
+_KillRevit()

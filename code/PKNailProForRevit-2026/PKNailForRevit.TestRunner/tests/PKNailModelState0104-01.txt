@@ -1,0 +1,579 @@
+
+{
+    "Walls" : [
+        {
+            "TypeName" : "PKNail 6\"",
+            "LocationEndPt0" : [
+                0.0,
+                0.0,
+                1.5
+            ],
+            "LocationEndPt1" : [
+                -25.0,
+                1.53075794227797E-15,
+                1.5
+            ],
+            "Width"          : 0.5,
+            "LevelName"      : "Level 1",
+            "LevelElevation" : 1.5,
+            "IsFlipped"      : false,
+            "WALL_USER_HEIGHT_PARAM" : 9.99999999999844,
+            "WALL_TOP_OFFSET"        : 0.0,
+            "WALL_TOP_IS_ATTACHED"   : 0,
+            "WALL_HEIGHT_TYPE"       : "Level 2",
+            "WALL_BASE_CONSTRAINT"   : "Level 1",
+            "WALL_BOTTOM_IS_ATTACHED" : 0,
+            "WALL_BASE_OFFSET"        : 0.0,
+            "WALL_KEY_REF_PARAM"      : 2,
+            "WallState"               : {
+                "m_IsFaceSurveyed" : [
+                    true,
+                    true
+                ],
+                "m_LevelOffset"    : [
+                    0.791666666666667,
+                    -10000001.0001
+                ],
+                "m_LevelOffsetDetailIdValue" : [
+                    175448,
+                    -1
+                ],
+                "m_RefPtOffset"              : [
+                    null,
+                    null,
+                    null,
+                    null
+                ]
+            }
+        }
+    ],
+    "DetailCurves" : [
+    ],
+    "FamilyInstances" : [
+        {
+            "TypeName" : "Plumbing Fixtures:PKNail Wall Sink:PKNail Wall Sink",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -21.0,
+                1.2858366715135E-15,
+                4.66666666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 1.16666666666667,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 3.16666666666667
+        },
+        {
+            "TypeName" : "Electrical Fixtures:PKNail Duplex Outlet:Duplex Outlet",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -19.0,
+                1.16337603613126E-15,
+                2.66666666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.229166666666667,
+            "Height"                      : 0.375,
+            "SillHeight"                  : 1.16666666666667
+        },
+        {
+            "TypeName" : "Electrical Fixtures:PKNail Quad Outlet:Quad Outlet",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -18.0,
+                1.10214571844014E-15,
+                7.0
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.375,
+            "Height"                      : 0.375,
+            "SillHeight"                  : 5.5
+        },
+        {
+            "TypeName" : "Electrical Fixtures:PKNail Duplex Outlet:Duplex Outlet",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -17.0,
+                1.04091540074902E-15,
+                2.66666666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.229166666666667,
+            "Height"                      : 0.375,
+            "SillHeight"                  : 1.16666666666667
+        },
+        {
+            "TypeName" : "Electrical Fixtures:PKNail Quad Outlet:Quad Outlet",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -16.0,
+                9.79685083057902E-16,
+                7.0
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.375,
+            "Height"                      : 0.375,
+            "SillHeight"                  : 5.5
+        },
+        {
+            "TypeName" : "Plumbing Fixtures:PKNail Domestic Toilet:PKNail Domestic Toilet",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -14.0,
+                8.57224447675664E-16,
+                1.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 0.0
+        },
+        {
+            "TypeName" : "Electrical Fixtures:PKNail Com Outlet:COM Outlet",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -12.0,
+                7.34763812293426E-16,
+                2.66666666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.229166666666667,
+            "Height"                      : 0.375,
+            "SillHeight"                  : 1.16666666666667
+        },
+        {
+            "TypeName" : "Plumbing Fixtures:PKNail Urinal:PKNail Urinal",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -10.5,
+                6.42918335756748E-16,
+                3.75
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 2.25
+        },
+        {
+            "TypeName" : "Electrical Fixtures:PKNail Single Switch:Single Switch",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -9.0,
+                5.5107285922007E-16,
+                5.0
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.229166666666667,
+            "Height"                      : 0.375,
+            "SillHeight"                  : 3.5
+        },
+        {
+            "TypeName" : "Electrical Fixtures:PKNail Double Switch:Double Switch",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -8.0,
+                4.89842541528951E-16,
+                5.0
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.375,
+            "Height"                      : 0.375,
+            "SillHeight"                  : 3.5
+        },
+        {
+            "TypeName" : "Plumbing Fixtures:PKNail Bathtub:60\" x 26\" x 28\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -2.5,
+                1.53075794227797E-16,
+                1.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 5.0,
+            "Height"                      : 2.16666666666667,
+            "SillHeight"                  : 0.0
+        },
+        {
+            "TypeName" : "Windows:PKNail Fixed:24\" x 20\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -3.5,
+                2.14306111918916E-16,
+                6.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 2.0,
+            "Height"                      : 1.66666666666667,
+            "SillHeight"                  : 5.0
+        },
+        {
+            "TypeName" : "Lighting Fixtures:PKNail Wall Light:Wall Light",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -1.33333333333333,
+                8.16404235881584E-17,
+                7.16666666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 5.66666666666667
+        },
+        {
+            "TypeName" : "Detail Items:PKNail Level Offset Detail:PKNail Level Offset Detail",
+            "LevelName" : null,
+            "LevelElevation" : 0.0,
+            "Location"       : [
+                1.53075794227797E-17,
+                0.25,
+                1.5
+            ],
+            "LocationCurveSecondEndpoint" : [
+                -25.0,
+                0.250000000000002,
+                1.5
+            ],
+            "Rotation"                    : 0.0,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 0.0
+        },
+        {
+            "TypeName" : "Generic Models:PKNail Survey Sprite RL:PKNail Survey Sprite RL",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -23.5666192038505,
+                1.25395193770902,
+                1.49999999999999
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : false,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 0.0
+        },
+        {
+            "TypeName" : "Plumbing Fixtures:PKNail Wall Sink:PKNail Wall Sink",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -21.0,
+                1.2858366715135E-15,
+                5.45833333333333
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 1.16666666666667,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 3.95833333333333
+        },
+        {
+            "TypeName" : "Plumbing Fixtures:PKNail Bathtub:57\" x 26\" x 28\"",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -16.9583333333333,
+                1.03836413751189E-15,
+                2.29166666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 0.0,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : true,
+            "Width"                       : 4.75,
+            "Height"                      : 2.16666666666667,
+            "SillHeight"                  : 0.0
+        },
+        {
+            "TypeName" : "Plumbing Fixtures:PKNail Domestic Toilet:PKNail Domestic Toilet",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -12.5,
+                7.65378971138986E-16,
+                2.29166666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 0.791666666666667
+        },
+        {
+            "TypeName" : "Electrical Fixtures:PKNail Duplex Outlet:Duplex Outlet",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -11.0,
+                6.73533494602307E-16,
+                3.45833333333333
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.229166666666667,
+            "Height"                      : 0.375,
+            "SillHeight"                  : 1.95833333333333
+        },
+        {
+            "TypeName" : "Electrical Fixtures:PKNail Quad Outlet:Quad Outlet",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -10.0,
+                6.12303176911189E-16,
+                7.79166666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.375,
+            "Height"                      : 0.375,
+            "SillHeight"                  : 6.29166666666667
+        },
+        {
+            "TypeName" : "Electrical Fixtures:PKNail Com Outlet:COM Outlet",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -9.0,
+                5.5107285922007E-16,
+                3.45833333333333
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.229166666666667,
+            "Height"                      : 0.375,
+            "SillHeight"                  : 1.95833333333333
+        },
+        {
+            "TypeName" : "Plumbing Fixtures:PKNail Urinal:PKNail Urinal",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -7.5,
+                4.59227382683391E-16,
+                4.54166666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 3.04166666666667
+        },
+        {
+            "TypeName" : "Lighting Fixtures:PKNail Wall Light:Wall Light",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -7.5,
+                4.59227382683391E-16,
+                8.29166666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.0,
+            "Height"                      : 0.0,
+            "SillHeight"                  : 6.79166666666667
+        },
+        {
+            "TypeName" : "Electrical Fixtures:PKNail Single Switch:Single Switch",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -5.0,
+                3.06151588455594E-16,
+                5.79166666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.229166666666667,
+            "Height"                      : 0.375,
+            "SillHeight"                  : 4.29166666666667
+        },
+        {
+            "TypeName" : "Electrical Fixtures:PKNail Double Switch:Double Switch",
+            "LevelName" : "Level 1",
+            "LevelElevation" : 1.5,
+            "Location"       : [
+                -5.0,
+                3.06151588455594E-16,
+                8.29166666666667
+            ],
+            "LocationCurveSecondEndpoint" : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Rotation"                    : 3.14159265358979,
+            "IsFacingFlipped"             : true,
+            "IsHandFlipped"               : false,
+            "Width"                       : 0.375,
+            "Height"                      : 0.375,
+            "SillHeight"                  : 6.79166666666667
+        }
+    ]
+}

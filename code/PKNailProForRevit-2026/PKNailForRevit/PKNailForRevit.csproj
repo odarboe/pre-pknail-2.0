@@ -1,0 +1,133 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>PKNailForRevit</AssemblyName>
+    <RootNamespace>PKNailForRevit</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <ProjectGuid>{EB0835DD-2B0A-42DC-B64D-909938BDC421}</ProjectGuid>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;BYPASS_LICENSE_CHECK;BYPASS_UPDATE_CHECK;BYPASS_SPLASH</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Deploy'">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Deploy\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Deploy64'">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Deploy64\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Local DLL references -->
+  <ItemGroup>
+    <!-- NuGet packages -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.IO.Ports" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Revit 2026 API - do not copy to Output (deployed with Revit) -->
+    <Reference Include="RevitAPI">
+      <HintPath>..\RevitAPI\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>..\RevitAPI\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <!-- SoftwareKey licensing SDK -->
+    <Reference Include="PLUSManaged">
+      <HintPath>..\Tools\SoftwareKey\PLUSManaged.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <!-- Project references -->
+  <ItemGroup>
+    <ProjectReference Include="..\Json\Json.csproj" />
+  </ItemGroup>
+  <!-- PKLicenseSrc files linked from outside project directory -->
+  <ItemGroup>
+    <Compile Include="..\PKLicenseSrc\ConsumedUsageData.cs">
+      <Link>ConsumedUsageData.cs</Link>
+    </Compile>
+    <Compile Include="..\PKLicenseSrc\PKLicense.cs">
+      <Link>PKLicense.cs</Link>
+    </Compile>
+    <Compile Include="..\PKLicenseSrc\PKLicenseData.cs">
+      <Link>PKLicenseData.cs</Link>
+    </Compile>
+    <Compile Include="..\PKLicenseSrc\StringEncryption.cs">
+      <Link>StringEncryption.cs</Link>
+    </Compile>
+    <Compile Include="..\PKLicenseSrc\UsageRecord.cs">
+      <Link>UsageRecord.cs</Link>
+    </Compile>
+  </ItemGroup>
+
+  <!-- T4-generated files: prevent double-inclusion -->
+  <ItemGroup>
+    <Compile Update="AssemblyInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Update="ProductInfo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProductInfo.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <!-- T4 templates -->
+  <ItemGroup>
+    <None Update="AssemblyInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
+    </None>
+    <None Update="ProductInfo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ProductInfo.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <!-- Resources -->
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

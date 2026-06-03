@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix
+  xmlns="http://schemas.microsoft.com/wix/2006/wi"
+  xmlns:util="http://schemas.microsoft.com/wix/UtilExtension" >
+
+  <?define ProductDisplayVersion = "1.9" ?>
+  
+  <?define ProductRevitVersion = "2017" ?>
+  <!-- The upgrade code must be changed when the Revit version changes -->
+  <!-- This allows version upgrades within a Revit version while still -->
+  <!-- allowing multiple installations for different Revit versions -->
+  <?define ProductUpgradeCode = "298D74F9-81D5-4451-AE10-C80193D34D9E" ?>
+
+  <?define ProductNameBase = "PKNail Pro For Revit" ?>
+  <?define ProductName = "$(var.ProductNameBase) $(var.ProductRevitVersion)" ?>
+  <?define ProductDisplayName = "$(var.ProductName) v$(var.ProductDisplayVersion) (64 bit)" ?>
+  <?define ProductVendor = "PointKnown LLC" ?>
+  <?define ProductVendorFolderName = "PointKnown" ?>
+  <?define ProductLicenseFolderName = "license" ?>  
+  <?define ProductEULAFileBase = "PKNailProForRevitEULA" ?>
+  <?define ProductUserManualFileName = "PKNailProForRevitUserManual.pdf"?>  
+  <?define ProductRTFExt = "rtf" ?>
+  <?define ProductPDFExt = "pdf" ?>
+  <?define ProductEULARTFFileName = "$(var.ProductEULAFileBase).$(var.ProductRTFExt)" ?>
+  <?define ProductEULARTFFileID = "$(var.ProductEULAFileBase)_$(var.ProductRTFExt)" ?>
+  <?define ProductEULAPDFFileName = "$(var.ProductEULAFileBase).$(var.ProductPDFExt)" ?>
+  <?define ProductEULAPDFFileID = "$(var.ProductEULAFileBase)_$(var.ProductPDFExt)" ?>
+
+  <Product
+    Id="*"
+    Name="$(var.ProductDisplayName)"
+    Language="1033"
+    Version="!(bind.FileVersion.PKNailForRevit_dll)"
+    Manufacturer="$(var.ProductVendor)"
+    UpgradeCode="$(var.ProductUpgradeCode)">
+
+    <Package
+      InstallerVersion="200"
+      Compressed="yes"  
+      Manufacturer="$(var.ProductVendor)" />
+
+    <Upgrade Id="$(var.ProductUpgradeCode)">
+      <UpgradeVersion
+        OnlyDetect="yes"
+        Property="NEWERVERSIONDETECTED"
+        Minimum="!(bind.FileVersion.PKNailForRevit_dll)" IncludeMinimum="no" />
+      
+      <UpgradeVersion
+        OnlyDetect="no"
+        Property="OLDERVERSIONBEINGUPGRADED"
+        Minimum="1.0.0" IncludeMinimum="yes"
+        Maximum="!(bind.FileVersion.PKNailForRevit_dll)" IncludeMaximum="no" />
+    </Upgrade>
+
+    <Condition Message="Can't downgrade to an earlier version from this installer.  To downgrade, uninstall the existing version, then run this installer again.">
+      NOT NEWERVERSIONDETECTED      
+    </Condition>
+
+    <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+
+    <Property Id="ALLUSERS">1</Property>
+
+    <Binary Id="CustomActions" SourceFile="..\SetupCA\bin\$(var.Configuration)\SetupCA.CA.dll" />
+    
+    <CustomAction
+      Id="GetRevitEdition"
+      BinaryKey="CustomActions"
+      DllEntry="GetRevitEdition"
+      Execute="immediate"
+      Return="check" />
+    
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProductEULARTFFileName)"/>
+    <WixVariable Id="WixUIDialogBmp" Value="Bitmaps\dlgbmp.bmp" Overridable="no"/>
+    <WixVariable Id="WixUIBannerBmp" Value="Bitmaps\bannrbmp.bmp" Overridable="no"/>
+
+	<Directory Id="TARGETDIR" Name="SourceDir">
+      
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="ProductVendorFolder" Name="$(var.ProductVendorFolderName)">
+          <Directory Id="INSTALL_LOCATION" Name="$(var.ProductName)">
+            <Directory Id="DOC_LOCATION" Name="doc" />
+          </Directory>
+        </Directory>
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder">
+          <Directory Id="ProductStartMenuLocation" Name="$(var.ProductName)" />
+      </Directory>      
+
+      <Directory Id="CommonAppDataFolder">
+
+        <Directory Id="VENDOR_COMMON_APPDATADIR_LOCATION" Name="$(var.ProductVendorFolderName)">
+          <Directory Id="PRODUCT_COMMON_APPDATADIR_LOCATION" Name="$(var.ProductName)">
+            <Directory Id="MY_REVIT_FILES_ROOT_LOCATION" Name="Libraries">
+              <Directory Id="MY_REVIT_FILES_IMPERIAL_LOCATION" Name="US Imperial" />
+              <Directory Id="MY_REVIT_FILES_METRIC_LOCATION" Name="US Metric" />
+            </Directory>  
+          </Directory>              
+        </Directory>
+
+        <Directory Id="Autodesk" Name="Autodesk">
+          <Directory Id="Revit" Name="Revit">
+            <Directory Id="Addins" Name="Addins">
+              <Directory Id="ADDIN_MANIFEST_LOCATION" Name="$(var.ProductRevitVersion)" />
+            </Directory>
+          </Directory>
+
+          <Directory Id="RAC_$(var.ProductRevitVersion)" Name="RAC $(var.ProductRevitVersion)">
+            <Directory Id="RevitTemplates_RAC" Name="Templates">
+              <Directory Id="REVIT_IMPERIAL_TEMPLATES_LOCATION_RAC" Name="US Imperial" />
+              <Directory Id="REVIT_METRIC_TEMPLATES_LOCATION_RAC" Name="US Metric" />
+            </Directory>
+          </Directory>
+          <Directory Id="RVT_$(var.ProductRevitVersion)" Name="RVT $(var.ProductRevitVersion)">
+            <Directory Id="RevitTemplates_RVT" Name="Templates">
+              <Directory Id="REVIT_IMPERIAL_TEMPLATES_LOCATION_RVT" Name="US Imperial" />
+              <Directory Id="REVIT_METRIC_TEMPLATES_LOCATION_RVT" Name="US Metric" />
+            </Directory>
+          </Directory>
+          
+        </Directory>
+      </Directory>
+    </Directory>
+    
+    <DirectoryRef Id="INSTALL_LOCATION">
+      
+      <Component Id="Json_dll" Guid="D548BFB5-5EBD-4142-BDB7-6BD17AC16DFF">
+        <File
+          Id="Json_dll"
+          Name="Json.dll"
+          DiskId="1"
+          Source="..\Json\bin\$(var.Configuration)\Json.dll" />
+      </Component>
+      
+      <Component Id="PKNailForRevit_dll" Guid="92EE0DB3-D7D6-46A5-AE54-B0C48431ADBF">
+        <File
+          Id="PKNailForRevit_dll"
+          Name="PKNailForRevit.dll"
+          DiskId="1"
+          Source="..\PKNailForRevit\bin\$(var.Configuration)\PKNailForRevit.dll" />
+      </Component>
+
+      <Component Id="PLUSManaged_dll" Guid="1FA9C981-409C-4D7C-8678-D5D2F73B0946">
+        <File
+          Id="PLUSManaged_dll"
+          Name="PLUSManaged.dll"
+          DiskId="1"
+          Source="..\PKNailForRevit\bin\$(var.Configuration)\PLUSManaged.dll" />
+      </Component>
+
+      <Component Id="NewtonsoftJson_dll" Guid="FA7B55C5-D7C4-4D77-AFC9-C01AEF45CDF4">
+        <File
+          Id="NewtonsoftJson_dll"
+          Name="Newtonsoft.Json.dll"
+          DiskId="1"
+          Source="..\PKNailForRevit\bin\$(var.Configuration)\Newtonsoft.Json.dll" />
+      </Component>
+
+      <Component Id="$(var.ProductEULAPDFFileID)" Guid="0315FB87-EA50-45AC-AACF-7BF4C7E008D8">
+        <File
+          Id="$(var.ProductEULAPDFFileID)"
+          Name="$(var.ProductEULAPDFFileName)"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="$(var.ProductEULAPDFFileName)" />
+      </Component>
+      
+    </DirectoryRef>
+
+    <DirectoryRef Id="DOC_LOCATION">
+      <Component Id="UserManual" Guid="DEB25ED6-B4B9-4FDB-906D-3232705073D5">
+        <File
+          Id="UserManual"
+          Name="$(var.ProductUserManualFileName)"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="$(var.ProductUserManualFileName)" />
+      </Component>
+    </DirectoryRef>    
+
+    <DirectoryRef Id="ProductStartMenuLocation">
+      <Component Id="StartMenuShortcuts" Guid="C6CBC6CA-ECCD-4FDB-936C-823C1DE38C3C" >
+        <Shortcut
+          Id="UserManualShortcut"
+          Name="User Manual"
+          Target="[DOC_LOCATION]$(var.ProductUserManualFileName)"
+          Description="$(var.ProductName) User Manual (pdf)"
+          Show="normal" />
+        <Shortcut
+          Id="FamiliesShortcut"
+          Name="Family Library"
+          Target="[MY_REVIT_FILES_ROOT_LOCATION]"
+          Description="Open the folder containing Revit families for PKNail"
+          Show="normal" />
+        <Shortcut
+          Id="UninstallShortcut"
+          Name="Uninstall $(var.ProductName)"
+          Target="[System64Folder]msiexec.exe"
+          Arguments="/x [ProductCode]"
+          Description="Uninstalls $(var.ProductName)" />
+        <RemoveFolder Id="ProductStartMenuLocation" On="uninstall" />
+        <RegistryValue
+          Root="HKCU"
+          Key="Software\PointKnown\PKNailProForRevit\$(var.ProductRevitVersion)"
+          Name="InstalledStartMenuShortcuts"
+          Type="integer"
+          Value="1"
+          KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="ADDIN_MANIFEST_LOCATION">
+      <Component Id="PKNailProForRevit_addin" Guid="282E9942-A62A-42A7-8CF1-5178346AE8C4">
+        <File
+          Id="PKNailProForRevit_addin"
+          Name="PKNailProForRevit.addin"
+          DiskId="1"
+          Source="PKNailProForRevit.addin.template" />
+        <util:XmlFile
+          Id="SetAssemblyLocation"
+          File="[ADDIN_MANIFEST_LOCATION]PKNailProForRevit.addin"
+          ElementPath="//RevitAddIns/AddIn/Assembly"
+          Action="setValue"
+          Value="[INSTALL_LOCATION]PKNailForRevit.dll"
+          Sequence="1" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="VENDOR_COMMON_APPDATADIR_LOCATION">
+      <Directory Id="LicenseFolder" Name="$(var.ProductLicenseFolderName)">
+        <Component Id="LicenseFolder" Guid="C84A6C41-430E-4823-892A-AC01FFE879FE">
+          <CreateFolder>
+            <util:PermissionEx User="Everyone" Delete="no" DeleteChild="no"/>            
+          </CreateFolder>
+        </Component>
+      </Directory>
+    </DirectoryRef>
+
+    <DirectoryRef Id="REVIT_IMPERIAL_TEMPLATES_LOCATION_RAC">
+      <Component Id="PKNailProForRevitImperial_rte_RAC" Guid="884F33C9-1747-4F46-9AC3-0DFAB4A4A524">
+        <Condition>REVIT_EDITION_LABEL = "RAC"</Condition>
+        <File
+          Id="PKNailProForRevitImperial_rte_RAC"
+          Name="PKNailProForRevit.rte"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNailProForRevit.rte" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="REVIT_METRIC_TEMPLATES_LOCATION_RAC">
+      <Component Id="PKNailProForRevitMetric_rte_RAC" Guid="6CD46C12-94C8-43E7-A9A0-A5EF6AA9EE9C">
+        <Condition>REVIT_EDITION_LABEL = "RAC"</Condition>
+        <File
+          Id="PKNailProForRevitMetric_rte_RAC"
+          Name="PKNailProForRevit.rte"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNailProForRevit.rte" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="REVIT_IMPERIAL_TEMPLATES_LOCATION_RVT">
+      <Component Id="PKNailProForRevitImperial_rte_RVT" Guid="0AA79705-2762-4B6C-AB80-5E243E233C53">
+        <Condition>REVIT_EDITION_LABEL = "RVT"</Condition>
+        <File
+          Id="PKNailProForRevitImperial_rte_RVT"
+          Name="PKNailProForRevit.rte"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNailProForRevit.rte" />
+      </Component>
+    </DirectoryRef>
+    
+    <DirectoryRef Id="REVIT_METRIC_TEMPLATES_LOCATION_RVT">
+      <Component Id="PKNailProForRevitMetric_rte_RVT" Guid="456F96CD-1E42-456B-B1BD-CD43D1A06F9F">
+        <Condition>REVIT_EDITION_LABEL = "RVT"</Condition>
+        <File
+          Id="PKNailProForRevitMetric_rte_RVT"
+          Name="PKNailProForRevit.rte"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNailProForRevit.rte" />
+      </Component>
+    </DirectoryRef>
+    
+    <DirectoryRef Id="MY_REVIT_FILES_IMPERIAL_LOCATION">
+      <Component Id="PKNail_Double_rfa" Guid="A828300E-3C45-4B79-98AD-4FE0D06D0071">
+        <File
+          Id="PKNail_Double_rfa"
+          Name="PKNail Double.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Double.rfa" />
+      </Component>
+      <Component Id="PKNail_Fixed_rfa" Guid="3A153B82-95C1-4FFD-ADA8-42CE28A59C45">
+        <File
+          Id="PKNail_Fixed_rfa"
+          Name="PKNail Fixed.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Fixed.rfa" />
+      </Component>
+      <Component Id="PKNail_Opening_rfa" Guid="D2B37E85-EB3E-4F9B-860C-B44F1E7FAAD9">
+        <File
+          Id="PKNail_Opening_rfa"
+          Name="PKNail Opening.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Opening.rfa" />
+      </Component>
+      <Component Id="PKNail_Pocket_rfa" Guid="A669647E-A750-451C-AC7D-981DE8EA971B">
+        <File
+          Id="PKNail_Pocket_rfa"
+          Name="PKNail Pocket.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Pocket.rfa" />
+      </Component>
+      <Component Id="PKNail_Single_rfa" Guid="F9B7A594-A006-4F25-BA9A-5E068116957A">
+        <File
+          Id="PKNail_Single_rfa"
+          Name="PKNail Single.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Single.rfa" />
+      </Component>
+      <Component Id="PKNail_Sliding_Glass_rfa" Guid="C6E742F7-8989-426B-B740-6150038AC15B">
+        <File
+          Id="PKNail_Sliding_Glass_rfa"
+          Name="PKNail Sliding Glass.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Sliding Glass.rfa" />
+      </Component>
+      <Component Id="PKNail_Sliding_rfa" Guid="AF02D408-4062-43FD-A479-36A6DBEF9284">
+        <File
+          Id="PKNail_Sliding_rfa"
+          Name="PKNail Sliding.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Sliding.rfa" />
+      </Component>
+      <Component Id="PKNail_Survey_Sprite_LR_rfa" Guid="30611FF6-D37B-4A59-85B3-5F7B10E18000">
+        <File
+          Id="PKNail_Survey_Sprite_LR_rfa"
+          Name="PKNail Survey Sprite LR.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Survey Sprite LR.rfa" />
+      </Component>
+      <Component Id="PKNail_Survey_Sprite_RL_rfa" Guid="13B5CAEC-68E2-49BE-A708-4B57921FAD3D">
+        <File
+          Id="PKNail_Survey_Sprite_RL_rfa"
+          Name="PKNail Survey Sprite RL.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Survey Sprite RL.rfa" />
+      </Component>
+      <Component Id="PKNailProForRevitImperial_backup_rte" Guid="381F42D4-CE04-4E7E-BBA3-ACA97701CD3B">
+        <File
+          Id="PKNailProForRevitImperial_backup_rte"
+          Name="PKNailProForRevitImperial.rte"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNailProForRevit.rte" />
+      </Component>
+      <Component Id="PKNail_Emergency_Wall_Light_rfa" Guid="82C4B747-9C6C-4A6C-84E7-C76D5DBBC68A">
+        <File
+          Id="PKNail_Emergency_Wall_Light_rfa"
+          Name="PKNail Emergency Wall Light.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Emergency Wall Light.rfa" />
+      </Component>
+      <Component Id="PKNail_Exit_Sign_rfa" Guid="3BD7C8FB-5CAC-46E1-AFAB-6F0B03FFEA4F">
+        <File
+          Id="PKNail_Exit_Sign_rfa"
+          Name="PKNail Exit Sign.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Exit Sign.rfa" />
+      </Component>
+      <Component Id="PKNail_Fire_Alarm_Horn_rfa" Guid="E90D178C-7490-4931-B6EF-C572E9D14E75">
+        <File
+          Id="PKNail_Fire_Alarm_Horn_rfa"
+          Name="PKNail Fire Alarm Horn.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Fire Alarm Horn.rfa" />
+      </Component>
+      <Component Id="PKNail_Fire_Alarm_Pull_Box_rfa" Guid="AE642A09-5209-40E7-BDCF-741BD2E46A3D">
+        <File
+          Id="PKNail_Fire_Alarm_Pull_Box_rfa"
+          Name="PKNail Fire Alarm Pull Box.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Fire Alarm Pull Box.rfa" />
+      </Component>
+      <Component Id="PKNail_Fire_Extinguisher_Cabinet_rfa" Guid="5F98683C-8C42-4D7B-AFB7-EE4F94A6D6F5">
+        <File
+          Id="PKNail_Fire_Extinguisher_Cabinet_rfa"
+          Name="PKNail Fire Extinguisher Cabinet.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Fire Extinguisher Cabinet.rfa" />
+      </Component>
+      <Component Id="PKNail_Bathtub_rfa" Guid="99C505BD-3B86-4B47-B562-9D970546B86A">
+        <File
+          Id="PKNail_Bathtub_rfa"
+          Name="PKNail Bathtub.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Bathtub.rfa" />
+      </Component>
+      <Component Id="PKNail_Com_Outlet_rfa" Guid="9683F9FA-D8F3-4388-88A7-5F963E4D29DE">
+        <File
+          Id="PKNail_Com_Outlet_rfa"
+          Name="PKNail Com Outlet.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Com Outlet.rfa" />
+      </Component>
+      <Component Id="PKNail_Domestic_Toilet_rfa" Guid="C68E4D58-FECD-4842-83EF-5B6AFBA745C8">
+        <File
+          Id="PKNail_Domestic_Toilet_rfa"
+          Name="PKNail Domestic Toilet.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Domestic Toilet.rfa" />
+      </Component>
+      <Component Id="PKNail_Double_Switch_rfa" Guid="FE49F52F-20EE-4109-9F85-FF988BA9FD46">
+        <File
+          Id="PKNail_Double_Switch_rfa"
+          Name="PKNail Double Switch.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Double Switch.rfa" />
+      </Component>
+      <Component Id="PKNail_Duplex_Outlet_rfa" Guid="EA5215AF-C714-47B5-91A3-4F4E670DE0B9">
+        <File
+          Id="PKNail_Duplex_Outlet_rfa"
+          Name="PKNail Duplex Outlet.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Duplex Outlet.rfa" />
+      </Component>
+      <Component Id="PKNail_Quad_Outlet_rfa" Guid="8B67F695-5E2D-40E5-B694-80762E93270F">
+        <File
+          Id="PKNail_Quad_Outlet_rfa"
+          Name="PKNail Quad Outlet.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Quad Outlet.rfa" />
+      </Component>
+      <Component Id="PKNail_Single_Switch_rfa" Guid="FF2F20DD-610F-4296-BA1E-8B08F62D0E29">
+        <File
+          Id="PKNail_Single_Switch_rfa"
+          Name="PKNail Single Switch.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Single Switch.rfa" />
+      </Component>
+      <Component Id="PKNail_Urinal_rfa" Guid="041D0CAE-88CC-4E19-B4AE-93D6E0D7A9C5">
+        <File
+          Id="PKNail_Urinal_rfa"
+          Name="PKNail Urinal.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Urinal.rfa" />
+      </Component>
+      <Component Id="PKNail_Wall_Light_rfa" Guid="D45F2A8B-3E25-48B2-A2D3-AAB6D4679475">
+        <File
+          Id="PKNail_Wall_Light_rfa"
+          Name="PKNail Wall Light.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Wall Light.rfa" />
+      </Component>
+      <Component Id="PKNail_Wall_Sink_rfa" Guid="43C6842F-4553-4C82-84A5-226E853E0EB5">
+        <File
+          Id="PKNail_Wall_Sink_rfa"
+          Name="PKNail Wall Sink.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Wall Sink.rfa" />
+      </Component>
+      <Component Id="PKNail_Double_Hung_rfa" Guid="BF60131F-A663-4EF3-82CA-F22F4B8753EA">
+        <File
+          Id="PKNail_Double_Hung_rfa"
+          Name="PKNail Double Hung.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Imperial\PKNail Double Hung.rfa" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="MY_REVIT_FILES_METRIC_LOCATION">
+      <Component Id="PKNail_Double_Metric_rfa" Guid="EAA1FD5B-3DEB-4203-A6F0-7E3D81F08EBD">
+        <File
+          Id="PKNail_Double_Metric_rfa"
+          Name="PKNail Double.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Double.rfa" />
+      </Component>
+      <Component Id="PKNail_Fixed_Metric_rfa" Guid="02A2FF40-558E-4C25-A3CF-FD1AE94BCE48">
+        <File
+          Id="PKNail_Fixed_Metric_rfa"
+          Name="PKNail Fixed.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Fixed.rfa" />
+      </Component>
+      <Component Id="PKNail_Opening_Metric_rfa" Guid="9DDD86AF-DB47-46E4-9203-DA6A05E6F516">
+        <File
+          Id="PKNail_Opening_Metric_rfa"
+          Name="PKNail Opening.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Opening.rfa" />
+      </Component>
+      <Component Id="PKNail_Pocket_Metric_rfa" Guid="A12BF81D-6B18-4EAC-97AF-2CB9FF3558D0">
+        <File
+          Id="PKNail_Pocket_Metric_rfa"
+          Name="PKNail Pocket.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Pocket.rfa" />
+      </Component>
+      <Component Id="PKNail_Single_Metric_rfa" Guid="9866B60A-A5D2-424C-949C-4DC9BB5FE6B5">
+        <File
+          Id="PKNail_Single_Metric_rfa"
+          Name="PKNail Single.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Single.rfa" />
+      </Component>
+      <Component Id="PKNail_Sliding_Glass_Metric_rfa" Guid="AEFEB445-D82A-4BFE-AB4E-7D72A6E84EE9">
+        <File
+          Id="PKNail_Sliding_Glass_Metric_rfa"
+          Name="PKNail Sliding Glass.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Sliding Glass.rfa" />
+      </Component>
+      <Component Id="PKNail_Sliding_Metric_rfa" Guid="C4FDA8A6-16C9-4426-B005-64024A26A3F7">
+        <File
+          Id="PKNail_Sliding_Metric_rfa"
+          Name="PKNail Sliding.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Sliding.rfa" />
+      </Component>
+      <Component Id="PKNail_Survey_Sprite_LR_Metric_rfa" Guid="E9C47D6D-42A5-4251-9582-CC672F7C8129">
+        <File
+          Id="PKNail_Survey_Sprite_LR_Metric_rfa"
+          Name="PKNail Survey Sprite LR.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Survey Sprite LR.rfa" />
+      </Component>
+      <Component Id="PKNail_Survey_Sprite_RL_Metric_rfa" Guid="D234DD66-DB0C-4F49-8286-20364DA559C0">
+        <File
+          Id="PKNail_Survey_Sprite_RL_Metric_rfa"
+          Name="PKNail Survey Sprite RL.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Survey Sprite RL.rfa" />
+      </Component>
+      <Component Id="PKNailProForRevitMetric_backup_rte" Guid="ED68ED26-4C9B-4F7B-BF2A-C9F4940CBFDD">
+        <File
+          Id="PKNailProForRevitMetric_backup_rte"
+          Name="PKNailProForRevit.rte"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNailProForRevit.rte" />
+      </Component>
+      <Component Id="PKNail_Emergency_Wall_Light_Metric_rfa" Guid="FC4A66A1-DE57-49F3-A45A-87FA1B34F938">
+        <File
+          Id="PKNail_Emergency_Wall_Light_Metric_rfa"
+          Name="PKNail Emergency Wall Light.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Emergency Wall Light.rfa" />
+      </Component>
+      <Component Id="PKNail_Exit_Sign_Metric_rfa" Guid="85325CB7-ED6E-48FD-A548-F1EF665ACDBE">
+        <File
+          Id="PKNail_Exit_Sign_Metric_rfa"
+          Name="PKNail Exit Sign.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Exit Sign.rfa" />
+      </Component>
+      <Component Id="PKNail_Fire_Alarm_Horn_Metric_rfa" Guid="9100B24D-0074-4C62-B796-4DAB8B7E6193">
+        <File
+          Id="PKNail_Fire_Alarm_Horn_Metric_rfa"
+          Name="PKNail Fire Alarm Horn.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Fire Alarm Horn.rfa" />
+      </Component>
+      <Component Id="PKNail_Fire_Alarm_Pull_Box_Metric_rfa" Guid="4FA1356C-6211-4EEB-AEE6-2BCEDD1E9AAB">
+        <File
+          Id="PKNail_Fire_Alarm_Pull_Box_Metric_rfa"
+          Name="PKNail Fire Alarm Pull Box.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Fire Alarm Pull Box.rfa" />
+      </Component>
+      <Component Id="PKNail_Fire_Extinguisher_Cabinet_Metric_rfa" Guid="F0C7688D-3AB2-4F99-BB3E-04B06EB6C16A">
+        <File
+          Id="PKNail_Fire_Extinguisher_Cabinet_Metric_rfa"
+          Name="PKNail Fire Extinguisher Cabinet.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Fire Extinguisher Cabinet.rfa" />
+      </Component>
+      <Component Id="PKNail_Bathtub_Metric_rfa" Guid="C7DFE09F-6FFA-4FF2-BFBA-3F30C8300575">
+        <File
+          Id="PKNail_Bathtub_Metric_rfa"
+          Name="PKNail Bathtub.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Bathtub.rfa" />
+      </Component>
+      <Component Id="PKNail_Com_Outlet_Metric_rfa" Guid="C84419AB-03E1-4608-937E-A37143EA5F9D">
+        <File
+          Id="PKNail_Com_Outlet_Metric_rfa"
+          Name="PKNail Com Outlet.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Com Outlet.rfa" />
+      </Component>
+      <Component Id="PKNail_Domestic_Toilet_Metric_rfa" Guid="254001C0-DEEC-409B-B8E3-4B64A3BCA2A6">
+        <File
+          Id="PKNail_Domestic_Toilet_Metric_rfa"
+          Name="PKNail Domestic Toilet.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Domestic Toilet.rfa" />
+      </Component>
+      <Component Id="PKNail_Double_Switch_Metric_rfa" Guid="404DBA60-DB4C-4291-89BE-217FD8BAC8EC">
+        <File
+          Id="PKNail_Double_Switch_Metric_rfa"
+          Name="PKNail Double Switch.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Double Switch.rfa" />
+      </Component>
+      <Component Id="PKNail_Duplex_Outlet_Metric_rfa" Guid="FAA0D7DB-ED69-41A8-AF6A-F7F4A76C12B4">
+        <File
+          Id="PKNail_Duplex_Outlet_Metric_rfa"
+          Name="PKNail Duplex Outlet.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Duplex Outlet.rfa" />
+      </Component>
+      <Component Id="PKNail_Quad_Outlet_Metric_rfa" Guid="C0956CCF-EC08-4253-828B-8454EF0B1A70">
+        <File
+          Id="PKNail_Quad_Outlet_Metric_rfa"
+          Name="PKNail Quad Outlet.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Quad Outlet.rfa" />
+      </Component>
+      <Component Id="PKNail_Single_Switch_Metric_rfa" Guid="A147F334-6C5C-47E1-A005-8E6AECA5DD91">
+        <File
+          Id="PKNail_Single_Switch_Metric_rfa"
+          Name="PKNail Single Switch.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Single Switch.rfa" />
+      </Component>
+      <Component Id="PKNail_Urinal_Metric_rfa" Guid="4400C2AC-D925-4602-9425-8CC529890336">
+        <File
+          Id="PKNail_Urinal_Metric_rfa"
+          Name="PKNail Urinal.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Urinal.rfa" />
+      </Component>
+      <Component Id="PKNail_Wall_Light_Metric_rfa" Guid="14F36C53-BB32-4824-B0B9-D254FC5CDFF2">
+        <File
+          Id="PKNail_Wall_Light_Metric_rfa"
+          Name="PKNail Wall Light.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Wall Light.rfa" />
+      </Component>
+      <Component Id="PKNail_Wall_Sink_Metric_rfa" Guid="EA717869-3BBD-41F0-8E50-EEC441EFA6AF">
+        <File
+          Id="PKNail_Wall_Sink_Metric_rfa"
+          Name="PKNail Wall Sink.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Wall Sink.rfa" />
+      </Component>
+      <Component Id="PKNail_Double_Hung_Metric_rfa" Guid="6F9F438D-3454-4A20-8D1A-0B0975BBF398">
+        <File
+          Id="PKNail_Double_Hung_Metric_rfa"
+          Name="PKNail Double Hung.rfa"
+          DiskId="1"
+          ReadOnly="yes"
+          Source="..\PKNailForRevit\RevitFiles\Metric\PKNail Double Hung.rfa" />
+      </Component>
+    </DirectoryRef>
+
+    <Feature Id="FullInstallation" Title="Full Installation" Level="1">
+      <ComponentRef Id="Json_dll" />
+      <ComponentRef Id="PKNailForRevit_dll" />      
+      <ComponentRef Id="PLUSManaged_dll" />
+      <ComponentRef Id="NewtonsoftJson_dll" />      
+      <ComponentRef Id="PKNailProForRevit_addin" />
+      <ComponentRef Id="LicenseFolder"/>
+      <ComponentRef Id="PKNailProForRevitImperial_rte_RAC" />
+      <ComponentRef Id="PKNailProForRevitMetric_rte_RAC" />
+      <ComponentRef Id="PKNailProForRevitImperial_rte_RVT" />
+      <ComponentRef Id="PKNailProForRevitMetric_rte_RVT" />
+      <ComponentRef Id="PKNail_Double_rfa" />
+      <ComponentRef Id="PKNail_Fixed_rfa" />
+      <ComponentRef Id="PKNail_Opening_rfa" />
+      <ComponentRef Id="PKNail_Pocket_rfa" />
+      <ComponentRef Id="PKNail_Single_rfa" />
+      <ComponentRef Id="PKNail_Sliding_Glass_rfa" />
+      <ComponentRef Id="PKNail_Sliding_rfa" />
+      <ComponentRef Id="PKNail_Survey_Sprite_LR_rfa" />
+      <ComponentRef Id="PKNail_Survey_Sprite_RL_rfa" />
+      <ComponentRef Id="PKNailProForRevitImperial_backup_rte" />
+      <ComponentRef Id="PKNail_Emergency_Wall_Light_rfa" />
+      <ComponentRef Id="PKNail_Exit_Sign_rfa" />
+      <ComponentRef Id="PKNail_Fire_Alarm_Horn_rfa" />
+      <ComponentRef Id="PKNail_Fire_Alarm_Pull_Box_rfa" />
+      <ComponentRef Id="PKNail_Fire_Extinguisher_Cabinet_rfa" />
+      <ComponentRef Id="PKNail_Bathtub_rfa" />
+      <ComponentRef Id="PKNail_Com_Outlet_rfa" />
+      <ComponentRef Id="PKNail_Domestic_Toilet_rfa" />
+      <ComponentRef Id="PKNail_Double_Switch_rfa" />
+      <ComponentRef Id="PKNail_Duplex_Outlet_rfa" />
+      <ComponentRef Id="PKNail_Quad_Outlet_rfa" />
+      <ComponentRef Id="PKNail_Single_Switch_rfa" />
+      <ComponentRef Id="PKNail_Urinal_rfa" />
+      <ComponentRef Id="PKNail_Wall_Light_rfa" />
+      <ComponentRef Id="PKNail_Wall_Sink_rfa" />
+      <ComponentRef Id="PKNail_Double_Hung_rfa" />
+      <ComponentRef Id="PKNail_Double_Metric_rfa" />
+      <ComponentRef Id="PKNail_Fixed_Metric_rfa" />
+      <ComponentRef Id="PKNail_Opening_Metric_rfa" />
+      <ComponentRef Id="PKNail_Pocket_Metric_rfa" />
+      <ComponentRef Id="PKNail_Single_Metric_rfa" />
+      <ComponentRef Id="PKNail_Sliding_Glass_Metric_rfa" />
+      <ComponentRef Id="PKNail_Sliding_Metric_rfa" />
+      <ComponentRef Id="PKNail_Survey_Sprite_LR_Metric_rfa" />
+      <ComponentRef Id="PKNail_Survey_Sprite_RL_Metric_rfa" />
+      <ComponentRef Id="PKNailProForRevitMetric_backup_rte" />
+      <ComponentRef Id="PKNail_Emergency_Wall_Light_Metric_rfa" />
+      <ComponentRef Id="PKNail_Exit_Sign_Metric_rfa" />
+      <ComponentRef Id="PKNail_Fire_Alarm_Horn_Metric_rfa" />
+      <ComponentRef Id="PKNail_Fire_Alarm_Pull_Box_Metric_rfa" />
+      <ComponentRef Id="PKNail_Fire_Extinguisher_Cabinet_Metric_rfa" />
+      <ComponentRef Id="PKNail_Bathtub_Metric_rfa" />
+      <ComponentRef Id="PKNail_Com_Outlet_Metric_rfa" />
+      <ComponentRef Id="PKNail_Domestic_Toilet_Metric_rfa" />
+      <ComponentRef Id="PKNail_Double_Switch_Metric_rfa" />
+      <ComponentRef Id="PKNail_Duplex_Outlet_Metric_rfa" />
+      <ComponentRef Id="PKNail_Quad_Outlet_Metric_rfa" />
+      <ComponentRef Id="PKNail_Single_Switch_Metric_rfa" />
+      <ComponentRef Id="PKNail_Urinal_Metric_rfa" />
+      <ComponentRef Id="PKNail_Wall_Light_Metric_rfa" />
+      <ComponentRef Id="PKNail_Wall_Sink_Metric_rfa" />
+      <ComponentRef Id="PKNail_Double_Hung_Metric_rfa" />
+      <ComponentRef Id="UserManual"/>
+      <ComponentRef Id="$(var.ProductEULAPDFFileID)" />
+      <ComponentRef Id="StartMenuShortcuts" />
+    </Feature>
+
+    <InstallExecuteSequence>
+      <Custom Action="GetRevitEdition" After="CostInitialize" />
+      <RemoveExistingProducts After="InstallInitialize" />
+    </InstallExecuteSequence>
+    
+    <UIRef Id="WixUI_Minimal" />
+    
+  </Product>
+</Wix>

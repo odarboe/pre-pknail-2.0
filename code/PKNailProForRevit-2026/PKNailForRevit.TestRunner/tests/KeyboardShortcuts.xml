@@ -1,0 +1,110 @@
+<Shortcuts>
+  <ShortcutItem CommandName="Modify" CommandId="ID_BUTTON_SELECT" Shortcuts="MD" Paths="Home&gt;Select; Insert&gt;Select; Annotate&gt;Select; View&gt;Select; Manage&gt;Select; Add-Ins&gt;Select; Modify&gt;Select; Structure&gt;Select; Massing &amp; Site&gt;Select; Collaborate&gt;Select; Contextual Tabs&gt;Select" />
+  <ShortcutItem CommandName="Properties" CommandId="ID_TOGGLE_PROPERTIES_PALETTE" Shortcuts="PP#Ctrl+1#VP" Paths="Home&gt;Properties; View&gt;Windows; Modify&gt;Properties; Contextual Tabs&gt;Properties" />
+  <ShortcutItem CommandName="Model Line; Boundary Line; Draw Lines; Rebar Line" CommandId="ID_OBJECTS_CURVE" Shortcuts="LI" Paths="Home&gt;Model; Home&gt;Detail; Home&gt;Draw; Modify&gt;Draw; Contextual Tabs&gt;Draw; Contextual Tabs&gt;Tools" />
+  <ShortcutItem CommandName="Place a Component" CommandId="ID_OBJECTS_FAMSYM" Shortcuts="CM" Paths="Home&gt;Model; Home&gt;Build" />
+  <ShortcutItem CommandName="Model Group:Create Group; Detail Group:Create Group" CommandId="ID_EDIT_GROUP" Shortcuts="GP" Paths="Home&gt;Model; Annotate&gt;Detail; Modify&gt;Create; Home&gt;Detail" />
+  <ShortcutItem CommandName="Reference Plane" CommandId="ID_OBJECTS_CLINE" Shortcuts="RP" Paths="Home&gt;Datum; Home&gt;Draw; Modify&gt;Draw; Home&gt;Work Plane; Contextual Tabs&gt;Work Plane" />
+  <ShortcutItem CommandName="Aligned Dimension" CommandId="ID_ANNOTATIONS_DIMENSION_ALIGNED" Shortcuts="DI" Paths="Annotate&gt;Dimension; Modify&gt;Measure; Home&gt;Dimension; Contextual Tabs&gt;Dimension; Quick Access Toolbar" />
+  <ShortcutItem CommandName="Text" CommandId="ID_OBJECTS_TEXT_NOTE" Shortcuts="TX" Paths="Annotate&gt;Text; Home&gt;Text; Quick Access Toolbar" />
+  <ShortcutItem CommandName="Find/ Replace" CommandId="ID_FIND_REPLACE" Shortcuts="FR" Paths="Annotate&gt;Text; Home&gt;Text; Contextual Tabs&gt;Tools" />
+  <ShortcutItem CommandName="Visibility/ Graphics" CommandId="ID_VIEW_CATEGORY_VISIBILITY" Shortcuts="VG#VV" Paths="View&gt;Graphics" />
+  <ShortcutItem CommandName="Thin Lines" CommandId="ID_THIN_LINES" Shortcuts="TL" Paths="View&gt;Graphics; Quick Access Toolbar" />
+  <ShortcutItem CommandName="Cascade Windows" CommandId="ID_WINDOW_CASCADE" Shortcuts="WC" Paths="View&gt;Windows" />
+  <ShortcutItem CommandName="Tile Windows" CommandId="ID_WINDOW_TILE_VERT" Shortcuts="WT" Paths="View&gt;Windows" />
+  <ShortcutItem CommandName="Keyboard Shortcuts" CommandId="ID_KEYBOARD_SHORTCUT_DIALOG" Shortcuts="KS" Paths="View&gt;Windows" />
+  <ShortcutItem CommandName="Project Units" CommandId="ID_SETTINGS_UNITS" Shortcuts="UN" Paths="Manage&gt;Settings" />
+  <ShortcutItem CommandName="Activate Wall" CommandId="CustomCtrl_%CustomCtrl_%ADD_INS_TAB%PKNail Pro%Activate Wall" Shortcuts="PKA" Paths="Add-Ins&gt;PKNail Pro" />
+  <ShortcutItem CommandName="Set Coordinate System" CommandId="CustomCtrl_%CustomCtrl_%ADD_INS_TAB%PKNail Pro%Set Coordinate System" Shortcuts="PKCO" Paths="Add-Ins&gt;PKNail Pro" />
+  <ShortcutItem CommandName="Survey Wall" CommandId="CustomCtrl_%CustomCtrl_%ADD_INS_TAB%PKNail Pro%Survey Wall" Shortcuts="PKWA" Paths="Add-Ins&gt;PKNail Pro" />
+  <ShortcutItem CommandName="Survey Door" CommandId="CustomCtrl_%CustomCtrl_%ADD_INS_TAB%PKNail Pro%Survey Door" Shortcuts="PKDR" Paths="Add-Ins&gt;PKNail Pro" />
+  <ShortcutItem CommandName="Survey Window" CommandId="CustomCtrl_%CustomCtrl_%ADD_INS_TAB%PKNail Pro%Survey Window" Shortcuts="PKWN" Paths="Add-Ins&gt;PKNail Pro" />
+  <ShortcutItem CommandName="Copy Walls" CommandId="CustomCtrl_%CustomCtrl_%ADD_INS_TAB%PKNail Pro%Copy Walls" Shortcuts="PKCW" Paths="Add-Ins&gt;PKNail Pro" />
+  <ShortcutItem CommandName="Settings" CommandId="CustomCtrl_%CustomCtrl_%ADD_INS_TAB%PKNail Pro%Settings" Shortcuts="PKST" Paths="Add-Ins&gt;PKNail Pro" />
+  <ShortcutItem CommandName="Export Model" CommandId="CustomCtrl_%CustomCtrl_%ADD_INS_TAB%PKNail Test%Export Model" Shortcuts="PKEM" Paths="Add-Ins&gt;PKNail Test" />
+  <ShortcutItem CommandName="Match Type Properties" CommandId="ID_EDIT_MATCH_TYPE" Shortcuts="MA" Paths="Modify&gt;Clipboard" />
+  <ShortcutItem CommandName="Split Face" CommandId="ID_SPLIT_FACE" Shortcuts="SF" Paths="Modify&gt;Geometry" />
+  <ShortcutItem CommandName="Paint" CommandId="ID_EDIT_PAINT" Shortcuts="PT" Paths="Modify&gt;Geometry" />
+  <ShortcutItem CommandName="Align" CommandId="ID_ALIGN" Shortcuts="AL" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Move" CommandId="ID_EDIT_MOVE" Shortcuts="MV" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Offset" CommandId="ID_OFFSET" Shortcuts="OF" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Copy" CommandId="ID_EDIT_MOVE_COPY" Shortcuts="CO#CC" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Mirror - Pick Axis" CommandId="ID_EDIT_MIRROR" Shortcuts="MM" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Rotate" CommandId="ID_EDIT_ROTATE" Shortcuts="RO" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Mirror - Draw Axis" CommandId="ID_EDIT_MIRROR_LINE" Shortcuts="DM" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Trim/Extend to Corner" CommandId="ID_TRIM_EXTEND_CORNER" Shortcuts="TR" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Split Element" CommandId="ID_SPLIT" Shortcuts="SL" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Array" CommandId="ID_EDIT_CREATE_PATTERN" Shortcuts="AR" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Scale" CommandId="ID_EDIT_SCALE" Shortcuts="RE" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Unpin" CommandId="ID_UNLOCK_ELEMENTS" Shortcuts="UP" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Pin" CommandId="ID_LOCK_ELEMENTS" Shortcuts="PN" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Delete" CommandId="ID_BUTTON_DELETE" Shortcuts="DE" Paths="Modify&gt;Modify" />
+  <ShortcutItem CommandName="Create Similar" CommandId="ID_EDIT_CREATE_SIMILAR" Shortcuts="CS" Paths="Modify&gt;Create" />
+  <ShortcutItem CommandName="Level" CommandId="ID_OBJECTS_LEVEL" Shortcuts="LL" Paths="Home&gt;Datum; Structure&gt;Datum" />
+  <ShortcutItem CommandName="Additional Settings:Sun Settings" CommandId="ID_SETTINGS_SUNANDSHADOWSSETTINGS" Shortcuts="SU" Paths="Manage&gt;Settings" />
+  <ShortcutItem CommandName="Wall; Wall:Partition Wall" CommandId="ID_OBJECTS_WALL" Shortcuts="WA" Paths="Home&gt;Build; Structure&gt;Structure" />
+  <ShortcutItem CommandName="Door" CommandId="ID_OBJECTS_DOOR" Shortcuts="DR" Paths="Home&gt;Build" />
+  <ShortcutItem CommandName="Window" CommandId="ID_OBJECTS_WINDOW" Shortcuts="WN" Paths="Home&gt;Build" />
+  <ShortcutItem CommandName="Model Line" CommandId="ID_OBJECTS_PROJECT_CURVE" Shortcuts="LI" Paths="Home&gt;Model" />
+  <ShortcutItem CommandName="Grid" CommandId="ID_OBJECTS_GRID" Shortcuts="GR" Paths="Home&gt;Datum; Structure&gt;Datum" />
+  <ShortcutItem CommandName="Room" CommandId="ID_OBJECTS_ROOM" Shortcuts="RM" Paths="Home&gt;Room &amp; Area" />
+  <ShortcutItem CommandName="Tag; Tag Room; Room Tag" CommandId="ID_OBJECTS_ROOM_TAG" Shortcuts="RT" Paths="Home&gt;Room &amp; Area; Annotate&gt;Tag" />
+  <ShortcutItem CommandName="Spot Elevation" CommandId="ID_SPOT_ELEVATION" Shortcuts="EL" Paths="Annotate&gt;Dimension; Modify&gt;Measure; Contextual Tabs&gt;Dimension" />
+  <ShortcutItem CommandName="Detail Line" CommandId="ID_OBJECTS_DETAIL_CURVES" Shortcuts="DL" Paths="Annotate&gt;Detail" />
+  <ShortcutItem CommandName="Tag by Category" CommandId="ID_BUTTON_TAG" Shortcuts="TG" Paths="Annotate&gt;Tag; Quick Access Toolbar" />
+  <ShortcutItem CommandName="Reload Latest" CommandId="ID_WORKSETS_RELOAD_LATEST" Shortcuts="RL#RW" Paths="Collaborate&gt;Synchronize" />
+  <ShortcutItem CommandName="Editing Requests" CommandId="ID_WORKSET_EDITING_REQUESTS" Shortcuts="ER" Paths="Collaborate&gt;Synchronize" />
+  <ShortcutItem CommandName="Render" CommandId="ID_PHOTO_RENDERING_VIEW" Shortcuts="RR" Paths="View&gt;Graphics; View Control Bar" />
+  <ShortcutItem CommandName="Hide in View:Hide Elements" CommandId="ID_VIEW_HIDE_ELEMENTS" Shortcuts="EH" Paths="Modify&gt;View" />
+  <ShortcutItem CommandName="Hide in View:Hide Category" CommandId="ID_VIEW_HIDE_CATEGORY" Shortcuts="VH" Paths="Modify&gt;View" />
+  <ShortcutItem CommandName="Linework" CommandId="ID_EDIT_LINEWORK" Shortcuts="LW" Paths="Modify&gt;View" />
+  <ShortcutItem CommandName="Add to Group" CommandId="ID_EDITGROUP_ADD_TO_GROUP" Shortcuts="AP" Paths="Contextual Tabs&gt;Edit Group" />
+  <ShortcutItem CommandName="Remove from Group" CommandId="ID_EDITGROUP_REMOVE_FROM_GROUP" Shortcuts="RG" Paths="Contextual Tabs&gt;Edit Group" />
+  <ShortcutItem CommandName="Attach Detail Group" CommandId="ID_EDITGROUP_ATTACH_TO_GROUP" Shortcuts="AD" Paths="Contextual Tabs&gt;Edit Group" />
+  <ShortcutItem CommandName="Finish" CommandId="ID_FINISH_GROUP_EDIT_MODE" Shortcuts="FG" Paths="Contextual Tabs&gt;Edit Group" />
+  <ShortcutItem CommandName="Cancel" CommandId="ID_CANCEL_GROUP_EDIT_MODE" Shortcuts="CG" Paths="Contextual Tabs&gt;Edit Group" />
+  <ShortcutItem CommandName="Divide Surface" CommandId="ID_OBJECTS_DIVIDED_SURFACE" Shortcuts="//" Paths="Contextual Tabs&gt;Divide" />
+  <ShortcutItem CommandName="Edit Group" CommandId="ID_EDITGROUP_GROUP_EDIT" Shortcuts="EG" Paths="Contextual Tabs&gt;Group" />
+  <ShortcutItem CommandName="Ungroup" CommandId="ID_EDITGROUP_UNGROUP" Shortcuts="UG" Paths="Contextual Tabs&gt;Group" />
+  <ShortcutItem CommandName="Link" CommandId="ID_REPLACE_GROUP_WITH_LINK" Shortcuts="LG" Paths="Contextual Tabs&gt;Group" />
+  <ShortcutItem CommandName="Restore All Excluded" CommandId="ID_RESTORE_ALL_EXCLUDED" Shortcuts="RA" Paths="Contextual Tabs&gt;Group; Context Menu" />
+  <ShortcutItem CommandName="Edit Witness Lines" CommandId="IDC_EDIT_WITNESS_REFS" Shortcuts="EW" Paths="Contextual Tabs&gt;Witness Lines" />
+  <ShortcutItem CommandName="Unhide Element" CommandId="ID_VIEW_UNHIDE_ELEMENTS" Shortcuts="EU" Paths="Contextual Tabs&gt;Reveal Hidden Elements" />
+  <ShortcutItem CommandName="Unhide Category" CommandId="ID_VIEW_UNHIDE_BY_CATEGORY" Shortcuts="VU" Paths="Contextual Tabs&gt;Reveal Hidden Elements" />
+  <ShortcutItem CommandName="Shading with Edges" CommandId="ID_IMAGE_SHADING_WITH_EDGES" Shortcuts="SD" Paths="View Control Bar" />
+  <ShortcutItem CommandName="WireFrame" CommandId="ID_IMAGE_WIREFRAME" Shortcuts="WF" Paths="View Control Bar" />
+  <ShortcutItem CommandName="Points" CommandId="ID_SNAP_OVERRIDE_POINT" Shortcuts="SX" Paths="Snaps" />
+  <ShortcutItem CommandName="Zoom Sheet Size" CommandId="ID_ZOOM_SHEET" Shortcuts="ZS" Paths="Navigation Bar" />
+  <ShortcutItem CommandName="Reset Temporary Hide/Isolate" CommandId="ID_TEMPHIDE_RESET" Shortcuts="HR" Paths="View Control Bar" />
+  <ShortcutItem CommandName="Previous Pan/Zoom" CommandId="ID_VIEW_ZOOMANDPAN_PREVIOUSVIEW" Shortcuts="ZP#ZC" Paths="Navigation Bar" />
+  <ShortcutItem CommandName="Zoom to Fit" CommandId="ID_ZOOM_FIT" Shortcuts="ZE#ZF#ZX" Paths="Navigation Bar" />
+  <ShortcutItem CommandName="Isolate Category" CommandId="ID_TEMPHIDE_ISOLATECAT" Shortcuts="IC" Paths="View Control Bar" />
+  <ShortcutItem CommandName="Work Plane Grid" CommandId="ID_SNAP_OVERRIDE_SKETCH_GRID" Shortcuts="SW" Paths="Snaps" />
+  <ShortcutItem CommandName="Isolate Element" CommandId="ID_TEMPHIDE_ISOLATE" Shortcuts="HI" Paths="View Control Bar" />
+  <ShortcutItem CommandName="Hide Category" CommandId="ID_TEMPHIDE_HIDECAT" Shortcuts="HC" Paths="View Control Bar" />
+  <ShortcutItem CommandName="Intersections" CommandId="ID_SNAP_OVERRIDE_INTERSECT" Shortcuts="SI" Paths="Snaps" />
+  <ShortcutItem CommandName="Centers" CommandId="ID_SNAP_OVERRIDE_CENTER" Shortcuts="SC" Paths="Snaps" />
+  <ShortcutItem CommandName="Move to Project" CommandId="ID_MOVE_GROUP_MEMBER_TO_PROJECT" Shortcuts="MP" Paths="Context Menu" />
+  <ShortcutItem CommandName="Quadrants" CommandId="ID_SNAP_OVERRIDE_QUADRANT" Shortcuts="SQ" Paths="Snaps" />
+  <ShortcutItem CommandName="Perpendicular" CommandId="ID_SNAP_OVERRIDE_PERP" Shortcuts="SP" Paths="Snaps" />
+  <ShortcutItem CommandName="Toggle Reveal Hidden Elements Mode" CommandId="ID_VIEW_FRAME_REVEALHIDDEN" Shortcuts="RH" Paths="View Control Bar" />
+  <ShortcutItem CommandName="Activate the first contextual tab" CommandId="ID_ACTIVATE_CONTEXTUAL_TAB" Shortcuts="Ctrl+`" />
+  <ShortcutItem CommandName="Midpoints" CommandId="ID_SNAP_OVERRIDE_MID" Shortcuts="SM" Paths="Snaps" />
+  <ShortcutItem CommandName="Repeat Last Command" CommandId="ID_REPEAT_LASTCOMMAND" Shortcuts="RC" Paths="Context Menu" />
+  <ShortcutItem CommandName="Turn Override Off" CommandId="ID_SETTINGS_SNAPS_NOOVERRIDE" Shortcuts="SS" Paths="Snaps" />
+  <ShortcutItem CommandName="Zoom Out(2x)" CommandId="ID_ZOOM_OUT_X2" Shortcuts="ZO#ZV" Paths="Navigation Bar" />
+  <ShortcutItem CommandName="Select All Instances: In Entire Project" CommandId="ID_SEL_ALL_IN_PRJ" Shortcuts="SA" Paths="Context Menu" />
+  <ShortcutItem CommandName="Graphic Display Options" CommandId="ID_GRAPHIC_DISPLAY_OPTIONS" Shortcuts="GD" Paths="View Control Bar" />
+  <ShortcutItem CommandName="Endpoints" CommandId="ID_SNAP_OVERRIDE_END" Shortcuts="SE" Paths="Snaps" />
+  <ShortcutItem CommandName="Hide Element" CommandId="ID_TEMPHIDE_HIDE" Shortcuts="HH" Paths="View Control Bar" />
+  <ShortcutItem CommandName="Snap to Remote Objects" CommandId="ID_SNAP_OVERRIDE_REMOTE" Shortcuts="SR" Paths="Snaps" />
+  <ShortcutItem CommandName="Close" CommandId="ID_SNAP_OVERRIDE_CLOSE" Shortcuts="SZ" Paths="Snaps" />
+  <ShortcutItem CommandName="Hidden Line" CommandId="ID_IMAGE_HIDDENLINE" Shortcuts="HL" Paths="View Control Bar" />
+  <ShortcutItem CommandName="Restore Excluded Member" CommandId="ID_ELEM_GROUP_EXCLUDED_MEMBER" Shortcuts="RB" Paths="Context Menu" />
+  <ShortcutItem CommandName="Nearest" CommandId="ID_SNAP_OVERRIDE_INTERIOR" Shortcuts="SN" Paths="Snaps" />
+  <ShortcutItem CommandName="Zoom All to Fit" CommandId="ID_ZOOM_ALL_ALL" Shortcuts="ZA" Paths="Navigation Bar" />
+  <ShortcutItem CommandName="Snap Off" CommandId="ID_SNAP_OVERRIDE_NO_SNAP" Shortcuts="SO" Paths="Snaps" />
+  <ShortcutItem CommandName="Zoom in Region" CommandId="ID_ZOOM_IN" Shortcuts="ZR#ZZ" Paths="Navigation Bar" />
+  <ShortcutItem CommandName="Exclude" CommandId="ID_EXCLUDE_GROUP_MEMBERS" Shortcuts="EX" Paths="Context Menu" />
+  <ShortcutItem CommandName="Tangents" CommandId="ID_SNAP_OVERRIDE_TANGENT" Shortcuts="ST" Paths="Snaps" />
+</Shortcuts>

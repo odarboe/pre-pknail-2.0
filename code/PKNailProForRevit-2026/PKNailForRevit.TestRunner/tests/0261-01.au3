@@ -1,0 +1,35 @@
+
+#include "globals.au3"
+#include "functions.au3"
+
+_InitRevitWindow()
+
+_EditRoundingSettings("5", "5", "", "")
+_SurveyWall("8000", "", "", "Idx:1", "", "Idx:1", "")
+_SurveyWallHostedObject("1200", "", "7", "", "", "", "", "", "940", "", "", "")
+_SurveyWallHostedObject("1800", "", "6", "0", "", "", "", "", "350", "", "", "")
+_SurveyWallHostedObject("2100", "", "6", "1", "", "", "", "", "1600", "", "", "")
+_SurveyWallHostedObject("2400", "", "6", "0", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("2700", "", "6", "1", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("3300", "", "9", "0", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("3900", "", "6", "2", "", "", "", "", "350", "", "", "")
+_SurveyWallHostedObject("4450", "", "9", "1", "", "", "", "", "650", "", "", "")
+_SurveyWallHostedObject("4800", "", "8", "", "", "", "", "", "1000", "", "", "")
+_SurveyWallHostedObject("5100", "", "8", "1", "", "", "", "", "1011", "", "", "")
+_SurveyWallHostedObject("6200", "", "0", "", "1500", "", "630", "", "", "", "660", "")
+_SurveyWindow("6400", "", "", "600", "", "500", "", "1500", "", "")
+_SurveyWallHostedObject("7280", "", "10", "", "", "", "", "", "1650", "", "", "")
+_ActivateWallRefOpeningWithLevelOffset(279, 345, 635, 345, "", "", "", "", "245", "")
+_SurveyWallHostedObject("1200", "", "7", "", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("1500", "8", "0", "", "1400", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("Center", "", "9", "0", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("4400", "", "6", "0", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("4700", "", "6", "1", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("5000", "", "6", "3", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("5450", "", "9", "1", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("5450", "", "10", "", "", "", "", "", "1800", "", "", "")
+_SurveyWallHostedObject("6200", "", "8", "0", "", "", "", "", "", "", "", "")
+_SurveyWallHostedObject("6200", "", "8", "1", "", "", "", "", "1800", "", "", "")
+
+_ExportModel()
+_KillRevit()
