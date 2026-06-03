@@ -1,26 +1,26 @@
-Work Type,Summary,Description,Work item id,Parent
-Epic,Project Setup & Test Case Definition,"Establish the foundational infrastructure, collaboration cadence, and baseline data.",1,
-Task,De-identify and finalize point cloud dataset,"De-identify, clean, and finalize the point cloud dataset for the controlled room/suite test case.",2,1
-Task,Initialize repositories,"Initialize code repositories (Python extraction & C# Revit Add-in) with appropriate access for Cognixlab and PointKnown.",3,1
-Task,Setup milestone demonstration schedule,"Setup milestone demonstration and code review schedule.",4,1
-Epic,Data Preprocessing & Geometry Extraction,"Develop the Python prototype that ingests the point cloud and outputs the structured architectural intents.",5,
-Task,Implement point cloud ingestion module,"Implement point cloud ingestion module to read the provided GeoSLAM/SLAM point cloud data.",6,5
-Task,Identify planar architectural evidence,"Develop algorithms to identify planar architectural evidence (floor, ceiling, and primary walls).",7,5
-Task,Calculate major wall intersections,"Calculate the major wall intersections, ensuring orthogonal snap mapping (architectural intent).",8,5
-Task,Define JSON Schema,"Define the standard JSON Schema that models the execution commands (e.g., Level elevation, Wall start/end points, width, angle).",9,5
-Task,Export extraction findings to JSON,"Export the normalized extraction findings into the structured, repeatable JSON build script.",10,5
-Epic,Revit Execution Engine & Refactoring,"Refactor the PKNail 1.0 foundations to receive script instructions and execute them reliably within Revit.",11,
-Task,Refactor PKNail 1.0 base code,"Refactor necessary PKNail 1.0 base code to run as an automated/headless execution add-in in Revit.",12,11
-Task,Develop JSON parser for Revit,"Develop JSON parser capable of reading and validating the input script exported from Python.",13,11
-Task,Implement automated Level constraints generation,"Implement automated Level & Base Reference constraints generation in Revit per the JSON definitions.",14,11
-Task,Implement ordered Wall Generation module,"Implement ordered Wall Generation module. Walls must be created in standard modeling sequence utilizing the standard architectural intentions.",15,11
-Task,Build wall intersection resolution module,"Build wall intersection & join resolution module (handling major corner joints and orthogonal alignments).",16,11
-Task,Implement execution logging logic,"Implement execution logging logic: system should explicitly flag uncertainties and halt/skip rather than forcing guesses.",17,11
-Task,Place high-confidence openings candidates (Stretch),"Identify and place high-confidence openings candidates (windows/doors) parametrically linked to respective host walls.",18,11
-Epic,Verification QA & Handoff,"Verify end-to-end functionality utilizing the test dataset to meet the required 80%+ wall accuracy limits, and package final handoff materials.",19,
-Task,Conduct end-to-end workflow test,"Conduct end-to-end workflow test linking the Python extraction to the C# Revit generation using the controlled dataset.",20,19
-Task,QA Phase - Validate Revit geometry,"Validate Revit geometry visually and extract accuracy metrics (wall placement offsets, clean alignment, functional wall joins).",21,19
-Task,Internal workflow refinement sprints,"Internal workflow refinement sprints (improving generation logic or JSON payload depending on Revit testing anomalies).",22,19
-Task,Compile final Test Results Summary,"Compile final Test Results Summary covering geometry extraction metrics, Revit behavior, and observation notes.",23,19
-Task,Package and document final deliverables,"Package and document final deliverables: source code, schema definition, compile/build instructions, dependencies, and sample I/O datasets.",24,19
-Task,Document Known Limitations and Roadmap,"Document Known Limitations and form the Recommended Next-Steps Roadmap for Phase 2.",25,19
+Issue Type,Summary,Description
+Epic,Project Setup & Test Case Definition,"Establish the foundational infrastructure, collaboration cadence, and baseline data."
+Task,De-identify and finalize point cloud dataset,"De-identify, clean, and finalize the point cloud dataset for the controlled room/suite test case."
+Task,Initialize repositories,"Initialize code repositories (Python extraction & C# Revit Add-in) with appropriate access for Cognixlab and PointKnown."
+Task,Setup milestone demonstration schedule,"Setup milestone demonstration and code review schedule."
+Epic,Data Preprocessing & Geometry Extraction,"Develop the Python prototype that ingests the point cloud and outputs the structured architectural intents."
+Task,Implement point cloud ingestion module,"Implement point cloud ingestion module to read the provided GeoSLAM/SLAM point cloud data."
+Task,Identify planar architectural evidence,"Develop algorithms to identify planar architectural evidence (floor, ceiling, and primary walls)."
+Task,Calculate major wall intersections,"Calculate the major wall intersections, ensuring orthogonal snap mapping (architectural intent)."
+Task,Define JSON Schema,"Define the standard JSON Schema that models the execution commands (e.g., Level elevation, Wall start/end points, width, angle)."
+Task,Export extraction findings to JSON,"Export the normalized extraction findings into the structured, repeatable JSON build script."
+Epic,Revit Execution Engine & Refactoring,"Refactor the PKNail 1.0 foundations to receive script instructions and execute them reliably within Revit."
+Task,Refactor PKNail 1.0 base code,"Refactor necessary PKNail 1.0 base code to run as an automated/headless execution add-in in Revit."
+Task,Develop JSON parser for Revit,"Develop JSON parser capable of reading and validating the input script exported from Python."
+Task,Implement automated Level constraints generation,"Implement automated Level & Base Reference constraints generation in Revit per the JSON definitions."
+Task,Implement ordered Wall Generation module,"Implement ordered Wall Generation module. Walls must be created in standard modeling sequence utilizing the standard architectural intentions."
+Task,Build wall intersection resolution module,"Build wall intersection & join resolution module (handling major corner joints and orthogonal alignments)."
+Task,Implement execution logging logic,"Implement execution logging logic: system should explicitly flag uncertainties and halt/skip rather than forcing guesses."
+Task,Place high-confidence openings candidates (Stretch),"Identify and place high-confidence openings candidates (windows/doors) parametrically linked to respective host walls."
+Epic,Verification QA & Handoff,"Verify end-to-end functionality utilizing the test dataset to meet the required 80%+ wall accuracy limits, and package final handoff materials."
+Task,Conduct end-to-end workflow test,"Conduct end-to-end workflow test linking the Python extraction to the C# Revit generation using the controlled dataset."
+Task,QA Phase - Validate Revit geometry,"Validate Revit geometry visually and extract accuracy metrics (wall placement offsets, clean alignment, functional wall joins)."
+Task,Internal workflow refinement sprints,"Internal workflow refinement sprints (improving generation logic or JSON payload depending on Revit testing anomalies)."
+Task,Compile final Test Results Summary,"Compile final Test Results Summary covering geometry extraction metrics, Revit behavior, and observation notes."
+Task,Package and document final deliverables,"Package and document final deliverables: source code, schema definition, compile/build instructions, dependencies, and sample I/O datasets."
+Task,Document Known Limitations and Roadmap,"Document Known Limitations and form the Recommended Next-Steps Roadmap for Phase 2."
