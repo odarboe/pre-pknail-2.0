@@ -125,9 +125,12 @@ Distance length = new Distance(detectedWall.LengthMeters, Distance.Units.MetricM
 double meters = length.ValueMetricMeters;
 ```
 
-**Rule:** the `Detected*` DTOs hold the raw `double` meters exactly as delivered; the **mapping layer
-(Epic 2)** is the only code that wraps them in `Distance(value, MetricMeter)`. Everything past that
-point is `Distance` (feet), identical to the rest of the plugin and to Revit's internal units.
+**Rule (refined in implementation):** the `Detected*` DTOs and the Epic 2 `Mapped*` model both hold
+**meters** (`double`). Because `Distance` physically lives in the Revit-coupled `PKNailForRevit`
+assembly, the **Epic 3 bridge** (not the Revit-free Epic 2 library) is the single place that wraps each
+value in `new Distance(value, Distance.Units.MetricMeter)` (plugin constant `cm_feetPerMeter = 3.2808399`).
+Everything from that point on is `Distance` (feet). This keeps Epic 2 Revit-free *and* drift-free (no
+re-implemented conversion constant).
 
 ```jsonc
 {
@@ -480,50 +483,48 @@ zero Revit dependency in the DTO layer.
 
 ---
 
-## EPIC 2 — Mapping Layer (Detected\* → PKNAIL params)
+## EPIC 2 — Mapping Layer (Detected\* → normalized `Mapped*` model) ✅ DONE & VERIFIED (2026-06-28)
 
-**Goal:** Pure, Revit-free translation from `Detected*` DTOs to PKNAIL parameter objects, including
-unit conversion and **architectural-intent normalization**. This is the heart of "map the geometry
-appropriately."
+**Goal:** Pure, Revit-free **normalization** from `Detected*` DTOs to a `Mapped*` model: resolve
+semantics and snap corner angles to architectural intent. **Refined boundary (per Q8):** because
+`Distance` lives in the Revit-coupled assembly, this layer keeps lengths in **meters** and does **not**
+produce `WallSurveyParams`/`LevelDataItem`; the meters→`Distance` conversion + `DocumentSettings`
+rounding + PKNAIL-param population move to the **Epic 3 bridge**. This keeps Epic 2 Revit-free and drift-free.
 
-**Stories**
+**Stories (as built, in `PKNail.AiImport/Mapping/`)**
 
-- 2.1 Unit conversion: meters → `Distance` (feet). Centralize in one helper; never use raw `double`
-  for measurements downstream (`Distance` only).
-- 2.2 Map levels → `LevelDataItem` list (incl. drop ceiling + typical window heights → `WindowHeights`).
-- 2.3 Map walls → ordered `WallSurveyParams` sequence; apply `LocationRounding` (length) and
-  `WallWidthRounding` (thickness).
-- 2.4 **Architectural-intent snapping** (brief §3): snap corner angles (epsilon ≈ 0 → 0; near-orthogonal
-  → 90°), normalize wall thickness, apply dimensional rounding. Rounding increments come from
-  `DocumentSettings` (`LocationRounding`, `WallWidthRounding`, `FeatureDimensionRounding` —
-  [NewProjectSettingsDlg.cs:41-47]) and apply via `Distance.Round(increment)` ([Distance.cs:97-106]).
-  **Scope note (architect):** this layer snaps the *scalar* fields (length, thickness, the single
-  `CornerAngle`). It does **NOT** synthesize `CornerAngleList`/`MaxLengthList`/`IsCloseWall` — those are
-  computed by the engine's `SurveyWallPrep` ([RevitDocument.cs:449-467]) at execute time (Epic 3), so
-  Epic 2 stays Revit-free.
-- 2.5 First-wall handling: `IsScanFromInterior` → `SurveyOrientation`; `FirstWallCompassDirection`
-  → `SurveyorCompassDirection` (DontKnow stays DontKnow).
-- 2.6 Map openings → `WallHostedObjectSurveyParams` + a chosen `SurveyFamilyDef` (door vs window via
-  `IsLikelyDoor`; hinge/swing/facing indices; `FamilyDefIdx`).
+- 2.1 ✅ `MappedBuilding/Level/Wall/Opening` records + Revit-free enums (`SurveyOrientationKind`,
+  `CompassDirectionKind`, `OpeningKind`, `HingeSideKind`, `SwingDirectionKind`, `FacingRelationKind`)
+  that mirror the plugin enums **by integer value** (trivial cast in Epic 3). Lengths stay in meters.
+- 2.2 ✅ Orientation: `IsScanFromInterior` → `Flipped`/`NotFlipped`; `FirstWallCompassDirection` →
+  `CompassDirectionKind` (DontKnow→Undefined).
+- 2.3 ✅ **Architectural-intent angle snapping** (`AiModelMapper.SnapCornerAngle`): normalize to
+  `[0,2π)`, snap to nearest 90° multiple within `MappingOptions.OrthogonalSnapToleranceRad` (default 5°);
+  floating-point noise (`2.22e-16`) collapses to 0. First wall's angle is dropped to 0 (ignored, Q2).
+- 2.4 ✅ Openings: door vs window via `IsLikelyDoor` → `OpeningKind`; hinge/swing/facing indices → enums;
+  `FamilyDefIdx` passed through.
+- 2.5 ✅ **Length rounding & meters→`Distance` are explicitly NOT here** — deferred to Epic 3 (they need
+  `DocumentSettings` + `Distance`, both Revit-side). Engine-derived lists (`CornerAngleList`,
+  `MaxLengthList`, `IsCloseWall`) are produced by `SurveyWallPrep` at execute time, not here.
 
-**Automated tests** (pure unit tests, no Revit)
+**Automated tests (13, pure unit tests, no Revit)**
 
-- 5.05 m → `Distance` ≈ 16.568 ft (within tolerance); 0.2 m thickness → ≈ 0.656 ft.
-- `CornerAngleRad = 2.22e-16` snaps to exactly 0; `1.5707963` snaps to 90°; `4.712` handled per the
-  agreed first-wall rule (see §5 — **confirm before coding**).
-- Opening on wall #3 maps to a **window** params object with width/height/sill converted and
-  `FamilyDefIdx = 0`.
-- Level maps `Floor2Floor`/`Floor2Ceiling` and typical window heights correctly.
+- Frozen contract → `Flipped`, compass `Undefined`, 1 level, 9 ordered walls, first wall flagged.
+- First-wall `4.712` → 0; `1.5707963` → exactly π/2; `2.22e-16` → 0 (`CornerAngleSnapped == true`).
+- 89° snaps to 90°; 45° does **not** snap; `-90°` normalizes to 270°.
+- Opening on wall #3 → `Window`, dims preserved in meters; exterior/interior facing from index.
+- Synthetic door → `Door` with hinge=Right, swing=In.
 
 **How to verify (manual)**
 
-1. Run `AiMappingTest` fixture → green.
-2. Inspect a dumped mapping report (log or test output) for the sample: 9 walls, 1 window, 1 level,
-   all dimensions in feet, angles snapped.
+```
+dotnet test PKNail.AiImport.Tests/PKNail.AiImport.Tests.csproj
+```
+→ all tests pass (31 total across Epics 9a/1/2).
 
-**Acceptance criteria:** deterministic mapping; all measurements are `Distance`; snapping rules
-applied; no Revit calls in this layer.
-**Commit:** `feat(pknail-2.0/mapping): Detected* → PKNAIL params with unit conversion + intent snap`.
+**Acceptance criteria:** deterministic, Revit-free normalization; semantics resolved; corner angles
+snapped to intent; lengths preserved in meters (conversion deferred to Epic 3). **(Met.)**
+**Commit:** `feat(pknail-2.0/mapping): Detected* → normalized Mapped model + intent angle snapping`.
 
 ---
 
@@ -558,7 +559,9 @@ without the rangefinder**, plus expose a ribbon entry point to import the AI-eng
   `SurveyWallPrep` / `SurveyWallHostedObjectPrep` to populate engine-derived fields
   (`CornerAngleList`, `MaxLengthList`, default `Width`/`Height`, `IsFirstWall`/`IsCreateWall`,
   `HostWallHeight/Length`, typical-window flags — [RevitDocument.cs:340-495]), then overwrite only the
-  AI-measured fields from the Epic-2 mapping output, then call `SurveyWall` /
+  AI-measured fields from the Epic-2 `Mapped*` output — **this is where the meters→`Distance` conversion
+  happens** (`new Distance(mapped.LengthMeters, Distance.Units.MetricMeter)` etc.) plus `DocumentSettings`
+  rounding (`Distance.Round`) and the trivial `Mapped*`-enum → plugin-enum cast — then call `SurveyWall` /
   `SurveyWallHostedObject` ([RevitDocument.cs:498, 1148]). This mirrors the dialog flow with the mapping
   layer substituted for the WinForms dialog (the dialogs mostly display Prep output — §C).
 - 3.7 **Auto-save / unsaved-project interaction (architect-added):** after group commit, `autoSave` may

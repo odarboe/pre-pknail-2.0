@@ -14,4 +14,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- Expose internal helpers (e.g. AiModelMapper.SnapCornerAngle) to the unit tests only. -->
+    <InternalsVisibleTo Include="PKNail.AiImport.Tests" />
+  </ItemGroup>
+
 </Project>
