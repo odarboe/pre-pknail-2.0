@@ -1,6 +1,13 @@
 ## Point Cloud Bridge — Fields the AI Must Produce
 
-The `PointCloud/` folder contains a headless bridge (`PointCloudImporter`) that feeds point-cloud geometry into the PKNail engine without showing any survey dialogs. The AI model that analyses the `.las` file must produce a `DetectedBuilding` that covers **every field the PKNail forms collect from the rangefinder**.
+> **Clarification (PKNAIL 2.0 boundary):** the **plugin does not import point clouds**. The point
+> cloud is processed by a **separate, independent AI-engine repository**, which produces
+> `ai_engine_pknail_results.json`. The Revit plugin's headless bridge — historically named
+> `PointCloudImporter` below, **implemented as `AiModelImporter`** — consumes **that JSON**, not the
+> `.las` file. The `.las` files under `PointCloud/` are AI-engine sample inputs kept for reference
+> only. See `PKNAIL_2.0_JiraPlan.md` for the full plan and the JSON contract.
+
+The AI engine that analyses the `.las` file must produce a `DetectedBuilding` (serialized to `ai_engine_pknail_results.json`) that covers **every field the PKNail forms collect from the rangefinder**. The headless bridge then maps that JSON onto the PKNail engine without showing any survey dialogs.
 
 ### Group 1 — Level (`LevelsDlg` / `LevelDataItem`)
 

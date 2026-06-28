@@ -1,0 +1,91 @@
+{
+  "IsScanFromInterior": true,
+  "FirstWallCompassDirection": 0,
+  "Levels": [
+    {
+      "Floor2FloorMeters": 2.8664869165231077,
+      "Floor2CeilingElev": 2.566486916523108,
+      "HasDropCeiling": false,
+      "DropCeilingHeightMeters": 0.0,
+      "TypicalWindowSillHeightMeters": 0.9,
+      "TypicalWindowHeadHeightMeters": 2.1,
+      "Walls": [
+        {
+          "LengthMeters": 5.050000000000001,
+          "ThicknessMeters": 0.2,
+          "CornerAngleRad": 4.71238898038469,
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "LengthMeters": 5.999999999999999,
+          "ThicknessMeters": 0.2,
+          "CornerAngleRad": 0.0,
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "LengthMeters": 5.249999999999999,
+          "ThicknessMeters": 0.2,
+          "CornerAngleRad": 0.0,
+          "LevelOffset": 0.0,
+          "Openings": [
+            {
+              "LocationFromNearEndMeters": 4.0,
+              "WidthMeters": 1.0,
+              "HeightMeters": 1.4,
+              "SillHeightMeters": 0.4,
+              "IsLikelyDoor": false,
+              "HingeSideIndex": 0,
+              "SwingDirectionIndex": 0,
+              "FacingOrientationIndex": 0,
+              "FamilyDefIdx": 0
+            }
+          ]
+        },
+        {
+          "LengthMeters": 1.2000000000000002,
+          "ThicknessMeters": 0.2,
+          "CornerAngleRad": 0.0,
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "LengthMeters": 1.0,
+          "ThicknessMeters": 0.2,
+          "CornerAngleRad": 0.0,
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "LengthMeters": 8.350000000000009,
+          "ThicknessMeters": 0.2,
+          "CornerAngleRad": 1.5707963267948963,
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "LengthMeters": 2.8500000000000085,
+          "ThicknessMeters": 0.2,
+          "CornerAngleRad": 2.220446049250313e-16,
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "LengthMeters": 4.6000000000000085,
+          "ThicknessMeters": 0.2,
+          "CornerAngleRad": 0.0,
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "LengthMeters": 2.8500000000000085,
+          "ThicknessMeters": 0.2,
+          "CornerAngleRad": 0.0,
+          "LevelOffset": 0.0,
+          "Openings": []
+        }
+      ]
+    }
+  ]
+}

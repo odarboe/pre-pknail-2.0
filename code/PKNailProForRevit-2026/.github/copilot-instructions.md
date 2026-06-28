@@ -13,6 +13,37 @@
 
 ---
 
+## PKNAIL 2.0 — AI-Engine JSON Import (CURRENT DIRECTION)
+
+> Most of this document describes the **PKNAIL 1.0 rangefinder workflow**, which is still in the
+> codebase. **The active 2.0 effort changes the input, not the placement engine.** Read
+> **`docs/PKNAIL_2.0_JiraPlan.md`** (master plan) and **`docs/PKNAIL_Fields.md`** before doing 2.0 work.
+
+**What changes:** PKNAIL 2.0 **removes the Leica Disto rangefinder/device step.** The **point cloud is
+never imported into this plugin** — it is uploaded into a **separate, independent AI-engine repository**
+(e.g. Cognixlab's Python pipeline) which reads the `.las` / GeoSLAM data and emits a single JSON file,
+`ai_engine_pknail_results.json`. **That JSON is the plugin's only 2.0 input.** The plugin deserializes it
+into `Detected*` DTOs, maps them onto the existing PKNAIL parameter objects, and drives the **same proven
+placement engine** (`IProjectModel` / `RevitDocument`) — **headlessly, with no survey dialogs and no Disto**.
+
+```
+PKNAIL 1.0:  Laser → Survey Dialogs → PKNAIL engine → Revit Model
+PKNAIL 2.0:  Point Cloud → [external AI-engine repo] → ai_engine_pknail_results.json → PKNAIL plugin → Revit Model
+```
+
+**Boundary:** this repo does **not** parse point clouds at runtime. The `.las` files under `PointCloud/`
+are AI-engine sample inputs kept for reference only. The headless bridge is **`AiModelImporter`**
+(`PKNAIL_Fields.md` calls it `PointCloudImporter`; it consumes the JSON, not the cloud). The `Detected*`
+DTOs and `AiModelImporter` **do not exist in the code yet** — building them is the 2.0 work (Epics 1–3 of
+the Jira plan). The rangefinder/`Disto` path stays as **legacy/optional** — do not delete without sign-off.
+
+**Working agreement:** implement **one epic at a time** → write full automated + step-by-step manual tests
+→ user confirms → **only then `git commit`** (one focused commit per epic) → next epic. **If anything is
+unclear or conflicting, STOP and ask.** Known discrepancies (no wall coordinates in the JSON, hardcoded
+`FamilyDefIdx`, unit/naming mismatches, metering at scale) are tracked in the Jira plan §5–§6.
+
+---
+
 ## Repository Structure
 
 ```
