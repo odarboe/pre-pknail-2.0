@@ -1,0 +1,52 @@
+name: PKNAIL 2.0 AiImport tests
+
+# Fast, Revit-free test gate for the PKNAIL 2.0 import layer (Epic 9a).
+# Builds and tests ONLY the net8.0 Revit-free projects (PKNail.AiImport + its tests).
+# The full PKNailForRevit plugin is NOT built here: it requires the Revit 2026 API
+# assemblies (RevitAPI/RevitAPIUI) and the SoftwareKey PLUSManaged.dll, which are not
+# available on a hosted runner. Plugin + in-process IProjectModel integration tests
+# (Epic 9b) run on a self-hosted Revit dev machine — add that lane when available.
+
+on:
+  push:
+    paths:
+      - 'code/PKNailProForRevit-2026/PKNail.AiImport/**'
+      - 'code/PKNailProForRevit-2026/PKNail.AiImport.Tests/**'
+      - 'docs/ai_engine_pknail_results.json'
+      - '.github/workflows/ci-aiimport.yml'
+  pull_request:
+    paths:
+      - 'code/PKNailProForRevit-2026/PKNail.AiImport/**'
+      - 'code/PKNailProForRevit-2026/PKNail.AiImport.Tests/**'
+      - 'docs/ai_engine_pknail_results.json'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: code/PKNailProForRevit-2026
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore PKNail.AiImport.Tests/PKNail.AiImport.Tests.csproj
+
+      - name: Build (warnings as errors)
+        run: dotnet build PKNail.AiImport.Tests/PKNail.AiImport.Tests.csproj -c Release --no-restore
+
+      - name: Test
+        run: dotnet test PKNail.AiImport.Tests/PKNail.AiImport.Tests.csproj -c Release --no-build --logger "trx;LogFileName=aiimport-tests.trx"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aiimport-test-results
+          path: code/PKNailProForRevit-2026/PKNail.AiImport.Tests/TestResults/*.trx

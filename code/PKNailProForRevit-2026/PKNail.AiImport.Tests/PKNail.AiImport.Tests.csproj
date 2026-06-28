@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- PKNAIL 2.0 fast unit-test gate (Epic 9a). net8.0, no Revit. Runs under `dotnet test`.
+       Hosts the frozen JSON contract as a copied fixture for Epic 1+ tests. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>PKNail.AiImport.Tests</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="4.2.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PKNail.AiImport\PKNail.AiImport.csproj" />
+  </ItemGroup>
+
+  <!-- Frozen JSON contract v1 (single source of truth in docs/) linked as a test fixture (Epic 0 story 0.2). -->
+  <ItemGroup>
+    <None Include="..\..\..\docs\ai_engine_pknail_results.json"
+          Link="Fixtures\ai_engine_pknail_results.json"
+          CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

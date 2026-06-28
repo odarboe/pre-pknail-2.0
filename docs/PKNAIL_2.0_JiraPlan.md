@@ -746,38 +746,67 @@ debugging, human-in-loop first).
 
 ---
 
-## EPIC 9 — Test & CI Infrastructure (architect-added)
+## EPIC 9 — Test & CI Infrastructure (architect-added; **run first**)
 
-**Goal:** Provide the *no-Revit* test seam the tests-before-commit gate depends on. **Pull forward to
-run alongside Epics 0/1** — Epics 1–2 cannot satisfy the gate without it.
+**Goal:** Provide the *no-Revit* test seam the tests-before-commit gate depends on.
 
-**Stories**
+> **✅ Build provisioning RESOLVED (2026-06-28).** The plugin originally failed to build because two
+> **local reference folders were missing from this checkout**: `RevitAPI/` (Revit 2026 `RevitAPI.dll` /
+> `RevitAPIUI.dll` / `RevitAddInUtility.dll`) and `Tools/SoftwareKey/PLUSManaged.dll` (SoftwareKey
+> licensing SDK). Both were sourced locally (from the sibling `…\NAIL_2\PKNailProForRevit-2017` working
+> copy) and dropped into the expected paths under `code/PKNailProForRevit-2026/`. **These are local-only
+> vendor DLLs — git-ignored, never committed.** With them in place, **`dotnet build
+> PKNailForRevit/PKNailForRevit.csproj` succeeds (0 errors)** — this satisfies the deferred **Epic 0.1
+> "build green"** for the main plugin. **Consequence:** the full plugin (and the Epic 9b in-process fake
+> that references it) **can be built and tested in this environment** — 9b is no longer blocked.
+>
+> **New developer setup (add to `DevDoc`):** before first build, populate `code/PKNailProForRevit-2026/RevitAPI/`
+> from `C:\Program Files\Autodesk\Revit 2026\` (RevitAPI.dll, RevitAPIUI.dll, RevitAddInUtility.dll) and place
+> the licensing `PLUSManaged.dll` in `code/PKNailProForRevit-2026/Tools/SoftwareKey/`.
+>
+> **Why a separate `PKNail.AiImport` library is still worthwhile (not because Revit is unavailable):** the
+> DTO + mapping logic is pure (JSON → `Distance` values) and gets **millisecond unit tests** with no Revit
+> load; the separate net8.0 project just *enforces* that purity. The real plugin still builds and the
+> import still runs through the live Revit API — this is a layering choice, not a workaround.
 
-- 9.1 Create a modern **SDK-style `net8.0` test project** (`PKNail.AiImport.UnitTests`) using
-  `Microsoft.NET.Test.Sdk` + `NUnit` + `NUnit3TestAdapter`, referencing the new `PKNail.AiImport`
-  library. Rationale: the existing `PKNailForRevit.UnitTests.csproj` is a legacy `v4.6` project
-  ([PKNailForRevit.UnitTests.csproj:13]) with vendored NUnit — unsuitable for `net8.0` DTO tests.
-- 9.2 Build a hand-rolled **in-process `IProjectModel` fake** (records the ordered call sequence of
-  `SurveyWallPrep`/`SurveyWall`/`SurveyWallHostedObject*`/levels writes and the params passed). This is
-  the seam Epic 3 tests assume but which **does not exist today** (`TestRunner` automates a real
-  `Revit.exe` via AutoIt — [TestFixture.cs:18, 50-80]).
-- 9.3 CI wiring: `dotnet build` + `dotnet test` for the new `net8.0` projects on each push; keep the
-  legacy Revit/AutoIt functional suite as a separate, manually/nightly-triggered job (it needs a Revit
-  install and a desktop session).
-- 9.4 New-code quality bar: enable `<Nullable>enable</Nullable>` and analyzers **for the new
-  `PKNail.AiImport` library only** (the legacy `PKNailForRevit` is `Nullable disable` —
-  [PKNailForRevit.csproj:11]; do not flip it wholesale).
-- 9.5 Modernize/repoint the legacy `TestRunner` constants still hardcoded to **Revit 2017**
-  ([TestFixture.cs:18]) toward Revit 2026 — or formally scope the AutoIt suite out for 2.0 and rely on
-  the `IProjectModel`-fake tests + manual Revit verification.
+### Epic 9a — Revit-free unit-test foundation ✅ DONE & VERIFIED (2026-06-28)
 
-**Automated tests:** the fake-based Epic 3 tests run green under `dotnet test`; CI is green on a clean
-checkout with no Revit installed.
+- 9a.1 ✅ New SDK-style **`net8.0` Revit-free library `PKNail.AiImport`** (`Nullable enable`, implicit
+  usings, `TreatWarningsAsErrors`) — home of the `Detected*` DTOs (Epic 1) + mapping (Epic 2). No
+  reference to `PKNailForRevit`/Revit (mechanically enforces Q8).
+- 9a.2 ✅ New **`net8.0` NUnit test project `PKNail.AiImport.Tests`** (`Microsoft.NET.Test.Sdk` +
+  `NUnit 4` + `NUnit3TestAdapter`) referencing the library. **3 smoke tests pass under `dotnet test`.**
+- 9a.3 ✅ **Frozen JSON contract v1** linked as a copied test fixture
+  (`docs/ai_engine_pknail_results.json` → `Fixtures/…`, single source of truth) for Epic 1+ tests.
+- 9a.4 ✅ Both projects added to `PKNailForRevit.sln`; `bin/obj` confirmed git-ignored.
+- 9a.5 ✅ **CI**: `.github/workflows/ci-aiimport.yml` builds + tests the Revit-free projects on
+  `windows-latest` (no Revit needed); uploads `.trx` results.
 
-**How to verify (manual):** `dotnet test PKNail.AiImport.UnitTests` passes on a machine without Revit.
+### Epic 9b — In-process `IProjectModel` fake + integration lane (do before Epic 3; now UNBLOCKED)
 
-**Acceptance criteria:** no-Revit test path exists and is wired into CI; Epics 1–3 tests run there.
-**Commit:** `chore(pknail-2.0/test-infra): net8.0 test project + IProjectModel fake + CI`.
+- 9b.1 ✅ Provision the build: `RevitAPI/` + `Tools/SoftwareKey/PLUSManaged.dll` in place; `PKNailForRevit`
+  builds (0 errors) — deferred Epic 0.1 "build green" satisfied. **Still TODO: write the `DevDoc` setup note.**
+- 9b.2 Build the hand-rolled **in-process `IProjectModel` fake** (`RecordingProjectModel`) that records
+  the ordered call sequence (`SurveyWallPrep`/`SurveyWall`/`SurveyWallHostedObject*`/`LevelsData` set)
+  and the params passed — the seam Epic 3 tests assume. **Architecture choice (flag for the spike):**
+  either reference the plugin assembly directly, or first extract the Revit-free contract
+  (`IProjectModel` + POCO param types) into a shared library so the fake compiles without Revit.
+- 9b.3 A net8.0(-windows) integration test project hosting the fake-driven Epic 3 tests.
+- 9b.4 Add a **self-hosted (Revit) CI lane** for 9b + the legacy AutoIt suite; repoint/quarantine the
+  `TestRunner` constants hardcoded to **Revit 2017** ([TestFixture.cs:18]).
+
+**Automated tests (9a):** `dotnet test PKNail.AiImport.Tests` → 3/3 green; CI green on a clean checkout
+with no Revit installed.
+**Automated tests (9b):** fake-driven Epic 3 tests run green under `dotnet test` on a provisioned machine.
+
+**How to verify (manual, 9a):** from `code/PKNailProForRevit-2026`, run
+`dotnet test PKNail.AiImport.Tests/PKNail.AiImport.Tests.csproj` on any machine **without Revit** → all
+tests pass.
+
+**Acceptance criteria:** 9a — no-Revit test path exists, wired into CI, ready for Epics 1–2 (**met**).
+9b — fake exists and Epic 3 tests run, once the plugin build is provisioned.
+**Commit (9a):** `chore(pknail-2.0/test-infra): net8.0 PKNail.AiImport library + NUnit project + CI`.
+**Commit (9b):** `chore(pknail-2.0/test-infra): in-process IProjectModel fake + integration lane`.
 
 ---
 

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- PKNAIL 2.0 AI-engine import layer. REVIT-FREE BY DESIGN (Q8): holds the Detected* DTOs
+       (Epic 1) and the mapping layer (Epic 2) so they unit-test without Revit. The Revit-touching
+       AiModelImporter bridge stays in the PKNailForRevit plugin project. Do NOT add a reference to
+       PKNailForRevit or RevitAPI here. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>PKNail.AiImport</RootNamespace>
+    <AssemblyName>PKNail.AiImport</AssemblyName>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+</Project>
