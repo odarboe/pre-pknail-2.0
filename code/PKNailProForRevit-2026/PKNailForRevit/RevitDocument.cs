@@ -58,6 +58,106 @@ namespace PKNailForRevit
             return CommandResult.Succeeded;
         }
 
+        // Parameters that live on family TYPES (read from FamilySymbol/WallType); everything else is
+        // an instance parameter. Names match the PKNail shared parameter definitions ("PKNail " prefix).
+        private static readonly System.Collections.Generic.HashSet<string> sm_typeParamNames =
+            new System.Collections.Generic.HashSet<string>(StringComparer.Ordinal)
+            {
+                @"PKNail Family Category", @"PKNail Family", @"PKNail Family Order",
+                @"PKNail Family Lateral Orientation", @"PKNail Family Facing Orientation",
+                @"PKNail Wall Type Unknown Width"
+            };
+
+        // IProjectModel interface implementation
+        // Binds any missing PKNail shared parameters to the document so the add-in works on projects that
+        // were NOT created from a PKNail template (the 2017-era templates lose bindings on 2026 upgrade).
+        public CommandResult EnsureDocumentParameters(ref string msg)
+        {
+            string previousSharedParamFile = app.SharedParametersFilename;
+            try
+            {
+                app.SharedParametersFilename = extractSharedParameterFile();
+
+                DefinitionFile defFile = app.OpenSharedParameterFile();
+                if (defFile == null)
+                { msg = @"Could not open the PKNail shared parameter file."; return CommandResult.Failed; }
+
+                DefinitionGroup group = defFile.Groups.get_Item(@"PKNail");
+                if (group == null)
+                { msg = @"The PKNail shared parameter group was not found."; return CommandResult.Failed; }
+
+                CategorySet instanceCats = buildCategorySet(
+                    BuiltInCategory.OST_ProjectInformation, BuiltInCategory.OST_Walls,
+                    BuiltInCategory.OST_Doors, BuiltInCategory.OST_Windows,
+                    BuiltInCategory.OST_GenericModel, BuiltInCategory.OST_Lines);
+                CategorySet typeCats = buildCategorySet(
+                    BuiltInCategory.OST_Walls, BuiltInCategory.OST_Doors,
+                    BuiltInCategory.OST_Windows, BuiltInCategory.OST_GenericModel);
+
+                using (Transaction t = new Transaction(doc, @"Bind PKNail Parameters"))
+                {
+                    t.Start();
+                    BindingMap bindings = doc.ParameterBindings;
+                    foreach (Definition def in group.Definitions)
+                    {
+                        if (bindings.Contains(def)) { continue; }
+                        bool isType = sm_typeParamNames.Contains(def.Name);
+                        CategorySet cats = isType ? typeCats : instanceCats;
+                        if (cats.IsEmpty) { continue; }
+                        Binding binding = isType
+                            ? (Binding)app.Create.NewTypeBinding(cats)
+                            : (Binding)app.Create.NewInstanceBinding(cats);
+                        try { bindings.Insert(def, binding, GroupTypeId.Data); }
+                        catch { /* already bound, or category does not allow it — leave as-is */ }
+                    }
+                    t.Commit();
+                }
+
+                return CommandResult.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                msg = @"Failed to bind PKNail parameters: " + ex.Message;
+                return CommandResult.Failed;
+            }
+            finally
+            {
+                app.SharedParametersFilename = previousSharedParamFile;
+            }
+        }
+
+        private CategorySet buildCategorySet(params BuiltInCategory[] builtInCategories)
+        {
+            CategorySet set = app.Create.NewCategorySet();
+            foreach (BuiltInCategory bic in builtInCategories)
+            {
+                Category cat = null;
+                try { cat = Category.GetCategory(doc, bic); }
+                catch { cat = null; }
+                if (cat != null && cat.AllowsBoundParameters) { set.Insert(cat); }
+            }
+            return set;
+        }
+
+        private static string extractSharedParameterFile()
+        {
+            System.Reflection.Assembly asm = System.Reflection.Assembly.GetExecutingAssembly();
+            string resName = null;
+            foreach (string n in asm.GetManifestResourceNames())
+            {
+                if (n.EndsWith(@"PKNailSharedParameters.txt", StringComparison.OrdinalIgnoreCase))
+                { resName = n; break; }
+            }
+            if (resName == null)
+            { throw new HardException(@"Embedded PKNail shared parameter file not found."); }
+
+            string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), @"PKNailSharedParameters.txt");
+            using (System.IO.Stream s = asm.GetManifestResourceStream(resName))
+            using (System.IO.FileStream fs = new System.IO.FileStream(tempPath, System.IO.FileMode.Create, System.IO.FileAccess.Write))
+            { s.CopyTo(fs); }
+            return tempPath;
+        }
+
         // IProjectModel interface implementation
         public CommandResult InitializeTransaction(ref string msg)
         {
@@ -772,6 +872,222 @@ namespace PKNailForRevit
             revitCmdContext.SaveRefWallFaceToModel(surveyF, revitCmdContext.SurveyDirection);
 
             return (commitTransaction() ? CommandResult.Succeeded : CommandResult.TransactionError);
+        }
+
+        // IProjectModel interface implementation
+        //
+        // Direct absolute wall placement for the v2 AI contract. The v2 walls are independent segments at
+        // real plan coordinates (NOT a connected survey chain), so we place each one directly at its own
+        // start/end rather than chaining it off the previous wall via SurveyWall. Runs inside the caller's
+        // transaction group; opens/commits only its own inner transaction (like the SurveyWall path).
+        public CommandResult CreateWallAbsolute(double startXMeters, double startYMeters,
+                                                double endXMeters, double endYMeters,
+                                                Distance thickness, Distance height, int levelIdx,
+                                                out long wallElementId, ref string msg)
+        {
+            wallElementId = -1;
+
+            // meters -> Revit internal feet at the import boundary.
+            double sx = new Distance(startXMeters, Distance.Units.MetricMeter).ValueRevitInternal;
+            double sy = new Distance(startYMeters, Distance.Units.MetricMeter).ValueRevitInternal;
+            double ex = new Distance(endXMeters, Distance.Units.MetricMeter).ValueRevitInternal;
+            double ey = new Distance(endYMeters, Distance.Units.MetricMeter).ValueRevitInternal;
+
+            XYZ startPt = new XYZ(sx, sy, 0.0);
+            XYZ endPt = new XYZ(ex, ey, 0.0);
+
+            // Degenerate (zero-length) wall: skip rather than let Revit throw.
+            if (startPt.DistanceTo(endPt) < m_revitApp.ShortCurveTolerance)
+            {
+                msg += @"CreateWallAbsolute: start and end points are coincident (zero-length wall)";
+                return CommandResult.Failed;
+            }
+
+            // Resolve the base level for the requested index; default to the lowest level if invalid.
+            List<Level> levels = getLevels();
+            if (levels.Count == 0)
+            {
+                msg += @"CreateWallAbsolute: the document has no levels";
+                return CommandResult.Failed;
+            }
+            Level level = (levelIdx >= 0 && levelIdx < levels.Count) ? levels[levelIdx] : levels[0];
+
+            try
+            {
+                startTransaction(@"Create AI Wall");
+
+                WallType wt = matchingWallType(thickness);
+                if (wt == null)
+                {
+                    commitTransaction();
+                    msg += @"CreateWallAbsolute: no matching wall type could be resolved";
+                    return CommandResult.Failed;
+                }
+
+                Line locLine = Line.CreateBound(startPt, endPt);
+                Wall wall = Wall.Create(m_doc, locLine, wt.Id, level.Id, height.ValueRevitInternal, 0.0, false, false);
+                if (wall == null)
+                {
+                    commitTransaction();
+                    msg += @"CreateWallAbsolute: Wall.Create returned null";
+                    return CommandResult.Failed;
+                }
+
+                wallElementId = wall.Id.Value;
+
+                return (commitTransaction() ? CommandResult.Succeeded : CommandResult.TransactionError);
+            }
+            catch (Exception e)
+            {
+                msg += @"CreateWallAbsolute: " + e.Message;
+                return CommandResult.TransactionError;
+            }
+        }
+
+        // IProjectModel interface implementation
+        //
+        // Direct opening (window/door) hosting on an absolute-placed wall for the v2 AI contract. The
+        // opening is placed at locationFromStartMeters measured from the host wall's start point, along its
+        // location line. Primary path: a hosted family instance from the correct category; fallback (no such
+        // family available): a rectangular wall opening at the exact size so the void still shows. Runs
+        // inside the caller's transaction group; opens/commits only its own inner transaction.
+        public CommandResult CreateOpeningOnWall(long wallElementId, double locationFromStartMeters,
+                                                 Distance width, Distance height, Distance sillHeight,
+                                                 bool isDoor, out long openingElementId, ref string msg)
+        {
+            openingElementId = -1;
+
+            try
+            {
+                Wall wall = doc.GetElement(new ElementId(wallElementId)) as Wall;
+                if (wall == null)
+                {
+                    msg += @"CreateOpeningOnWall: no wall found for element id " + wallElementId;
+                    return CommandResult.Failed;
+                }
+
+                LocationCurve locCurve = wall.Location as LocationCurve;
+                if (locCurve == null || locCurve.Curve == null)
+                {
+                    msg += @"CreateOpeningOnWall: host wall has no location curve";
+                    return CommandResult.Failed;
+                }
+
+                Curve curve = locCurve.Curve;
+                XYZ start = curve.GetEndPoint(0);
+                XYZ end = curve.GetEndPoint(1);
+                XYZ dir = end - start;
+                if (dir.GetLength() < m_revitApp.ShortCurveTolerance)
+                {
+                    msg += @"CreateOpeningOnWall: host wall is degenerate (zero length)";
+                    return CommandResult.Failed;
+                }
+                XYZ dirN = dir.Normalize();
+
+                double locFt = new Distance(locationFromStartMeters, Distance.Units.MetricMeter).ValueRevitInternal;
+                double widthFt = width.IsNoValue ? 0.0 : width.ValueRevitInternal;
+                double heightFt = height.IsNoValue ? 0.0 : height.ValueRevitInternal;
+                double sillFt = sillHeight.IsNoValue ? 0.0 : sillHeight.ValueRevitInternal;
+
+                XYZ hostPoint = start + dirN * locFt;
+
+                // Base level of the host wall (fall back to the lowest document level if unresolved).
+                Level level = doc.GetElement(wall.LevelId) as Level;
+                if (level == null)
+                {
+                    List<Level> levels = getLevels();
+                    if (levels.Count == 0)
+                    {
+                        msg += @"CreateOpeningOnWall: no level available to host on";
+                        return CommandResult.Failed;
+                    }
+                    level = levels[0];
+                }
+
+                BuiltInCategory cat = isDoor ? BuiltInCategory.OST_Doors : BuiltInCategory.OST_Windows;
+
+                startTransaction(@"Create AI Opening");
+                try
+                {
+                    // Primary: the first loadable family symbol in the correct category.
+                    FamilySymbol symbol = null;
+                    FilteredElementCollector symColl = new FilteredElementCollector(doc)
+                        .OfClass(typeof(FamilySymbol)).OfCategory(cat);
+                    foreach (Element e in symColl)
+                    {
+                        symbol = e as FamilySymbol;
+                        if (symbol != null) { break; }
+                    }
+
+                    if (symbol != null)
+                    {
+                        if (!symbol.IsActive)
+                        {
+                            symbol.Activate();
+                            doc.Regenerate();
+                        }
+
+                        FamilyInstance inst = doc.Create.NewFamilyInstance(
+                            hostPoint, symbol, wall, level,
+                            Autodesk.Revit.DB.Structure.StructuralType.NonStructural);
+                        if (inst == null)
+                        {
+                            commitTransaction();
+                            msg += @"CreateOpeningOnWall: NewFamilyInstance returned null";
+                            return CommandResult.Failed;
+                        }
+
+                        // Sill height (windows; doors are typically sill 0).
+                        Parameter sillP = inst.get_Parameter(BuiltInParameter.INSTANCE_SILL_HEIGHT_PARAM);
+                        if (sillP != null && !sillP.IsReadOnly) { sillP.Set(sillFt); }
+
+                        // Best-effort width/height — only when the family exposes them as INSTANCE params.
+                        // Type-only dimensions are left at the family default rather than failing.
+                        if (widthFt > 0.0)
+                        {
+                            Parameter wP = inst.LookupParameter(@"Width");
+                            if (wP != null && !wP.IsReadOnly) { wP.Set(widthFt); }
+                        }
+                        if (heightFt > 0.0)
+                        {
+                            Parameter hP = inst.LookupParameter(@"Height");
+                            if (hP != null && !hP.IsReadOnly) { hP.Set(heightFt); }
+                        }
+
+                        openingElementId = inst.Id.Value;
+                        return (commitTransaction() ? CommandResult.Succeeded : CommandResult.TransactionError);
+                    }
+
+                    // Fallback: a rectangular wall opening (a hole) at the exact size and elevation, so the
+                    // opening still shows even when no window/door family is loaded in the document.
+                    double baseElev = level.Elevation;
+                    XYZ c1 = new XYZ(hostPoint.X - dirN.X * (widthFt / 2.0),
+                                     hostPoint.Y - dirN.Y * (widthFt / 2.0),
+                                     baseElev + sillFt);
+                    XYZ c2 = new XYZ(hostPoint.X + dirN.X * (widthFt / 2.0),
+                                     hostPoint.Y + dirN.Y * (widthFt / 2.0),
+                                     baseElev + sillFt + heightFt);
+                    Opening op = doc.Create.NewOpening(wall, c1, c2);
+                    if (op == null)
+                    {
+                        commitTransaction();
+                        msg += @"CreateOpeningOnWall: NewOpening returned null";
+                        return CommandResult.Failed;
+                    }
+                    openingElementId = op.Id.Value;
+                    return (commitTransaction() ? CommandResult.Succeeded : CommandResult.TransactionError);
+                }
+                catch (Exception e)
+                {
+                    msg += @"CreateOpeningOnWall: " + e.Message;
+                    return CommandResult.TransactionError;
+                }
+            }
+            catch (Exception e)
+            {
+                msg += @"CreateOpeningOnWall: " + e.Message;
+                return CommandResult.Failed;
+            }
         }
 
         // IProjectModel interface implementation
@@ -3208,6 +3524,19 @@ namespace PKNailForRevit
             List<WallType> retval = new List<WallType>();
             foreach (Element el in FamilyCategoryUtils.GetAllTypesInCategory(doc, FamilyCategory.Walls))
             { if (el is WallType) { retval.Add(el as WallType); } }
+
+            // Fallback for documents not built from a PKNail template (e.g. the AI-model import on a stock
+            // template): if no PKNail-tagged wall types exist, use the document's real Basic wall types so a
+            // type can be matched/duplicated. PKNail-templated docs are unaffected (their tagged set is non-empty).
+            if (retval.Count == 0)
+            {
+                foreach (Element el in new FilteredElementCollector(doc).OfClass(typeof(WallType)).ToElements())
+                {
+                    WallType wt = el as WallType;
+                    if (wt != null && wt.Kind == WallKind.Basic) { retval.Add(wt); }
+                }
+            }
+
             return retval;
         }
 
@@ -5325,7 +5654,12 @@ namespace PKNailForRevit
                 { if (iter.Current.Name == familySymbolName) { sym = iter.Current as FamilySymbol; break; } }
 
                 if (sym == null)
-                { throw new HardException(@"Family """ + familySymbolName + @""" must be loaded into this project"); }
+                {
+                    // The survey sprite is a non-essential visual direction indicator that ships in the
+                    // PKNail template. On documents without it (e.g. AI-model import into a stock template),
+                    // skip the sprite rather than failing the whole wall placement.
+                    return;
+                }
                 if (!sym.IsActive){ sym.Activate(); }
                 FamilyInstance sprite = revitDoc.doc.Create.NewFamilyInstance(spriteLoc, sym, lvl,
                                                                               Autodesk.Revit.DB.Structure.StructuralType.NonStructural);

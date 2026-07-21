@@ -503,6 +503,7 @@ namespace PKNailForRevit
             m_rxThread = new Thread(new ThreadStart(this.receiveThread));
             m_rxThread.Name = "CommBaseRx";
             m_rxThread.Priority = ThreadPriority.AboveNormal;
+            m_rxThread.IsBackground = true;
             m_rxThread.Start();
 
             m_startEvent.WaitOne(500, false);
@@ -539,8 +540,9 @@ namespace PKNailForRevit
             Win32Com.CancelIo(m_hPort);
             if (m_rxThread != null)
             {
-                m_rxThread.Abort();
-                m_rxThread.Join(100);
+                // Thread.Abort() is unsupported on .NET 8. CancelIo() above (and CloseHandle below) unblock
+                // the receive thread's pending read so it exits on its own; just wait briefly for it.
+                try { m_rxThread.Join(500); } catch { }
                 m_rxThread = null;
             }
             Win32Com.CloseHandle(m_hPort);

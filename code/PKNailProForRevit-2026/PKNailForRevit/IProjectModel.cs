@@ -9,6 +9,10 @@ namespace PKNailForRevit
         CommandResult Initialize(ref string msg);
         CommandResult Finalize(ref string msg);
 
+        // Ensures the PKNail shared/project parameters exist in the document, binding any that are
+        // missing (so the add-in works on documents not created from a PKNail template).
+        CommandResult EnsureDocumentParameters(ref string msg);
+
         CommandResult InitializeTransaction(ref string msg);
         CommandResult SetTransactionName(string name, ref string msg);
         CommandResult StartTransaction(ref string msg);
@@ -23,6 +27,24 @@ namespace PKNailForRevit
         CommandResult SurveyWallPrep(SurveyDirection dir, out CommandContext cmdContext,
                                      out WallSurveyParams wsParams, ref string msg);
         CommandResult SurveyWall(CommandContext cmdContext, WallSurveyParams wsParams, ref string msg);
+
+        // Direct absolute wall placement for the v2 AI contract (independent walls at real plan
+        // coordinates, NOT a connected survey chain). Coordinates are in METERS; the implementation
+        // converts to Revit internal feet. Must run inside a transaction group already opened by the
+        // caller (the importer) — the implementation opens/commits only its own inner transaction.
+        CommandResult CreateWallAbsolute(double startXMeters, double startYMeters,
+                                         double endXMeters, double endYMeters,
+                                         Distance thickness, Distance height, int levelIdx,
+                                         out long wallElementId, ref string msg);
+
+        // Direct opening (window/door) hosting on an absolute-placed wall for the v2 AI contract. The
+        // opening is placed at <paramref name="locationFromStartMeters"/> measured from the host wall's
+        // start point, along its location line. Dimensions are Distances (feet internally). Must run inside
+        // a transaction group already opened by the caller — the implementation opens/commits only its own
+        // inner transaction (like CreateWallAbsolute).
+        CommandResult CreateOpeningOnWall(long wallElementId, double locationFromStartMeters,
+                                          Distance width, Distance height, Distance sillHeight,
+                                          bool isDoor, out long openingElementId, ref string msg);
 
         CommandResult SurveyLinePrep(SurveyDirection dir, bool isParallel, out CommandContext cmdContext,
                                      out LineSurveyParams lsParams, ref string msg);

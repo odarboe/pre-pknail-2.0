@@ -629,6 +629,14 @@ namespace Json
             RegisterImporter (base_importers_table, typeof (int),
                               typeof (double), importer);
 
+            // int -> long: Revit 2026 changed ElementId.IntegerValue (int) to ElementId.Value (long), so
+            // ElementId-backed fields (e.g. WallState) deserialize JSON integers into Int64.
+            importer = delegate (object input) {
+                return Convert.ToInt64 ((int) input);
+            };
+            RegisterImporter (base_importers_table, typeof (int),
+                              typeof (long), importer);
+
             importer = delegate (object input) {
                 return Convert.ToDecimal ((double) input);
             };

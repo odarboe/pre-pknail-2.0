@@ -53,6 +53,7 @@ namespace PKNailForRevit
         private ExternalEvent m_keypadCommandEvent = null;
         private AutoResetEvent m_txnErrorSignal;
         private Thread m_txnMonitorThread;
+        private volatile bool m_txnMonitorStop = false;
         private const int cm_splashLicenseTimeout = 2;  // seconds
         private const int cm_splashLoadingTimeout = 2;  // seconds
 
@@ -77,6 +78,7 @@ namespace PKNailForRevit
         private const string cm_cmdNameSurveyHostedObject = @"Wall-Hosted Object";
         private const string cm_cmdNameCopyObjects = @"Copy Level-to-Level";
         private const string cm_cmdNameConvertUnknownWidthWalls = @"Convert Walls";
+        private const string cm_cmdNameImportAiModel = "Import AI\nModel";
         private const string cm_cmdNameSettings = @"Settings";
 
         private string m_currentRFKeymapPage = @"";
@@ -961,8 +963,10 @@ namespace PKNailForRevit
             m_license.StartBackgroundPostUsageRecordsThread();
 
             m_txnErrorSignal = new AutoResetEvent(false);
+            m_txnMonitorStop = false;
             m_txnMonitorThread = new Thread(new ThreadStart(transactionMonitorThreadWorker));
             m_txnMonitorThread.Name = @"txnMonitor";
+            m_txnMonitorThread.IsBackground = true;
             m_txnMonitorThread.Start();
 
             m_autoSaveActionCount = 0;
@@ -988,8 +992,17 @@ namespace PKNailForRevit
             }
 
             m_license.StopBackgroundPostUsageRecordsThread();
-            // TODO: shutdown this thread gracefully
-            if (m_txnMonitorThread != null) { m_txnMonitorThread.Abort(); }
+
+            // Stop the transaction-monitor thread gracefully. Thread.Abort() is unsupported on .NET 8
+            // and throws PlatformNotSupportedException — which, escaping on shutdown, made Revit flag the
+            // add-in as crashed and disable it (re-adding <SuppressedWarning> to the manifest).
+            if (m_txnMonitorThread != null)
+            {
+                m_txnMonitorStop = true;
+                try { m_txnErrorSignal?.Set(); } catch { }
+                try { m_txnMonitorThread.Join(2000); } catch { }
+                m_txnMonitorThread = null;
+            }
         }
 
         private void setDocumentEventHandlers(UIControlledApplication revitApp)
@@ -1261,6 +1274,12 @@ namespace PKNailForRevit
             pb.LargeImage = getImage(@"pack://application:,,,/PKNailForRevit;component/Resources/changeKeypadMap.png");
             pb.AvailabilityClassName = @"PKNailForRevit.CommandsAvailability";
 
+            // Epic 3: import an AI-engine JSON model. Text-only button (no bespoke icon resource) to keep
+            // the ribbon registration low-risk; reuses CommandsAvailability (needs an open project doc).
+            pb = (PushButton)m_ribbonPanel.AddItem(new PushButtonData(cm_cmdNameImportAiModel, cm_cmdNameImportAiModel,
+                                                   assembly, @"PKNailForRevit.ImportAiModelCommand"));
+            pb.AvailabilityClassName = @"PKNailForRevit.CommandsAvailability";
+
             pb = (PushButton)m_ribbonPanel.AddItem(new PushButtonData(cm_cmdNameSettings, cm_cmdNameSettings,
                                                    assembly, @"PKNailForRevit.SettingsDlgCommand"));
             pb.LargeImage = getImage(@"pack://application:,,,/PKNailForRevit;component/Resources/settings.png");
@@ -1278,6 +1297,8 @@ namespace PKNailForRevit
 
         private void ControlledApplication_DocumentCreated(object sender, DocumentCreatedEventArgs e)
         {
+          try
+          {
             if (IsLicenseValid && e.Status == RevitAPIEventStatus.Succeeded && !e.Document.IsFamilyDocument)
             {
                 IProjectModel proj = new RevitDocument(e.Document.Application, e.Document);
@@ -1310,6 +1331,14 @@ namespace PKNailForRevit
                     if (msg.Length > 0) { System.Windows.Forms.MessageBox.Show(msg); }
                 }
             }
+          }
+          catch (Exception ex)
+          {
+              // A document-event handler must never throw into Revit (Revit flags the add-in as crashed
+              // and disables it). A new project that is not PKNail-initialized (no bound parameters) hits
+              // this until the user runs an import; swallow it.
+              System.Diagnostics.Trace.WriteLine(@"PKNail DocumentCreated handler: " + ex.Message);
+          }
         }
 
         private void controlledApplication_DocumentOpened(object sender, DocumentOpenedEventArgs e)
@@ -1449,9 +1478,10 @@ namespace PKNailForRevit
 
         private void transactionMonitorThreadWorker()
         {
-            while (true)
+            while (!m_txnMonitorStop)
             {
                 m_txnErrorSignal.WaitOne();
+                if (m_txnMonitorStop) { break; }
                 Sounds.Hand.Play();
             }
         }

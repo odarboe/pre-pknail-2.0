@@ -70,6 +70,8 @@
   <!-- Project references -->
   <ItemGroup>
     <ProjectReference Include="..\Json\Json.csproj" />
+    <!-- Epic 3: Revit-free AI-import model + mapping layer (net8.0). net8.0-windows can reference net8.0. -->
+    <ProjectReference Include="..\PKNail.AiImport\PKNail.AiImport.csproj" />
   </ItemGroup>
   <!-- PKLicenseSrc files linked from outside project directory -->
   <ItemGroup>
@@ -128,6 +130,21 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <!-- Ribbon icons are loaded at runtime via WPF pack:// URIs
+       (e.g. pack://application:,,,/PKNailForRevit;component/Resources/activateWall.png).
+       They MUST be embedded as WPF Resource items; the SDK-style migration dropped this, which
+       made getImage() throw and aborted OnStartup before the ribbon finished building. -->
+  <ItemGroup>
+    <Resource Include="Resources\*.png" />
+  </ItemGroup>
+
+  <!-- PKNail shared parameter definitions, embedded so the add-in can bind its project parameters at
+       runtime on any document (removes the dependency on a PKNail-templated project). -->
+  <ItemGroup>
+    <None Remove="RevitFiles\PKNailSharedParameters.txt" />
+    <EmbeddedResource Include="RevitFiles\PKNailSharedParameters.txt" />
   </ItemGroup>
 
 </Project>
