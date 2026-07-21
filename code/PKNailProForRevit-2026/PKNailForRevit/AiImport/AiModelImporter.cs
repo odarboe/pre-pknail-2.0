@@ -174,8 +174,13 @@ namespace PKNailForRevit.AiImport
                                     Func<bool> recordUsage, ref string msg)
         {
             // Re-base: subtract the building-wide min X / min Y from every endpoint so the model sits near
-            // the project origin instead of at its far-flung survey coordinates (e.g. Y ~ -100 m).
+            // the project origin instead of at its far-flung survey coordinates (e.g. Y ~ -100 m). The
+            // offset is a pure function of the input (deterministic) and is recorded on the report so the
+            // landing point relative to the original survey frame is documented (Epic 10.1).
             ComputeRebaseOffset(model, out double offsetX, out double offsetY);
+            report.RebaseXMeters = offsetX;
+            report.RebaseYMeters = offsetY;
+            report.Rebased = (offsetX != 0.0 || offsetY != 0.0);
 
             bool vetoed = false;
             foreach (MappedLevel level in model.Levels)
@@ -470,6 +475,13 @@ namespace PKNailForRevit.AiImport
         /// <summary>True when <c>recordUsage</c> vetoed a placement and the import stopped early.</summary>
         public bool MeteringStopped { get; internal set; }
 
+        /// <summary>Epic 10: the deterministic plan-coordinate offset (meters) subtracted from every absolute
+        /// wall endpoint so the building lands near the project origin. Zero on the v1 survey-chain path.
+        /// <see cref="Rebased"/> is true when a non-zero offset was applied.</summary>
+        public double RebaseXMeters { get; internal set; }
+        public double RebaseYMeters { get; internal set; }
+        public bool Rebased { get; internal set; }
+
         private readonly List<string> m_skipped = new List<string>();
         private readonly List<string> m_failures = new List<string>();
         private readonly List<string> m_warnings = new List<string>();
@@ -513,6 +525,13 @@ namespace PKNailForRevit.AiImport
               .Append(", warnings=").Append(m_warnings.Count)
               .Append(", failures=").Append(m_failures.Count);
             if (MeteringStopped) { sb.Append(" (metering stopped)"); }
+            if (Rebased)
+            {
+                sb.Append(Environment.NewLine)
+                  .Append("  origin re-based to project 0,0 (subtracted ")
+                  .Append(RebaseXMeters.ToString("0.###")).Append(", ").Append(RebaseYMeters.ToString("0.###"))
+                  .Append(" m from survey coords)");
+            }
             foreach (string f in m_failures) { sb.Append(Environment.NewLine).Append("  ! ").Append(f); }
             foreach (string s in m_skipped) { sb.Append(Environment.NewLine).Append("  - ").Append(s); }
             foreach (string w in m_warnings) { sb.Append(Environment.NewLine).Append("  ~ ").Append(w); }

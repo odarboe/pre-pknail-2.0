@@ -79,6 +79,19 @@ namespace PKNailForRevit
                 return Result.Failed;
             }
 
+            // Epic 10.3: default project metadata — name the PKNail project after the source file if it has
+            // no name yet. Best-effort: metadata must never block the geometry import.
+            try
+            {
+                DocumentSettings settings = proj.DocumentSettings;
+                if (settings != null && string.IsNullOrEmpty(settings.ProjectName))
+                {
+                    settings.ProjectName = System.IO.Path.GetFileNameWithoutExtension(path);
+                    proj.DocumentSettings = settings;
+                }
+            }
+            catch { /* metadata is non-critical; proceed with the import regardless */ }
+
             // Per-element metering hook lives in PKLicense usage tracking. Default to "allowed" here; the
             // real usage/consumption gate is wired through TheApp's licensing flow in product builds.
             ImportReport report = new AiModelImporter().Import(proj, mapped, recordUsage: null);
