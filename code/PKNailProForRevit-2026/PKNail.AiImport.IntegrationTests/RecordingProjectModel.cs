@@ -193,6 +193,27 @@ namespace PKNail.AiImport.IntegrationTests
 
         public AutoResetEvent TransactionErrorSignal { set { /* ignored in fake */ } }
 
+        // --- Import warning capture (Epic 7) ----------------------------------------
+        /// <summary>Warnings a test wants EndImportWarningCapture to surface (simulating Revit warnings
+        /// collected during placement). Empty by default.</summary>
+        public readonly List<string> WarningsToReturn = new List<string>();
+        public int BeginImportWarningCaptureCount;
+        public int EndImportWarningCaptureCount;
+        private bool m_capturing;
+
+        public void BeginImportWarningCapture()
+        { BeginImportWarningCaptureCount++; m_capturing = true; Calls.Add("BeginImportWarningCapture"); }
+
+        public IReadOnlyList<string> EndImportWarningCapture()
+        {
+            EndImportWarningCaptureCount++;
+            Calls.Add("EndImportWarningCapture");
+            // Mirror RevitDocument's idempotency: only the first drain after a Begin yields the warnings.
+            if (!m_capturing) { return new List<string>(); }
+            m_capturing = false;
+            return new List<string>(WarningsToReturn);
+        }
+
         // --- Unused IProjectModel surface (record-only / no-op) ---------------------
         public CommandResult Initialize(ref string msg) { return resultFor("Initialize"); }
         public CommandResult Finalize(ref string msg) { return resultFor("Finalize"); }

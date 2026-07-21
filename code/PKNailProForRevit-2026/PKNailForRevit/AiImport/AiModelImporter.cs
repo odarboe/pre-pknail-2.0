@@ -51,6 +51,10 @@ namespace PKNailForRevit.AiImport
                 if (!ok(proj.StartTransaction(ref msg), report, "StartTransaction", msg)) { return report; }
                 inTransaction = true;
 
+                // Epic 7: collect Revit warnings raised during placement (e.g. "insert conflicts with joined
+                // wall") into the report instead of letting them block the batch with modal dialogs.
+                proj.BeginImportWarningCapture();
+
                 // --- Levels -------------------------------------------------------------
                 proj.LevelsData = BuildLevelsData(proj, model, report);
                 report.LevelsAssigned = true;
@@ -62,6 +66,9 @@ namespace PKNailForRevit.AiImport
                 bool vetoed = HasAbsoluteGeometry(model)
                     ? ImportAbsolute(proj, model, report, recordUsage, ref msg)
                     : ImportSurveyChain(proj, model, report, recordUsage, ref msg);
+
+                // Fold the collected Revit warnings into the report regardless of the outcome.
+                DrainWarnings(proj, report);
 
                 if (vetoed)
                 {
@@ -83,9 +90,16 @@ namespace PKNailForRevit.AiImport
                 // Include the originating frame so import failures are diagnosable from the report dialog.
                 string where = ex.StackTrace == null ? "" : (" | at " + ex.StackTrace.Split('\n').FirstOrDefault()?.Trim());
                 report.AddFailure("exception: " + ex.Message + where);
-                if (inTransaction) { Rollback(proj, report); }
+                if (inTransaction) { DrainWarnings(proj, report); Rollback(proj, report); }
                 return report;
             }
+        }
+
+        // Move any warnings the project collected during placement into the report. EndImportWarningCapture
+        // is idempotent, so calling this on both the normal and exception paths never double-counts.
+        private static void DrainWarnings(IProjectModel proj, ImportReport report)
+        {
+            foreach (string w in proj.EndImportWarningCapture()) { report.AddWarning(w); }
         }
 
         /// <summary>True when the model's walls carry absolute geometry (v2). Requires at least one wall
@@ -458,11 +472,17 @@ namespace PKNailForRevit.AiImport
 
         private readonly List<string> m_skipped = new List<string>();
         private readonly List<string> m_failures = new List<string>();
+        private readonly List<string> m_warnings = new List<string>();
 
         public IReadOnlyList<string> Skipped { get { return m_skipped; } }
         public IReadOnlyList<string> Failures { get { return m_failures; } }
 
+        /// <summary>Revit warnings collected during placement (Epic 7) — e.g. "insert conflicts with joined
+        /// wall". These did NOT stop the import; they are surfaced for the reviewer, not clicked through.</summary>
+        public IReadOnlyList<string> Warnings { get { return m_warnings; } }
+
         public bool HasFailures { get { return m_failures.Count > 0; } }
+        public bool HasWarnings { get { return m_warnings.Count > 0; } }
 
         internal void SkipLevel(int index, string reason)
         { m_skipped.Add($"level[{index}]: {reason}"); }
@@ -479,6 +499,9 @@ namespace PKNailForRevit.AiImport
         internal void AddFailure(string reason)
         { m_failures.Add(reason); }
 
+        internal void AddWarning(string warning)
+        { m_warnings.Add(warning); }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -487,10 +510,12 @@ namespace PKNailForRevit.AiImport
               .Append("; walls placed=").Append(WallsPlaced)
               .Append(", openings placed=").Append(OpeningsPlaced)
               .Append(", skipped=").Append(m_skipped.Count)
+              .Append(", warnings=").Append(m_warnings.Count)
               .Append(", failures=").Append(m_failures.Count);
             if (MeteringStopped) { sb.Append(" (metering stopped)"); }
             foreach (string f in m_failures) { sb.Append(Environment.NewLine).Append("  ! ").Append(f); }
             foreach (string s in m_skipped) { sb.Append(Environment.NewLine).Append("  - ").Append(s); }
+            foreach (string w in m_warnings) { sb.Append(Environment.NewLine).Append("  ~ ").Append(w); }
             return sb.ToString();
         }
     }

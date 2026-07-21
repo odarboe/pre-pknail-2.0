@@ -22,6 +22,9 @@ namespace PKNailForRevit
         private bool m_isTrialTxn;
         private View3D m_view3D;
         private System.Threading.AutoResetEvent m_txnErrorSignal;
+        // Epic 7: non-null only while an AI import is capturing Revit warnings. The shared
+        // failuresPreprocessor collects+dismisses warnings into this list instead of showing a dialog.
+        private List<string> m_importWarnings;
         #endregion
 
         public RevitDocument(Application revitApp, Document doc)
@@ -1088,6 +1091,25 @@ namespace PKNailForRevit
                 msg += @"CreateOpeningOnWall: " + e.Message;
                 return CommandResult.Failed;
             }
+        }
+
+        // IProjectModel interface implementation (Epic 7)
+        //
+        // Begin collecting Revit warnings raised during placement instead of letting them pop modal
+        // dialogs. The shared failuresPreprocessor checks m_importWarnings on every transaction it
+        // processes; while it is non-null, any WARNING (not an error) is dismissed and its text recorded.
+        public void BeginImportWarningCapture()
+        {
+            m_importWarnings = new List<string>();
+        }
+
+        // Stop capturing and return the warnings collected since BeginImportWarningCapture. Idempotent:
+        // returns an empty list if capture was never started.
+        public IReadOnlyList<string> EndImportWarningCapture()
+        {
+            List<string> collected = m_importWarnings ?? new List<string>();
+            m_importWarnings = null;
+            return collected;
         }
 
         // IProjectModel interface implementation
@@ -3608,6 +3630,14 @@ namespace PKNailForRevit
 
                 // Create a duplicate of the template wall type
                 retval = (WallType)templateWT.Duplicate(wtName);
+
+                // Duplicate() copies every type parameter, including "Type Mark". Inheriting the source's
+                // mark makes the new PKNail type collide with its template (e.g. a stock "Concrete 24"),
+                // which Revit reports as "Elements have duplicate Type Mark values". A freshly created type
+                // conventionally has an empty mark, so clear it on the copy.
+                Parameter dupTypeMark = retval.get_Parameter(BuiltInParameter.ALL_MODEL_TYPE_MARK);
+                if (dupTypeMark != null && !dupTypeMark.IsReadOnly && dupTypeMark.StorageType == StorageType.String)
+                { dupTypeMark.Set(string.Empty); }
 
                 // Set the width of the wall (there should only be one structural layer and all other layers should have
                 // zero width)
@@ -6763,6 +6793,15 @@ namespace PKNailForRevit
                         {
                             if (fId.Guid.Equals(sm_inaccurateWallFailureGuid))
                             {
+                                failuresAccessor.DeleteWarning(fma);
+                                retval = FailureProcessingResult.ProceedWithCommit;
+                            }
+                            else if (m_revitDoc.m_importWarnings != null && fma.GetSeverity() == FailureSeverity.Warning)
+                            {
+                                // Epic 7: during an AI import, collect the warning into the import report and
+                                // dismiss it, rather than blocking the batch with a modal dialog. Errors still
+                                // fall through to the failure path below (they must roll the import back).
+                                m_revitDoc.m_importWarnings.Add(fma.GetDescriptionText());
                                 failuresAccessor.DeleteWarning(fma);
                                 retval = FailureProcessingResult.ProceedWithCommit;
                             }

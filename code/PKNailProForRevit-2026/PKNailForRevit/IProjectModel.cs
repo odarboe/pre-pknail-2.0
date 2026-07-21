@@ -46,6 +46,15 @@ namespace PKNailForRevit
                                           Distance width, Distance height, Distance sillHeight,
                                           bool isDoor, out long openingElementId, ref string msg);
 
+        // Epic 7 (validation / human-in-the-loop): while an AI import runs, Revit warnings raised when
+        // placing walls/openings (e.g. "insert conflicts with joined wall") are COLLECTED into a list
+        // instead of surfaced as blocking modal dialogs the user must click through. The importer calls
+        // BeginImportWarningCapture after opening its transaction group and EndImportWarningCapture before
+        // committing; the returned strings are folded into the import report. Outside a capture scope
+        // behaviour is unchanged (warnings surface normally).
+        void BeginImportWarningCapture();
+        IReadOnlyList<string> EndImportWarningCapture();
+
         CommandResult SurveyLinePrep(SurveyDirection dir, bool isParallel, out CommandContext cmdContext,
                                      out LineSurveyParams lsParams, ref string msg);
         CommandResult SurveyLine(CommandContext cmdContext, LineSurveyParams lsParams, ref string msg);

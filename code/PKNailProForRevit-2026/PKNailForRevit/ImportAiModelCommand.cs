@@ -85,7 +85,14 @@ namespace PKNailForRevit
 
             if (report.Committed)
             {
-                MessageBox.Show(report.ToString(), @"Import AI Model");
+                // Epic 7: Revit warnings encountered during placement (e.g. "insert conflicts with joined
+                // wall") were collected into the report, not shown as blocking dialogs — surface them here so
+                // the reviewer sees exactly what happened without clicking through per-element prompts.
+                string header = report.HasWarnings
+                    ? $"Import committed with {report.Warnings.Count} warning(s) — review below."
+                    : @"Import committed successfully.";
+                MessageBox.Show(header + Environment.NewLine + Environment.NewLine + report.ToString(),
+                                @"Import AI Model");
                 return Result.Succeeded;
             }
 
