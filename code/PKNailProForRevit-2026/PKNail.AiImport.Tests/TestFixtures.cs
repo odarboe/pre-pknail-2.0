@@ -9,4 +9,8 @@ internal static class TestFixtures
         Path.Combine(TestContext.CurrentContext.TestDirectory, "Fixtures", "ai_engine_pknail_results.json");
 
     public static string FrozenContractJson => File.ReadAllText(FrozenContractPath);
+
+    /// <summary>Known-good demo (clean 5x4 m room with correct interior angles) verified end-to-end in Revit 2026.</summary>
+    public static string DemoPath =>
+        Path.Combine(TestContext.CurrentContext.TestDirectory, "Fixtures", "ai_engine_pknail_results.demo.json");
 }

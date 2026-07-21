@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Epic 9b — in-process integration tests for the Epic 3 AiModelImporter bridge. Must target
+       net8.0-windows because it references PKNailForRevit (net8.0-windows). A hand-rolled
+       RecordingProjectModel fake stands in for the live RevitDocument; no Revit runtime is needed. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>PKNail.AiImport.IntegrationTests</RootNamespace>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="NUnit" Version="4.2.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PKNailForRevit\PKNailForRevit.csproj" />
+    <ProjectReference Include="..\PKNail.AiImport\PKNail.AiImport.csproj" />
+  </ItemGroup>
+
+  <!-- Frozen JSON contract v1 + the known-good demo, linked as copied fixtures. -->
+  <ItemGroup>
+    <None Include="..\..\..\docs\ai_engine_pknail_results.json"
+          Link="Fixtures\ai_engine_pknail_results.json"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\..\docs\ai_engine_pknail_results.demo.json"
+          Link="Fixtures\ai_engine_pknail_results.demo.json"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\..\docs\ai_engine_pknail_results.v2.example.json"
+          Link="Fixtures\ai_engine_pknail_results.v2.example.json"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\..\docs\new_final_combined_pknail.json"
+          Link="Fixtures\new_final_combined_pknail.json"
+          CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

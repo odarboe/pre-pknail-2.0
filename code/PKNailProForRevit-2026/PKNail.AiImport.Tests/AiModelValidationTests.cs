@@ -86,7 +86,7 @@ public class AiModelValidationTests
         });
 
         ValidationReport report = AiModelValidator.Validate(b);
-        Assert.That(report.Errors.Any(e => e.Path.EndsWith("LocationFromNearEndMeters")), Is.True, report.ToString());
+        Assert.That(report.Errors.Any(e => e.Path.EndsWith("Location")), Is.True, report.ToString());
     }
 
     [Test]

@@ -27,6 +27,18 @@
     <None Include="..\..\..\docs\ai_engine_pknail_results.json"
           Link="Fixtures\ai_engine_pknail_results.json"
           CopyToOutputDirectory="PreserveNewest" />
+    <!-- Known-good demo: clean 5x4 m room with correct interior angles; verified end-to-end in Revit 2026. -->
+    <None Include="..\..\..\docs\ai_engine_pknail_results.demo.json"
+          Link="Fixtures\ai_engine_pknail_results.demo.json"
+          CopyToOutputDirectory="PreserveNewest" />
+    <!-- v2 contract example: same room expressed with absolute wall endpoints. -->
+    <None Include="..\..\..\docs\ai_engine_pknail_results.v2.example.json"
+          Link="Fixtures\ai_engine_pknail_results.v2.example.json"
+          CopyToOutputDirectory="PreserveNewest" />
+    <!-- Real v2 building: 9 independent absolute walls (multi-room, not a connected chain). -->
+    <None Include="..\..\..\docs\new_final_combined_pknail.json"
+          Link="Fixtures\new_final_combined_pknail.json"
+          CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
