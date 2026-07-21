@@ -1,0 +1,83 @@
+{
+  "SchemaVersion": "2.0",
+  "Units": "meters",
+  "AngleUnits": "radians",
+  "CoordinateSystem": {
+    "Frame": "plan",
+    "Handedness": "right",
+    "ZUp": true,
+    "OriginNote": "the plugin re-bases to its own project origin. X/Y are a consistent plan frame.",
+    "XAxisRealWorld": "unknown",
+    "YAxisRealWorld": "unknown"
+  },
+  "IsScanFromInterior": true,
+  "FirstWallCompassDirection": 0,
+  "Levels": [
+    {
+      "Name": "Level 1",
+      "ElevationMeters": 0.0,
+      "Floor2FloorMeters": 2.866,
+      "Floor2CeilingMeters": 2.566,
+      "HasDropCeiling": false,
+      "DropCeilingHeightMeters": 0.0,
+      "TypicalWindowSillHeightMeters": 0.9,
+      "TypicalWindowHeadHeightMeters": 2.1,
+      "IsClosed": true,
+      "Walls": [
+        {
+          "StartMeters": { "X": 0.0, "Y": 0.0 },
+          "EndMeters": { "X": 5.05, "Y": 0.0 },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": { "X": 5.05, "Y": 0.0 },
+          "EndMeters": { "X": 5.05, "Y": 4.0 },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": { "X": 5.05, "Y": 4.0 },
+          "EndMeters": { "X": 0.0, "Y": 4.0 },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": [
+            {
+              "LocationFromStartMeters": 2.525,
+              "WidthMeters": 1.0,
+              "HeightMeters": 1.4,
+              "SillHeightMeters": 0.9,
+              "Kind": "Window",
+              "FacingOrientationIndex": 0,
+              "FamilyDefIdx": 0
+            }
+          ]
+        },
+        {
+          "StartMeters": { "X": 0.0, "Y": 4.0 },
+          "EndMeters": { "X": 0.0, "Y": 0.0 },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": [
+            {
+              "LocationFromStartMeters": 1.2,
+              "WidthMeters": 0.9,
+              "HeightMeters": 2.1,
+              "SillHeightMeters": 0.0,
+              "Kind": "Door",
+              "HingeSideIndex": 0,
+              "SwingDirectionIndex": 1,
+              "FamilyDefIdx": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

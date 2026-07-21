@@ -40,6 +40,9 @@ public sealed record MappedLevel(
     double TypicalWindowHeadMeters,
     IReadOnlyList<MappedWall> Walls);
 
+/// <summary>A 2D plan point in <b>meters</b> (v2 absolute wall endpoints carried through to the bridge).</summary>
+public sealed record MappedPoint2D(double XMeters, double YMeters);
+
 public sealed record MappedWall(
     int Index,
     bool IsFirstWall,
@@ -48,7 +51,16 @@ public sealed record MappedWall(
     double CornerAngleRad,
     bool CornerAngleSnapped,
     double LevelOffsetMeters,
-    IReadOnlyList<MappedOpening> Openings);
+    IReadOnlyList<MappedOpening> Openings,
+    MappedPoint2D? Start = null,
+    MappedPoint2D? End = null)
+{
+    /// <summary>
+    /// True when this wall carries absolute plan endpoints (v2). The Epic 3 bridge places these walls
+    /// directly at their real coordinates instead of chaining them via the survey engine (v1 path).
+    /// </summary>
+    public bool HasAbsoluteGeometry => Start != null && End != null;
+}
 
 public sealed record MappedOpening(
     double LocationFromNearEndMeters,

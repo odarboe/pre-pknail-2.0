@@ -1,0 +1,57 @@
+{
+  "_comment": "KNOWN-GOOD demo input (v1 format) - a clean 5.0 x 4.0 m rectangular room with correct interior corner angles (pi/2 = 90 deg inside corner). Use this to validate end-to-end wall generation. The first wall's angle is ignored. One window on wall index 2.",
+  "IsScanFromInterior": true,
+  "FirstWallCompassDirection": 0,
+  "Levels": [
+    {
+      "Floor2FloorMeters": 2.866,
+      "Floor2CeilingElev": 2.566,
+      "HasDropCeiling": false,
+      "DropCeilingHeightMeters": 0.0,
+      "TypicalWindowSillHeightMeters": 0.9,
+      "TypicalWindowHeadHeightMeters": 2.1,
+      "Walls": [
+        {
+          "LengthMeters": 5.0,
+          "ThicknessMeters": 0.2,
+          "CornerAngleRad": 0.0,
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "LengthMeters": 4.0,
+          "ThicknessMeters": 0.2,
+          "CornerAngleRad": 1.5707963267948966,
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "LengthMeters": 5.0,
+          "ThicknessMeters": 0.2,
+          "CornerAngleRad": 1.5707963267948966,
+          "LevelOffset": 0.0,
+          "Openings": [
+            {
+              "LocationFromNearEndMeters": 2.5,
+              "WidthMeters": 1.0,
+              "HeightMeters": 1.4,
+              "SillHeightMeters": 0.9,
+              "IsLikelyDoor": false,
+              "HingeSideIndex": 0,
+              "SwingDirectionIndex": 0,
+              "FacingOrientationIndex": 0,
+              "FamilyDefIdx": 0
+            }
+          ]
+        },
+        {
+          "LengthMeters": 4.0,
+          "ThicknessMeters": 0.2,
+          "CornerAngleRad": 1.5707963267948966,
+          "LevelOffset": 0.0,
+          "Openings": []
+        }
+      ]
+    }
+  ]
+}

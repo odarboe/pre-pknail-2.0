@@ -59,33 +59,46 @@ public static class AiModelValidator
 
     private static void ValidateWall(DetectedWall w, string path, bool isFirst, ValidationReport r)
     {
-        if (w.LengthMeters <= Epsilon)
-            r.Error($"{path}.LengthMeters", $"Must be positive: {w.LengthMeters}.");
+        // v2 walls carry absolute endpoints; their length is derived. v1 walls supply LengthMeters.
+        double effectiveLength = w.HasEndpoints
+            ? Mapping.WallGeometry.Length(w.StartMeters!, w.EndMeters!)
+            : w.LengthMeters;
+
+        if (effectiveLength <= Epsilon)
+            r.Error($"{path}.LengthMeters", w.HasEndpoints
+                ? $"Wall start/end points are coincident (zero length)."
+                : $"Must be positive: {w.LengthMeters}.");
         if (w.ThicknessMeters <= Epsilon)
             r.Error($"{path}.ThicknessMeters", $"Must be positive: {w.ThicknessMeters}.");
-        if (w.CornerAngleRad < -Epsilon || w.CornerAngleRad >= TwoPi + Epsilon)
-            r.Error($"{path}.CornerAngleRad", $"Out of range [0, 2π): {w.CornerAngleRad}.");
-        if (isFirst && Math.Abs(w.CornerAngleRad) > Epsilon)
-            r.Warn($"{path}.CornerAngleRad",
-                $"First wall has no predecessor; corner angle {w.CornerAngleRad} is ignored (Q2).");
+
+        // CornerAngleRad is only a v1 concern (v2 derives the angle from endpoints).
+        if (!w.HasEndpoints)
+        {
+            if (w.CornerAngleRad < -Epsilon || w.CornerAngleRad >= TwoPi + Epsilon)
+                r.Error($"{path}.CornerAngleRad", $"Out of range [0, 2π): {w.CornerAngleRad}.");
+            if (isFirst && Math.Abs(w.CornerAngleRad) > Epsilon)
+                r.Warn($"{path}.CornerAngleRad",
+                    $"First wall has no predecessor; corner angle {w.CornerAngleRad} is ignored (Q2).");
+        }
 
         for (int oi = 0; oi < w.Openings.Count; oi++)
-            ValidateOpening(w.Openings[oi], w, $"{path}.Openings[{oi}]", r);
+            ValidateOpening(w.Openings[oi], effectiveLength, $"{path}.Openings[{oi}]", r);
     }
 
-    private static void ValidateOpening(DetectedOpening o, DetectedWall host, string path, ValidationReport r)
+    private static void ValidateOpening(DetectedOpening o, double hostLength, string path, ValidationReport r)
     {
         if (o.WidthMeters <= Epsilon) r.Error($"{path}.WidthMeters", $"Must be positive: {o.WidthMeters}.");
         if (o.HeightMeters <= Epsilon) r.Error($"{path}.HeightMeters", $"Must be positive: {o.HeightMeters}.");
         if (o.SillHeightMeters < -Epsilon) r.Error($"{path}.SillHeightMeters", $"Must be >= 0: {o.SillHeightMeters}.");
 
-        if (o.LocationFromNearEndMeters < -Epsilon || o.LocationFromNearEndMeters > host.LengthMeters + Epsilon)
-            r.Error($"{path}.LocationFromNearEndMeters",
-                $"Opening centre {o.LocationFromNearEndMeters} is outside the wall length {host.LengthMeters}.");
+        double loc = o.LocationMeters; // v2 LocationFromStartMeters, else v1 LocationFromNearEndMeters
+        if (loc < -Epsilon || loc > hostLength + Epsilon)
+            r.Error($"{path}.Location",
+                $"Opening centre {loc} is outside the wall length {hostLength}.");
         else if (o.WidthMeters > Epsilon
-                 && (o.LocationFromNearEndMeters - o.WidthMeters / 2.0 < -Epsilon
-                     || o.LocationFromNearEndMeters + o.WidthMeters / 2.0 > host.LengthMeters + Epsilon))
-            r.Warn($"{path}.LocationFromNearEndMeters", "Opening extents reach beyond the wall ends.");
+                 && (loc - o.WidthMeters / 2.0 < -Epsilon
+                     || loc + o.WidthMeters / 2.0 > hostLength + Epsilon))
+            r.Warn($"{path}.Location", "Opening extents reach beyond the wall ends.");
 
         if (o.HingeSideIndex is < 0 or > 1) r.Error($"{path}.HingeSideIndex", $"Out of range (0-1): {o.HingeSideIndex}.");
         if (o.SwingDirectionIndex is < 0 or > 1) r.Error($"{path}.SwingDirectionIndex", $"Out of range (0-1): {o.SwingDirectionIndex}.");

@@ -36,9 +36,50 @@ public static class AiModelMapper
 
     private static MappedLevel MapLevel(DetectedLevel lvl, MappingOptions options)
     {
+        // v2: every wall carries absolute endpoints, so length + corner angle are DERIVED from geometry
+        // (correct, unambiguous). v1: use the supplied length + CornerAngleRad. Mixed is treated as v1.
+        bool isV2 = lvl.Walls.Count > 0;
+        for (int i = 0; i < lvl.Walls.Count && isV2; i++)
+            isV2 = lvl.Walls[i].HasEndpoints;
+
+        double windingSign = isV2 ? WallGeometry.WindingSign(lvl.Walls) : 1.0;
+
         var walls = new List<MappedWall>(lvl.Walls.Count);
         for (int i = 0; i < lvl.Walls.Count; i++)
-            walls.Add(MapWall(lvl.Walls[i], i, options));
+        {
+            DetectedWall w = lvl.Walls[i];
+            bool isFirst = i == 0;
+
+            double lengthMeters;
+            double rawCornerAngle; // the first wall's corner angle is meaningless and ignored (Q2)
+            if (isV2)
+            {
+                lengthMeters = WallGeometry.Length(w.StartMeters!, w.EndMeters!);
+                rawCornerAngle = isFirst ? 0.0 : WallGeometry.InteriorCornerAngle(lvl.Walls[i - 1], w, windingSign);
+            }
+            else
+            {
+                lengthMeters = w.LengthMeters;
+                rawCornerAngle = isFirst ? 0.0 : w.CornerAngleRad;
+            }
+
+            double angle;
+            bool snapped;
+            if (isFirst) { angle = 0.0; snapped = false; }
+            else { angle = SnapCornerAngle(rawCornerAngle, options, out snapped); }
+
+            var openings = new List<MappedOpening>(w.Openings.Count);
+            foreach (DetectedOpening o in w.Openings)
+                openings.Add(MapOpening(o));
+
+            // v2: carry the RAW absolute endpoints (meters) through to the bridge so it can place the
+            // wall directly at its real coordinates. v1 (no endpoints) leaves these null → survey chain.
+            MappedPoint2D? start = w.HasEndpoints ? new MappedPoint2D(w.StartMeters!.X, w.StartMeters!.Y) : null;
+            MappedPoint2D? end = w.HasEndpoints ? new MappedPoint2D(w.EndMeters!.X, w.EndMeters!.Y) : null;
+
+            walls.Add(new MappedWall(i, isFirst, lengthMeters, w.ThicknessMeters, angle, snapped,
+                                     w.LevelOffsetMeters, openings, start, end));
+        }
 
         return new MappedLevel(
             lvl.Floor2FloorMeters,
@@ -50,36 +91,12 @@ public static class AiModelMapper
             walls);
     }
 
-    private static MappedWall MapWall(DetectedWall w, int index, MappingOptions options)
-    {
-        bool isFirst = index == 0;
-
-        // The first wall has no predecessor, so its corner angle is meaningless and ignored (Q2).
-        double angle;
-        bool snapped;
-        if (isFirst)
-        {
-            angle = 0.0;
-            snapped = false;
-        }
-        else
-        {
-            angle = SnapCornerAngle(w.CornerAngleRad, options, out snapped);
-        }
-
-        var openings = new List<MappedOpening>(w.Openings.Count);
-        foreach (DetectedOpening o in w.Openings)
-            openings.Add(MapOpening(o));
-
-        return new MappedWall(index, isFirst, w.LengthMeters, w.ThicknessMeters, angle, snapped, w.LevelOffsetMeters, openings);
-    }
-
     private static MappedOpening MapOpening(DetectedOpening o) => new(
-        o.LocationFromNearEndMeters,
+        o.LocationMeters,
         o.WidthMeters,
         o.HeightMeters,
         o.SillHeightMeters,
-        o.IsLikelyDoor ? OpeningKind.Door : OpeningKind.Window,
+        o.ResolvedIsDoor ? OpeningKind.Door : OpeningKind.Window,
         o.HingeSideIndex == 1 ? HingeSideKind.Right : HingeSideKind.Left,
         o.SwingDirectionIndex == 1 ? SwingDirectionKind.In : SwingDirectionKind.Out,
         o.FacingOrientationIndex == 1 ? FacingRelationKind.Exterior : FacingRelationKind.Interior,

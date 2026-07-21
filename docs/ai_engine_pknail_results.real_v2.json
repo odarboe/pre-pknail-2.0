@@ -1,0 +1,106 @@
+{
+  "_comment": "REAL scan in v2, turns adjusted to better match the AI team's model. For a pixel-exact match the AI engine should export the Blender model's vertex coordinates directly as v2 StartMeters/EndMeters - that is the whole point of the v2 contract.",
+  "SchemaVersion": "2.0",
+  "Units": "meters",
+  "AngleUnits": "radians",
+  "CoordinateSystem": { "Frame": "plan", "Handedness": "right", "ZUp": true },
+  "IsScanFromInterior": true,
+  "FirstWallCompassDirection": 0,
+  "Levels": [
+    {
+      "Name": "Level 1",
+      "ElevationMeters": 0.0,
+      "Floor2FloorMeters": 2.866,
+      "Floor2CeilingMeters": 2.566,
+      "HasDropCeiling": false,
+      "DropCeilingHeightMeters": 0.0,
+      "TypicalWindowSillHeightMeters": 0.9,
+      "TypicalWindowHeadHeightMeters": 2.1,
+      "IsClosed": false,
+      "Walls": [
+        {
+          "StartMeters": { "X": 0.0, "Y": 0.0 },
+          "EndMeters": { "X": 5.05, "Y": 0.0 },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": { "X": 5.05, "Y": 0.0 },
+          "EndMeters": { "X": 5.05, "Y": 6.0 },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": { "X": 5.05, "Y": 6.0 },
+          "EndMeters": { "X": -0.2, "Y": 6.0 },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": [
+            {
+              "LocationFromStartMeters": 4.0,
+              "WidthMeters": 1.0,
+              "HeightMeters": 1.4,
+              "SillHeightMeters": 0.4,
+              "Kind": "Window",
+              "FacingOrientationIndex": 0,
+              "FamilyDefIdx": 0
+            }
+          ]
+        },
+        {
+          "StartMeters": { "X": -0.2, "Y": 6.0 },
+          "EndMeters": { "X": -0.2, "Y": 7.2 },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": { "X": -0.2, "Y": 7.2 },
+          "EndMeters": { "X": -1.2, "Y": 7.2 },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": { "X": -1.2, "Y": 7.2 },
+          "EndMeters": { "X": -1.2, "Y": -1.15 },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": { "X": -1.2, "Y": -1.15 },
+          "EndMeters": { "X": 1.65, "Y": -1.15 },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": { "X": 1.65, "Y": -1.15 },
+          "EndMeters": { "X": 1.65, "Y": 3.45 },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": { "X": 1.65, "Y": 3.45 },
+          "EndMeters": { "X": 4.5, "Y": 3.45 },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        }
+      ]
+    }
+  ]
+}
