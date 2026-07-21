@@ -990,6 +990,32 @@ These are real mismatches between the delivered JSON and what the plugin needs. 
 > **face** length? (f) which wall end is the **"near end"** that `Opening.LocationFromNearEndMeters` is
 > measured from, given the wall ordering? (g) confirm walls are always a single ordered loop per level
 > (and how multiple disconnected runs would be represented).
+>
+> ---
+>
+> ### Empirical confirmation — live Revit 2026 import of the v1 JSON (2026-06-29)
+>
+> The full import pipeline is built and was run against `ai_engine_pknail_results.json` in Revit 2026.
+> It **bound parameters, created/linked the level, resolved wall types, set wall heights, and began
+> placing walls** — then **placed 5 walls and aborted** with:
+> `XYZ..ctor: x must be a finite number` (a non-finite wall coordinate), after several Revit
+> **"Highlighted walls overlap"** warnings. The import rolled back atomically (no partial model left).
+> This is the predicted failure, now reproduced.
+>
+> **Exact engine convention (verified in code — please match it).** The engine computes each wall's
+> heading as `newAzimuth = previousAzimuth + (π if surveyed right-to-left) + CornerAngleRad`
+> ([RevitDocument.cs:2356-2362](../code/PKNailProForRevit-2026/PKNailForRevit/RevitDocument.cs#L2356)).
+> `CornerAngleRad` is therefore the **interior angle** at the corner, and:
+> - **`π/2` (90°)** = a normal **90° inside corner**.
+> - **`π` (180°)** = a **straight, collinear continuation** (no corner).
+> - **`0`** = the next wall folds **180° back over** the previous one ⇒ **overlapping/degenerate walls**
+>   (exactly the overlaps + the eventual non-finite coordinate we hit).
+>
+> So the v1 sample's seven `0` angles are interpreted as fold-backs, and `270°`/`90°` don't close the
+> loop — the data cannot describe the room. **Bottom line: the pipeline is proven; it needs valid
+> geometry.** Preferred: emit **wall start/end XY points**. If staying with angles: use **`π` for straight
+> runs, `π/2` for inside corners**, a **null first-wall angle**, an **`IsClosed`** flag, and verify the
+> turn angles actually close the polygon.
 
 ---
 
