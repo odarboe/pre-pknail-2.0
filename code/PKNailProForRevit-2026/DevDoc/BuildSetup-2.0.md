@@ -74,6 +74,40 @@ Regression before packaging: `dotnet test` the `PKNail.AiImport.Tests` and
 > ⚠ The MSI build could not be validated in the current environment (no WiX toolset present). The
 > manifest changes follow the existing component pattern; validate with a real WiX build before release.
 
+## 5. Continuous integration & the test gate (Epic 11a)
+
+The tests-before-commit gate runs as **two CI lanes** (both required before merge to `main`):
+
+| Lane | Workflow | Runner | Covers |
+| ---- | -------- | ------ | ------ |
+| Fast (Revit-free) | `.github/workflows/ci-aiimport.yml` | GitHub-hosted `windows-latest` | `PKNail.AiImport` + its 44 unit tests |
+| **Revit integration** | `.github/workflows/ci-revit-integration.yml` | **self-hosted** `windows` + `revit2026` | `PKNailForRevit` plugin build + the 32 in-process integration tests |
+
+Lane 2 cannot use a hosted runner (RevitAPI/PLUSManaged are non-redistributable), so it needs a
+self-hosted runner. Both lanes call the same logic locally via **`scripts/ci-gate.ps1`**.
+
+### Run the full gate locally (required before committing any Revit-side change)
+
+```
+# From code/PKNailProForRevit-2026 (Revit 2026 CLOSED, vendored DLLs in place):
+pwsh scripts/ci-gate.ps1            # unit -> plugin build -> integration; fails fast, writes .trx
+```
+
+### Provision the self-hosted Revit runner (one-time)
+
+1. Install Revit 2026 and the .NET 8 SDK on a Windows machine.
+2. Register it as a GitHub Actions **self-hosted runner** with labels `self-hosted, windows, revit2026`.
+3. Put `RevitAPI.dll`, `RevitAPIUI.dll`, `RevitAddInUtility.dll`, and `PLUSManaged.dll` in a folder and
+   set the machine env var **`PKNAIL_VENDOR_LIBS`** to it — `ci-gate.ps1` copies them into `RevitAPI/`
+   and `Tools/SoftwareKey/` on each run (a fresh checkout has no git-ignored vendor binaries).
+4. Ensure Revit 2026 is **closed** during CI runs (the plugin output DLLs must not be locked).
+
+### Branch protection (repo setting)
+
+In GitHub → Settings → Branches → protect `main`: require the status checks **"PKNAIL 2.0 AiImport
+tests"** and **"PKNAIL 2.0 Revit integration tests"** to pass before merging. This makes the acceptance
+criterion enforceable: no Revit-side change can merge without the integration suite green.
+
 ## Notes
 
 - The `.las` files under `PointCloud/` are **AI-engine sample inputs**, not plugin runtime inputs.

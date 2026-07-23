@@ -1,0 +1,54 @@
+name: PKNAIL 2.0 Revit integration tests
+
+# Epic 11a — the Revit-side test gate. Builds the PKNailForRevit plugin AND runs the 32 in-process
+# integration tests (PKNail.AiImport.IntegrationTests, which drive the RecordingProjectModel fake).
+#
+# These CANNOT run on a GitHub-hosted runner: they reference PKNailForRevit, which needs the Revit 2026
+# API assemblies (RevitAPI/RevitAPIUI/RevitAddInUtility) and the SoftwareKey PLUSManaged.dll — neither is
+# redistributable. This lane therefore runs on a SELF-HOSTED Windows runner that has Revit 2026 installed
+# and the vendored DLLs provisioned. See DevDoc/BuildSetup-2.0.md for runner setup.
+#
+# Runner requirements:
+#   * Labels: self-hosted, windows, revit2026
+#   * .NET 8 SDK on PATH
+#   * Env var PKNAIL_VENDOR_LIBS pointing to a folder containing RevitAPI.dll, RevitAPIUI.dll,
+#     RevitAddInUtility.dll, PLUSManaged.dll (ci-gate.ps1 copies them into place on each run).
+#   * Revit 2026 must be CLOSED while the job runs (the plugin DLLs must not be locked).
+
+on:
+  push:
+    paths:
+      - 'code/PKNailProForRevit-2026/PKNailForRevit/**'
+      - 'code/PKNailProForRevit-2026/PKNail.AiImport/**'
+      - 'code/PKNailProForRevit-2026/PKNail.AiImport.IntegrationTests/**'
+      - 'code/PKNailProForRevit-2026/Json/**'
+      - 'code/PKNailProForRevit-2026/scripts/ci-gate.ps1'
+      - 'docs/*.json'
+      - '.github/workflows/ci-revit-integration.yml'
+  pull_request:
+    paths:
+      - 'code/PKNailProForRevit-2026/PKNailForRevit/**'
+      - 'code/PKNailProForRevit-2026/PKNail.AiImport/**'
+      - 'code/PKNailProForRevit-2026/PKNail.AiImport.IntegrationTests/**'
+      - 'code/PKNailProForRevit-2026/Json/**'
+      - 'code/PKNailProForRevit-2026/scripts/ci-gate.ps1'
+      - 'docs/*.json'
+  workflow_dispatch:
+
+jobs:
+  integration:
+    runs-on: [self-hosted, windows, revit2026]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Full gate (unit + plugin build + integration)
+        shell: pwsh
+        run: ./code/PKNailProForRevit-2026/scripts/ci-gate.ps1 -Configuration Debug
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: revit-integration-test-results
+          path: 'code/PKNailProForRevit-2026/**/TestResults/*.trx'
+          if-no-files-found: warn

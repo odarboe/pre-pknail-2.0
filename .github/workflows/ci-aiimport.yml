@@ -1,11 +1,15 @@
 name: PKNAIL 2.0 AiImport tests
 
-# Fast, Revit-free test gate for the PKNAIL 2.0 import layer (Epic 9a).
-# Builds and tests ONLY the net8.0 Revit-free projects (PKNail.AiImport + its tests).
-# The full PKNailForRevit plugin is NOT built here: it requires the Revit 2026 API
-# assemblies (RevitAPI/RevitAPIUI) and the SoftwareKey PLUSManaged.dll, which are not
-# available on a hosted runner. Plugin + in-process IProjectModel integration tests
-# (Epic 9b) run on a self-hosted Revit dev machine — add that lane when available.
+# Fast, Revit-free test gate for the PKNAIL 2.0 import layer (Epic 9a). Lane 1 of 2.
+# Builds and tests ONLY the net8.0 Revit-free projects (PKNail.AiImport + its tests) on a
+# hosted runner. The full PKNailForRevit plugin is NOT built here: it needs the Revit 2026 API
+# assemblies (RevitAPI/RevitAPIUI) and the SoftwareKey PLUSManaged.dll, which are not available
+# on a hosted runner.
+#
+# Lane 2 — the plugin build + the 32 in-process integration tests — runs on a SELF-HOSTED Revit
+# runner in ci-revit-integration.yml (Epic 11a). It triggers on PKNailForRevit/** and
+# PKNail.AiImport.IntegrationTests/** changes, which this fast lane deliberately does NOT (it
+# cannot build the plugin). Both lanes are required before merge to main.
 
 on:
   push:
