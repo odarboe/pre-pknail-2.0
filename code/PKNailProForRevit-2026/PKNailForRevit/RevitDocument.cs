@@ -7,6 +7,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.ApplicationServices;
 
 using G2D = PKNailForRevit.Geometry2D;
+using AiActivation = PKNail.AiImport.Mapping.WallActivationGeometry;
 
 namespace PKNailForRevit
 {
@@ -1150,25 +1151,33 @@ namespace PKNailForRevit
 
                 Level level = RevitSurveyWall.BaseLevel(wall);
 
-                // Interior scan surveys the interior face (NotFlipped); exterior scan the exterior (Flipped).
-                SurveyOrientation so = interiorFace ? SurveyOrientation.NotFlipped : SurveyOrientation.Flipped;
+                // Decision 1 — which face the scan surveyed (unit-tested in WallActivationGeometryTests):
+                // interior -> NotFlipped, exterior -> Flipped. Translate the Revit-free kind to the engine type.
+                SurveyOrientation so =
+                    (AiActivation.FaceOrientation(interiorFace) == PKNail.AiImport.Mapping.SurveyOrientationKind.Flipped)
+                        ? SurveyOrientation.Flipped : SurveyOrientation.NotFlipped;
 
-                // A plan point on the chosen face (front-edge midpoint; the face-point match is loose).
+                // Read the wall's front-edge geometry from the solid (Revit-only): a plan point on the chosen
+                // face (front-edge midpoint; the face-point match is loose) and the two face corners.
                 G2D.Vector frontEdge = RevitSurveyWall.WallEdge(wall, so, true);
                 G2D.Point facePoint = frontEdge.MidPoint;
 
-                // Build the face, then choose the survey direction so the near corner is the desired wall end
-                // (the JSON measures opening locations from the wall's start).
                 surveyFace f;
                 surveyFace.CreateFaceNoModifyWalls(this, level, wall, so, facePoint, out f);
 
                 XYZ nearXYZ = nearEndIsStart ? lc.Curve.GetEndPoint(0) : lc.Curve.GetEndPoint(1);
-                G2D.Point desiredNear = Utilities.To2D(nearXYZ);
-                double dLeft = f.Corner(SurveySide.Left).DistanceTo(desiredNear).ValueRevitInternal;
-                double dRight = f.Corner(SurveySide.Right).DistanceTo(desiredNear).ValueRevitInternal;
-                SurveySide nearSide = (dLeft <= dRight) ? SurveySide.Left : SurveySide.Right;
-                SurveyDirection dir = (nearSide == SurveySide.Left) ? SurveyDirection.LeftToRight
-                                                                    : SurveyDirection.RightToLeft;
+                G2D.Point near = Utilities.To2D(nearXYZ);
+                G2D.Point cLeft = f.Corner(SurveySide.Left);
+                G2D.Point cRight = f.Corner(SurveySide.Right);
+
+                // Decision 2 — choose the survey direction so the near corner is the desired wall end (the JSON
+                // measures opening locations from the wall's start). Also unit-tested, convention-independent.
+                SurveyDirection dir =
+                    (AiActivation.NearEndDirection(
+                        new AiActivation.PlanPoint(cLeft.X, cLeft.Y),
+                        new AiActivation.PlanPoint(cRight.X, cRight.Y),
+                        new AiActivation.PlanPoint(near.X, near.Y)) == AiActivation.Direction.LeftToRight)
+                        ? SurveyDirection.LeftToRight : SurveyDirection.RightToLeft;
 
                 // Persist the active/reference element exactly like saveToDocumentState(). This writes a
                 // shared parameter, so it needs its own inner transaction inside the caller's group.
