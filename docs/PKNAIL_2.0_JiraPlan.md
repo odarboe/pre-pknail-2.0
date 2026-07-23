@@ -399,15 +399,25 @@ net8.0 test project + in-process `IProjectModel` fake exist.
 | 9   | 7   | Validation, Logging & Human-in-Loop           | Confidence flags, halt/skip, import report, accuracy metrics              | commit |
 | 10  | 10  | Coordinate System & Project Origin            | Import origin/orientation handling; `Set Coord Sys` interaction defined   | commit |
 | 11  | 8   | Packaging & Handoff                           | Installer, docs, sample I/O, limitations & roadmap                        | commit |
+| 12  | 11a | **Revit-integration CI lane** (hardening)     | Integration suite + plugin build run in CI; path filters fixed (**release-blocking**) | commit |
+| 13  | 11b | **Testable placement geometry** (hardening)   | Absolute-wall activation geometry extracted + unit-tested (**release-blocking**)      | commit |
+| 14  | 11d | Nullable + analyzer baseline (hardening)       | Bridge null-annotated; ~1,400-warning noise baselined                     | commit |
+| 15  | 11c | Transaction scope + RevitDocument decomposition | RAII transaction scope; AI-import surface isolated from the God class    | commit |
+| 16  | 11e | Interface segregation + opening-path consolidation | Segregated import interface; opening-path strategy documented          | commit |
 
 Each epic below has: **Goal · Stories · Deliverables · Automated tests · How to verify (manual) ·
 Acceptance criteria · Commit gate.**
 
-> ### Delivery status (as of 2026-07-21)
+> **Post-2.0 sequencing (architect review 2026-07-23).** The 2.0 import *design* is accepted; **Epic 11
+> (Production Hardening)** closes the production-readiness gaps. Run order: **11a → 11b** (both
+> release-blocking) **→ 11d → 11c → 11e** (incremental, may land post-release). The same working
+> agreement applies — implement, test, manual-verify, confirm, then one focused commit per sub-epic.
+
+> ### Delivery status (as of 2026-07-23)
 >
 > The end-to-end AI-JSON import path is **built, tested, and verified in live Revit 2026**
 > (`new_final_combined_pknail.json` → 9 walls + 3 windows, 0 failures). Test suites: **44 unit +
-> 29 integration**, all green.
+> 32 integration**, all green.
 >
 > | Epic | Status | Notes |
 > | --- | --- | --- |
@@ -418,13 +428,15 @@ Acceptance criteria · Commit gate.**
 > | 3 Bridge | ✅ committed | `AiModelImporter` + ribbon + .NET 8 runtime hardening |
 > | 4 Levels | ✅ done | in the bridge (merge-into-existing-levels); verified in Revit |
 > | 5 Walls | ✅ done | **v2 absolute endpoints** resolved the Q1 blocker; direct placement |
-> | 6 Openings | ✅ done | hosted door/window via `CreateOpeningOnWall`; verified in Revit |
+> | 6 Openings | ✅ committed | hosted via the **1.0 engine flow** (`ActivateWallById` → `SurveyWallHostedObject`, hinge/swing/facing + family-def); direct-hosting fallback when no PKNAIL family loaded (R4). Verified in Revit. |
 > | 7 Validation/logging | ✅ committed | warnings collected into the report; duplicate Type Mark fixed. **Deferred: 7.3 visual highlight/zoom, 7.4 accuracy-metrics harness.** |
 > | 10 Coord system/origin | ✅ committed | deterministic re-based origin (documented in report) + default project name; Set Coord Sys stays a manual step (Q13) |
-> | 8 Packaging | ⚠ partial | manifest updated for 2.0 (Revit 2026, new upgrade code, ships `PKNail.AiImport.dll`) + user/dev docs. **MSI build + code-signing + clean-VM install are PointKnown release steps** (no WiX toolset in the dev env to validate the MSI build). |
+> | 8 Packaging | ✅ committed | manifest updated for 2.0 (Revit 2026, new upgrade code, ships `PKNail.AiImport.dll`) + user/dev docs. **MSI build + code-signing + clean-VM install remain PointKnown release steps** (no WiX toolset in the dev env). |
+> | 11 Production Hardening | 📋 planned | Senior-architect review 2026-07-23. **11a (Revit CI) + 11b (activation-geometry tests) are release-blocking**; 11c–11e are incremental. |
 >
 > Epics 4/5/6 were delivered as part of the v2-contract and bridge commits (the real data required
-> absolute placement) rather than as separate commits.
+> absolute placement) rather than as separate commits. The audit gaps #1–#5 (opening-engine reuse,
+> re-import guard, metering, out-of-bounds, WallState tagging) landed in the openings commit.
 
 > **Sequencing (CONFIRMED).** **Epic 9 runs first** (after the Epic 0 baseline) — the no-Revit test
 > project + in-process `IProjectModel` fake are prerequisites for honoring the test gate on every later
@@ -867,6 +879,149 @@ defined.
 
 ---
 
+## EPIC 11 — Production Hardening (Senior C# Architect review, 2026-07-23)
+
+**Goal:** Close the production-readiness gaps found in the post-2.0 architecture review so the AI-import
+pipeline is **regression-protected and maintainable**, not merely "manually verified once." The 2.0
+import *design* is accepted (clean layering, testable seam, faithful engine reuse); Epic 11 is the set of
+**conditions** to call the codebase production-ready. Verdict: *architecturally sound at the 2.0 layer;
+not yet production-hardened at the plugin/infra level.*
+
+**Evidence baseline (as reviewed):** `RevitDocument.cs` is **7,497 lines** (single implementation of a
+**41-member** `IProjectModel`); CI ([.github/workflows/ci-aiimport.yml](../.github/workflows/ci-aiimport.yml))
+builds/tests **only** the 44 Revit-free unit tests and its `paths:` filters **exclude `PKNailForRevit/**`**;
+the 32 integration tests + plugin build never run in CI; the absolute-wall **activation geometry**
+(`ActivateWallById` in `RevitDocument.cs`) is verified **only by manual Revit clicks**; `PKNailForRevit`
+has `<Nullable>disable</Nullable>` and ~**1,400** analyzer warnings; two opening paths now coexist
+(engine primary + `CreateOpeningOnWall` fallback).
+
+**Run order:** **11a → 11b** (release-blocking) **→ 11d → 11c → 11e** (incremental). Each sub-epic is one
+focused commit under the standard gate.
+
+---
+
+### Epic 11a — Revit-integration CI lane (review #1 → R11) · release-blocking
+
+**Goal:** Run the 32 in-process integration tests **and** the `PKNailForRevit` plugin build in CI so
+bridge/engine regressions are caught automatically, not just by a human importing in Revit.
+
+**Stories**
+- 11a.1 Add a **self-hosted (Revit 2026) Actions lane** (or a documented, required local gate on a
+  provisioned dev machine) that restores the vendored `RevitAPI/` + `Tools/SoftwareKey/PLUSManaged.dll`,
+  builds `PKNailForRevit` (Debug), and runs `PKNail.AiImport.IntegrationTests`; upload the `.trx`.
+- 11a.2 **Fix `ci-aiimport.yml` `paths:` filters** so changes under `PKNailForRevit/**` and
+  `PKNail.AiImport.IntegrationTests/**` trigger the relevant lane — today only `PKNail.AiImport/**`
+  changes trigger CI, so a bridge/engine regression is invisible to CI.
+- 11a.3 Require both lanes green in branch protection before merge to `main`.
+
+**Automated tests:** the 32-test integration suite runs in CI on every PR touching the plugin or bridge.
+**How to verify (manual):** open a PR that edits `PKNailForRevit/AiImport/AiModelImporter.cs`; confirm the
+integration lane runs and blocks the PR when red.
+**Acceptance criteria:** no Revit-side change can merge without the integration suite passing.
+**Commit:** `ci(pknail-2.0/hardening): Revit integration lane + corrected path filters`.
+
+---
+
+### Epic 11b — Testable placement geometry (review #2 → R12) · release-blocking
+
+**Goal:** Put the **riskiest new logic** under automated test: the absolute-wall activation geometry
+(front-face selection, `IsScanFromInterior` → `SurveyOrientation`, near-end → `SurveyDirection`, face
+point) that currently has **no** automated coverage — the integration fake asserts call sequence/params,
+not geometric correctness.
+
+**Stories**
+- 11b.1 Extract the pure geometry of `ActivateWallById` into a **Revit-free helper** in `PKNail.AiImport`
+  (input: wall start/end points + thickness + `IsScanFromInterior` + near-end flag; output: chosen face
+  point / orientation-kind / direction-kind) — no `Autodesk.Revit` types.
+- 11b.2 Keep `ActivateWallById` a **thin wrapper** that reads Revit wall geometry, calls the helper, and
+  writes the `refElementState`. No geometry *decisions* remain in the Revit method.
+- 11b.3 **Unit-test the convention** (from the engine investigation): near corner == wall start; interior
+  scan → interior face; each `(SO, dir)` combination; degenerate / near-collinear / reversed-endpoint cases.
+
+**Automated tests:** net8.0 unit tests (no Revit) covering the convention + edge cases; a single Revit
+smoke test still confirms one door hinge/side end-to-end.
+**How to verify (manual):** the helper's tests run in the fast unit lane; place one door in Revit and
+confirm hinge/side match the JSON.
+**Acceptance criteria:** the activation convention is guarded by unit tests; the Revit wrapper contains no
+untested geometry decisions.
+**Commit:** `refactor(pknail-2.0/hardening): extract + unit-test absolute-wall activation geometry`.
+
+---
+
+### Epic 11c — Transaction scope + RevitDocument decomposition (review #3/#1 → R13)
+
+**Goal:** Make transaction lifetime **RAII-safe** and begin carving the AI-import surface out of the
+7,497-line `RevitDocument` God class — incrementally, never big-bang.
+
+**Stories**
+- 11c.1 Introduce an **`IDisposable` transaction scope** (Start → Commit, rollback-on-dispose) wrapping
+  `m_txn`/`m_txnGrp`, so a dangling inner transaction is structurally impossible — this replaces the
+  manual `AbortPendingTransaction` workaround. Migrate the **AI-import methods first**; leave legacy
+  call-sites untouched until they are test-covered.
+- 11c.2 Extract the AI-import additions (`CreateWallAbsolute`, `ActivateWallById`, `EnsureDefault3DView`,
+  `HasPKNailWalls`, `AbortPendingTransaction`, import-warning capture) into a focused
+  `RevitDocument.AiImport.cs` **partial** (or an `AiImportDocumentService`), so the new surface is
+  isolated and reviewable.
+- 11c.3 (Stretch) File tickets to extract the next 1–2 cohesive services (wall placement, opening
+  hosting); do **not** rewrite the God class in one pass.
+
+**Automated tests:** the 32 integration tests stay green through the refactor (behavior-preserving); add a
+fake-driven test that a scope disposed without commit rolls back.
+**How to verify (manual):** re-run the live import — identical result, no behavior change.
+**Acceptance criteria:** transaction lifetime is scope-managed for the import path; AI-import code is
+isolated from the bulk of `RevitDocument`.
+**Commit:** `refactor(pknail-2.0/hardening): IDisposable transaction scope + isolate AI-import surface`.
+
+---
+
+### Epic 11d — Nullable + analyzer baseline on PKNailForRevit (review #4/#10 → R14)
+
+**Goal:** Give the bridge code null-safety and surface real defects hidden in ~1,400 analyzer warnings.
+
+**Stories**
+- 11d.1 Enable **`<Nullable>annotations</Nullable>`** on `PKNailForRevit` (annotations-only first to avoid
+  a warning flood), fully annotate the AI-import files, and set `PKNail.AiImport.IntegrationTests` to
+  `enable` (it is currently `disable`).
+- 11d.2 Add an **`.editorconfig` / analyzer ruleset** that suppresses the known-benign **CA1416**
+  (WinForms-is-Windows-only) with justification and treats **new** warnings on the AI-import files as
+  errors (mirroring `PKNail.AiImport`'s existing `TreatWarningsAsErrors`).
+- 11d.3 Triage the remaining top warning categories into follow-up tickets — do not fix all 1,400.
+
+**Automated tests:** build stays green; the Revit-free lib already builds warnings-as-errors.
+**How to verify (manual):** the build shows a small, clean warning set for the AI-import files; CA1416 no
+longer masks real warnings.
+**Acceptance criteria:** the bridge is null-annotated; analyzer noise is baselined; new warnings on 2.0
+code fail the build.
+**Commit:** `chore(pknail-2.0/hardening): nullable annotations + analyzer baseline on the bridge`.
+
+---
+
+### Epic 11e — Interface segregation + opening-path consolidation (review #5/#11 → R15)
+
+**Goal:** Shrink the 41-member `IProjectModel` surface the import depends on, and document/consolidate the
+two opening paths.
+
+**Stories**
+- 11e.1 Define a focused import-facing interface (e.g. `IAiImportTarget`) exposing only what
+  `AiModelImporter` uses (transaction control, `LevelsData`, `CreateWallAbsolute`, `ActivateWallById`,
+  `SurveyWallHostedObject*`, warning capture, `EnsureDefault3DView`). `RevitDocument` implements it; the
+  `RecordingProjectModel` fake shrinks to match.
+- 11e.2 Document the **two opening paths** (engine-hosting primary + `CreateOpeningOnWall` fallback) with a
+  decision note; decide whether to keep the fallback long-term.
+- 11e.3 (Optional, closes R4) **Auto-load the shipped PKNAIL window/door families** when none are present,
+  so the engine path (correct AI orientation) works on **any** template and the fallback's fidelity gap
+  disappears. Resolve family paths for both dev (`RevitFiles/`) and installed (`Libraries/`) layouts.
+
+**Automated tests:** importer tests retarget to the smaller interface; fallback + engine-path tests
+unchanged; a test asserts family auto-load routes openings to the engine (not the fallback).
+**How to verify (manual):** import on a stock metric template with family auto-load → windows show correct
+AI orientation with **no** fallback warning.
+**Acceptance criteria:** the import depends on a segregated interface; opening-path strategy is documented;
+(optional) family auto-load removes the stock-template fidelity gap.
+**Commit:** `refactor(pknail-2.0/hardening): segregate import interface + consolidate opening paths`.
+
+---
+
 ## 4b. Risk Register (Senior C# Architect)
 
 | #  | Risk | Likelihood × Impact | Mitigation |
@@ -881,6 +1036,11 @@ defined.
 | R8 | **Failure noise / silent suppression.** Trial-txn preprocessor only beeps via `m_txnErrorSignal` ([RevitDocument.cs:3329]; [PKNailForRevitApp.cs:1450-1457]); batch failures are neither logged nor surfaced. | Med × Med | Epic 7.5: import-specific `IFailuresPreprocessor` that collects to the report. |
 | R9 | **Contract drift without a version field.** v1 JSON has no `SchemaVersion` (§5 item 7); the inconsistent `Floor2CeilingElev` suffix ([ai_engine_pknail_results.json:7]) shows the contract is informal. | Med × Med | Q10: add `SchemaVersion` to the DTO + a version check on import; request suffix normalization in v2. |
 | R10 | **Extensible-storage / parameter schema growth.** New PKNAIL params or `JsonSerializable` shape changes can break round-trip of older saved files ([PKNailParameter.cs]; [LevelsData.cs:7]). | Low × High | Version the persisted schema; add round-trip tests (Epic 1.4 + 4) before changing any serialized type. |
+| R11 | **CI does not cover the Revit side.** `ci-aiimport.yml` builds/tests only the 44 Revit-free unit tests and its `paths:` exclude `PKNailForRevit/**`; the 32 integration tests + plugin build never run in CI, so a bridge/engine regression is invisible. | High × High | **Epic 11a**: self-hosted Revit lane running the integration suite + plugin build; fix path filters; require green before merge. **Release-blocking.** |
+| R12 | **Riskiest new logic is untested.** `ActivateWallById` geometry (face selection, interior/exterior→SO, near-end→dir) is verified only by manual Revit clicks; the integration fake asserts call sequence, not geometric correctness. | High × High | **Epic 11b**: extract the pure geometry into a Revit-free helper and unit-test the convention + edge cases. **Release-blocking.** |
+| R13 | **God class + fragile manual transactions.** `RevitDocument.cs` is 7,497 lines implementing a 41-member interface; `m_txn`/`m_txnGrp` are mutable fields, nesting throws, and `AbortPendingTransaction` is a manual patch for dangling transactions (we hit exactly that in the openings work). | Med × High | **Epic 11c**: `IDisposable` transaction scope (rollback-on-dispose); incrementally isolate the AI-import surface into a partial/service. Do not big-bang. |
+| R14 | **No null-safety on the bridge + warning noise.** `PKNailForRevit` is `<Nullable>disable</Nullable>` (so `AiModelImporter` gets no null-safety) and emits ~1,400 CA1416/SYSLIB warnings that mask real ones. | Med × Med | **Epic 11d**: nullable annotations on the bridge; analyzer baseline that suppresses benign CA1416 and treats new 2.0-code warnings as errors. |
+| R15 | **Fat interface + dual opening paths.** The import depends on a 41-member `IProjectModel` (ISP violation; the fake must implement all of it), and two opening paths now coexist (engine primary + `CreateOpeningOnWall` fallback), with the fallback dropping AI orientation on stock templates. | Med × Med | **Epic 11e**: segregate an `IAiImportTarget`; document the opening-path strategy; optionally auto-load PKNAIL families to remove the fallback's fidelity gap (also closes R4 on stock templates). |
 
 ---
 
