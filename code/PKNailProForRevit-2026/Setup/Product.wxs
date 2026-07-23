@@ -3,13 +3,14 @@
   xmlns="http://schemas.microsoft.com/wix/2006/wi"
   xmlns:util="http://schemas.microsoft.com/wix/UtilExtension" >
 
-  <?define ProductDisplayVersion = "1.9" ?>
-  
-  <?define ProductRevitVersion = "2017" ?>
+  <?define ProductDisplayVersion = "2.0" ?>
+
+  <?define ProductRevitVersion = "2026" ?>
   <!-- The upgrade code must be changed when the Revit version changes -->
   <!-- This allows version upgrades within a Revit version while still -->
   <!-- allowing multiple installations for different Revit versions -->
-  <?define ProductUpgradeCode = "298D74F9-81D5-4451-AE10-C80193D34D9E" ?>
+  <!-- New for Revit 2026 / PKNAIL 2.0 (2017 used 298D74F9-81D5-4451-AE10-C80193D34D9E) -->
+  <?define ProductUpgradeCode = "08CC9F0C-7A4A-4C66-8D55-28A1D2A56F4E" ?>
 
   <?define ProductNameBase = "PKNail Pro For Revit" ?>
   <?define ProductName = "$(var.ProductNameBase) $(var.ProductRevitVersion)" ?>
@@ -154,6 +155,17 @@
           Name="Newtonsoft.Json.dll"
           DiskId="1"
           Source="..\PKNailForRevit\bin\$(var.Configuration)\Newtonsoft.Json.dll" />
+      </Component>
+
+      <!-- PKNAIL 2.0: the Revit-free AI-import library the plugin now depends on. Without this the
+           installed plugin fails to load (missing PKNail.AiImport). Copied into PKNailForRevit's bin
+           by the ProjectReference, so it is sourced from the same folder as the other dependencies. -->
+      <Component Id="PKNailAiImport_dll" Guid="2A7914ED-6690-49EB-89CC-5612CE4C379F">
+        <File
+          Id="PKNailAiImport_dll"
+          Name="PKNail.AiImport.dll"
+          DiskId="1"
+          Source="..\PKNailForRevit\bin\$(var.Configuration)\PKNail.AiImport.dll" />
       </Component>
 
       <Component Id="$(var.ProductEULAPDFFileID)" Guid="0315FB87-EA50-45AC-AACF-7BF4C7E008D8">
@@ -708,9 +720,10 @@
 
     <Feature Id="FullInstallation" Title="Full Installation" Level="1">
       <ComponentRef Id="Json_dll" />
-      <ComponentRef Id="PKNailForRevit_dll" />      
+      <ComponentRef Id="PKNailForRevit_dll" />
       <ComponentRef Id="PLUSManaged_dll" />
-      <ComponentRef Id="NewtonsoftJson_dll" />      
+      <ComponentRef Id="NewtonsoftJson_dll" />
+      <ComponentRef Id="PKNailAiImport_dll" />
       <ComponentRef Id="PKNailProForRevit_addin" />
       <ComponentRef Id="LicenseFolder"/>
       <ComponentRef Id="PKNailProForRevitImperial_rte_RAC" />

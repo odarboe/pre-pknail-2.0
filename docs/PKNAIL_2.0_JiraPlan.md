@@ -403,6 +403,29 @@ net8.0 test project + in-process `IProjectModel` fake exist.
 Each epic below has: **Goal · Stories · Deliverables · Automated tests · How to verify (manual) ·
 Acceptance criteria · Commit gate.**
 
+> ### Delivery status (as of 2026-07-21)
+>
+> The end-to-end AI-JSON import path is **built, tested, and verified in live Revit 2026**
+> (`new_final_combined_pknail.json` → 9 walls + 3 windows, 0 failures). Test suites: **44 unit +
+> 29 integration**, all green.
+>
+> | Epic | Status | Notes |
+> | --- | --- | --- |
+> | 0 Baseline | ✅ committed | |
+> | 9 Test/CI foundation | ✅ committed | net8.0 lib + NUnit + in-process `IProjectModel` fake |
+> | 1 `Detected*` model | ✅ committed | System.Text.Json DTOs + validation |
+> | 2 Mapping | ✅ committed | `Mapped*` + intent snapping |
+> | 3 Bridge | ✅ committed | `AiModelImporter` + ribbon + .NET 8 runtime hardening |
+> | 4 Levels | ✅ done | in the bridge (merge-into-existing-levels); verified in Revit |
+> | 5 Walls | ✅ done | **v2 absolute endpoints** resolved the Q1 blocker; direct placement |
+> | 6 Openings | ✅ done | hosted door/window via `CreateOpeningOnWall`; verified in Revit |
+> | 7 Validation/logging | ✅ committed | warnings collected into the report; duplicate Type Mark fixed. **Deferred: 7.3 visual highlight/zoom, 7.4 accuracy-metrics harness.** |
+> | 10 Coord system/origin | ✅ committed | deterministic re-based origin (documented in report) + default project name; Set Coord Sys stays a manual step (Q13) |
+> | 8 Packaging | ⚠ partial | manifest updated for 2.0 (Revit 2026, new upgrade code, ships `PKNail.AiImport.dll`) + user/dev docs. **MSI build + code-signing + clean-VM install are PointKnown release steps** (no WiX toolset in the dev env to validate the MSI build). |
+>
+> Epics 4/5/6 were delivered as part of the v2-contract and bridge commits (the real data required
+> absolute placement) rather than as separate commits.
+
 > **Sequencing (CONFIRMED).** **Epic 9 runs first** (after the Epic 0 baseline) — the no-Revit test
 > project + in-process `IProjectModel` fake are prerequisites for honoring the test gate on every later
 > epic. The **Q1 wall-geometry blocker gates only Epic 5 (and the wall-loop portion of Epic 7)**; Epics

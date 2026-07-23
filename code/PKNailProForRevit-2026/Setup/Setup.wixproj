@@ -6,7 +6,7 @@
     <ProductVersion>3.0</ProductVersion>
     <ProjectGuid>{186154f0-0756-4228-8f8e-d628995e5616}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>PKNailProForRevit2017</OutputName>
+    <OutputName>PKNailProForRevit2026</OutputName>
     <OutputType>Package</OutputType>
     <WixToolPath>..\Tools\Wix\bin\</WixToolPath>
     <WixTargetsPath>$(WixToolPath)wix.targets</WixTargetsPath>
