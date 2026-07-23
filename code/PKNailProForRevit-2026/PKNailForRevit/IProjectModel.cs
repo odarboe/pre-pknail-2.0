@@ -13,6 +13,10 @@ namespace PKNailForRevit
         // missing (so the add-in works on documents not created from a PKNail template).
         CommandResult EnsureDocumentParameters(ref string msg);
 
+        // Ensures the document has a usable default 3D view, creating an isometric one if none exists. The
+        // engine derives wall-face geometry from a default 3D view, so opening hosting needs one present.
+        CommandResult EnsureDefault3DView(ref string msg);
+
         CommandResult InitializeTransaction(ref string msg);
         CommandResult SetTransactionName(string name, ref string msg);
         CommandResult StartTransaction(ref string msg);
@@ -54,6 +58,20 @@ namespace PKNailForRevit
         // behaviour is unchanged (warnings surface normally).
         void BeginImportWarningCapture();
         IReadOnlyList<string> EndImportWarningCapture();
+
+        // 1.0-adaptation for the v2 absolute path: make an absolute-placed wall the engine's active/reference
+        // wall so the proven SurveyWallHostedObjectPrep -> SurveyWallHostedObject flow hosts openings on it
+        // (family-def resolution + hinge/swing/facing), instead of a re-implemented direct placement.
+        // interiorFace: the scan surveyed the interior face (IsScanFromInterior). nearEndIsStart: opening
+        // locations are measured from the wall's start point.
+        CommandResult ActivateWallById(long wallId, bool interiorFace, bool nearEndIsStart, ref string msg);
+
+        // Roll back a dangling inner transaction without touching the transaction group, so the batch
+        // importer can discard one failed opening's partial changes and continue (best-effort openings).
+        void AbortPendingTransaction();
+
+        // True when the document already contains PKNAIL-created walls (re-import guard, Q5).
+        bool HasPKNailWalls();
 
         CommandResult SurveyLinePrep(SurveyDirection dir, bool isParallel, out CommandContext cmdContext,
                                      out LineSurveyParams lsParams, ref string msg);

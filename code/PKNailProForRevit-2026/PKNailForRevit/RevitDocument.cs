@@ -938,6 +938,12 @@ namespace PKNailForRevit
 
                 wallElementId = wall.Id.Value;
 
+                // Tag the wall as a PKNAIL survey wall (stores a WallState), exactly as SurveyWall does, so
+                // (a) the engine's opening-hosting flow treats it as a valid host and (b) a subsequent import
+                // can detect existing PKNAIL content (re-import guard). An empty WallState is a pure marker:
+                // ApplyToWall is a no-op when no level offsets are set.
+                setWallState(wall, new WallState());
+
                 return (commitTransaction() ? CommandResult.Succeeded : CommandResult.TransactionError);
             }
             catch (Exception e)
@@ -1110,6 +1116,150 @@ namespace PKNailForRevit
             List<string> collected = m_importWarnings ?? new List<string>();
             m_importWarnings = null;
             return collected;
+        }
+
+        // IProjectModel interface implementation (1.0-adaptation for the v2 absolute path)
+        //
+        // Headlessly make an absolute-placed wall the engine's "active/reference wall" so the PROVEN 1.0
+        // opening-hosting flow (SurveyWallHostedObjectPrep -> SurveyWallHostedObject) can host doors/windows
+        // on it — applying family-def resolution and hinge/swing/facing exactly like the interactive survey
+        // tool. This replicates revitCommandContext.saveToDocumentState() but sources the ref element from
+        // the given wall + the scan's interior/exterior and near-end convention instead of a PickObject.
+        //
+        // interiorFace: true when the scan surveyed the interior face (IsScanFromInterior) -> NotFlipped.
+        // nearEndIsStart: true when opening locations are measured from the wall's start point.
+        // Precondition: doc.ActiveView is the floor plan whose GenLevel is the wall's base level (the caller
+        // ensures this); the subsequent SurveyWallHostedObjectPrep builds its context from the active view.
+        public CommandResult ActivateWallById(long wallId, bool interiorFace, bool nearEndIsStart, ref string msg)
+        {
+            try
+            {
+                Wall wall = doc.GetElement(new ElementId(wallId)) as Wall;
+                if (wall == null)
+                {
+                    msg += @"ActivateWallById: element " + wallId + @" is not a wall";
+                    return CommandResult.Failed;
+                }
+
+                LocationCurve lc = wall.Location as LocationCurve;
+                if (lc == null || lc.Curve == null)
+                {
+                    msg += @"ActivateWallById: wall has no location curve";
+                    return CommandResult.Failed;
+                }
+
+                Level level = RevitSurveyWall.BaseLevel(wall);
+
+                // Interior scan surveys the interior face (NotFlipped); exterior scan the exterior (Flipped).
+                SurveyOrientation so = interiorFace ? SurveyOrientation.NotFlipped : SurveyOrientation.Flipped;
+
+                // A plan point on the chosen face (front-edge midpoint; the face-point match is loose).
+                G2D.Vector frontEdge = RevitSurveyWall.WallEdge(wall, so, true);
+                G2D.Point facePoint = frontEdge.MidPoint;
+
+                // Build the face, then choose the survey direction so the near corner is the desired wall end
+                // (the JSON measures opening locations from the wall's start).
+                surveyFace f;
+                surveyFace.CreateFaceNoModifyWalls(this, level, wall, so, facePoint, out f);
+
+                XYZ nearXYZ = nearEndIsStart ? lc.Curve.GetEndPoint(0) : lc.Curve.GetEndPoint(1);
+                G2D.Point desiredNear = Utilities.To2D(nearXYZ);
+                double dLeft = f.Corner(SurveySide.Left).DistanceTo(desiredNear).ValueRevitInternal;
+                double dRight = f.Corner(SurveySide.Right).DistanceTo(desiredNear).ValueRevitInternal;
+                SurveySide nearSide = (dLeft <= dRight) ? SurveySide.Left : SurveySide.Right;
+                SurveyDirection dir = (nearSide == SurveySide.Left) ? SurveyDirection.LeftToRight
+                                                                    : SurveyDirection.RightToLeft;
+
+                // Persist the active/reference element exactly like saveToDocumentState(). This writes a
+                // shared parameter, so it needs its own inner transaction inside the caller's group.
+                refElementState rws = new refElementState(wall.Id);
+                rws.RefElementSO = so;
+                rws.RefElementFacePoint = facePoint;
+                rws.RefElementDir = dir;
+
+                startTransaction(@"Activate AI Wall");
+                documentState.SetRefElementState(this, rws);
+                return commitTransaction() ? CommandResult.Succeeded : CommandResult.TransactionError;
+            }
+            catch (Exception e)
+            {
+                // Never leave a dangling inner transaction (it would break the next operation in the group).
+                AbortPendingTransaction();
+                msg += @"ActivateWallById: " + e.Message;
+                return CommandResult.Failed;
+            }
+        }
+
+        // IProjectModel interface implementation — roll back a dangling inner transaction (if any) WITHOUT
+        // touching the surrounding transaction group. The engine's SurveyWallHostedObject opens its own
+        // transaction and can throw (e.g. a family that cannot flip facing) before committing; the batch
+        // importer calls this to discard that one failed opening's partial changes and keep going, so a
+        // single un-hostable opening does not roll back the whole import.
+        public void AbortPendingTransaction()
+        {
+            if (m_txn != null)
+            {
+                try { if (m_txn.GetStatus() == TransactionStatus.Started) { m_txn.RollBack(); } }
+                catch { /* best effort — the group rollback is the backstop */ }
+                m_txn = null;
+            }
+        }
+
+        // IProjectModel interface implementation — true if the document already contains PKNAIL-created walls
+        // (walls carrying a stored WallState). Used by the import command's re-import guard (Q5: warn +
+        // require an empty PKNAIL context rather than silently appending a second building).
+        public bool HasPKNailWalls()
+        {
+            foreach (Element el in new FilteredElementCollector(doc).OfClass(typeof(Wall)).ToElements())
+            {
+                Wall w = el as Wall;
+                if (w != null && !isManuallyCreated(w)) { return true; }
+            }
+            return false;
+        }
+
+        // IProjectModel interface implementation — the engine extracts wall-face solid geometry through a
+        // default 3D view (see the view3D getter). A brand-new project (e.g. a stock metric template) may
+        // have no usable 3D view, which would make opening hosting fail with "No default 3D view in
+        // document". Create an isometric one up front if none exists. Runs in its own transaction.
+        public CommandResult EnsureDefault3DView(ref string msg)
+        {
+            try
+            {
+                foreach (Element vEl in new FilteredElementCollector(doc).OfClass(typeof(View3D)).ToElements())
+                {
+                    View3D existing = vEl as View3D;
+                    if (existing != null && !existing.IsTemplate && !existing.IsPerspective)
+                    { return CommandResult.Succeeded; }
+                }
+
+                ViewFamilyType vft = null;
+                foreach (Element tEl in new FilteredElementCollector(doc).OfClass(typeof(ViewFamilyType)).ToElements())
+                {
+                    ViewFamilyType t = tEl as ViewFamilyType;
+                    if (t != null && t.ViewFamily == ViewFamily.ThreeDimensional) { vft = t; break; }
+                }
+                if (vft == null)
+                {
+                    msg += @"EnsureDefault3DView: no 3D view family type available in the document";
+                    return CommandResult.Failed;
+                }
+
+                // Standalone transaction (this runs BEFORE the import transaction group, like
+                // EnsureDocumentParameters), so it must not use the group-based startTransaction helper.
+                using (Transaction t = new Transaction(doc, @"Create default 3D view"))
+                {
+                    t.Start();
+                    View3D.CreateIsometric(doc, vft.Id);
+                    t.Commit();
+                }
+                return CommandResult.Succeeded;
+            }
+            catch (Exception e)
+            {
+                msg += @"EnsureDefault3DView: " + e.Message;
+                return CommandResult.Failed;
+            }
         }
 
         // IProjectModel interface implementation

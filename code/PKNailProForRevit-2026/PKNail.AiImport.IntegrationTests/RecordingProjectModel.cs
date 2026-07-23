@@ -144,7 +144,39 @@ namespace PKNail.AiImport.IntegrationTests
             return result;
         }
 
+        // --- Wall activation / re-import guard (1.0-adaptation) ----------------------
+        /// <summary>Records each headless wall activation the absolute opening path performs.</summary>
+        public sealed class ActivateCall
+        {
+            public long WallId;
+            public bool InteriorFace;
+            public bool NearEndIsStart;
+        }
+        public readonly List<ActivateCall> ActivateWallByIdCalls = new List<ActivateCall>();
+        public int AbortPendingTransactionCount;
+
+        /// <summary>Test knob: value returned by HasPKNailWalls (re-import guard). Default false.</summary>
+        public bool HasPKNailWallsResult;
+
+        public CommandResult ActivateWallById(long wallId, bool interiorFace, bool nearEndIsStart, ref string msg)
+        {
+            ActivateWallByIdCalls.Add(new ActivateCall
+            { WallId = wallId, InteriorFace = interiorFace, NearEndIsStart = nearEndIsStart });
+            return resultFor("ActivateWallById");
+        }
+
+        public void AbortPendingTransaction()
+        { AbortPendingTransactionCount++; Calls.Add("AbortPendingTransaction"); }
+
+        public bool HasPKNailWalls()
+        { Calls.Add("HasPKNailWalls"); return HasPKNailWallsResult; }
+
         // --- Wall-hosted objects ----------------------------------------------------
+        /// <summary>Test knob: when false, SurveyWallHostedObjectPrep returns no survey family defs
+        /// (simulating a stock template with no PKNAIL families), which drives the absolute path's
+        /// direct-hosting fallback. Default true.</summary>
+        public bool ProvideSurveyFamilyDefs = true;
+
         public CommandResult SurveyWallHostedObjectPrep(SurveyDirection dir, string familyCategory,
                                                         out CommandContext cmdContext,
                                                         out WallHostedObjectSurveyParams whoParams,
@@ -152,9 +184,13 @@ namespace PKNail.AiImport.IntegrationTests
         {
             cmdContext = new CommandContext { SurveyDirection = dir };
             whoParams = new WallHostedObjectSurveyParams(familyCategory);
-            // Populate at least one family-def so SetWidth/SetHeight/... don't throw HardException.
-            whoParams.ProjectSurveyFamilyDefs.Add(new SurveyFamilyDef { Name = "Default" });
-            whoParams.SurveyFamilyDefIdx = 0;
+            // Populate at least one family-def so SetWidth/SetHeight/... don't throw HardException — unless a
+            // test is exercising the "no PKNAIL family" case.
+            if (ProvideSurveyFamilyDefs)
+            {
+                whoParams.ProjectSurveyFamilyDefs.Add(new SurveyFamilyDef { Name = "Default" });
+                whoParams.SurveyFamilyDefIdx = 0;
+            }
             return resultFor("SurveyWallHostedObjectPrep");
         }
 
@@ -218,6 +254,7 @@ namespace PKNail.AiImport.IntegrationTests
         public CommandResult Initialize(ref string msg) { return resultFor("Initialize"); }
         public CommandResult Finalize(ref string msg) { return resultFor("Finalize"); }
         public CommandResult EnsureDocumentParameters(ref string msg) { return resultFor("EnsureDocumentParameters"); }
+        public CommandResult EnsureDefault3DView(ref string msg) { return resultFor("EnsureDefault3DView"); }
         public CommandResult SetCoordinateSystemFromWall() { Calls.Add("SetCoordinateSystemFromWall"); return CommandResult.Succeeded; }
 
         public CommandResult ActivateWallPrep(out CommandContext cmdContext, out WallSurveyParams wsParams, ref string msg)

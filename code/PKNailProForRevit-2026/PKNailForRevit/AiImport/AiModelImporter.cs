@@ -156,8 +156,11 @@ namespace PKNailForRevit.AiImport
                         // Openings are best-effort: a benign skip (e.g. missing window family) is
                         // recorded but does NOT abort the import. A hard engine error (e.g. a
                         // TransactionError) still rolls everything back to keep the model consistent.
-                        OpeningOutcome outcome = PlaceOpening(proj, wall, opening, report, ref msg);
+                        // The survey chain auto-activates each new wall left-to-right, so host that way.
+                        OpeningOutcome outcome = PlaceOpening(proj, wall, opening, SurveyDirection.LeftToRight, report, ref msg);
                         if (outcome == OpeningOutcome.Placed) { report.OpeningsPlaced++; }
+                        else if (outcome == OpeningOutcome.NoFamily)
+                        { report.SkipOpening(wall.Index, oi, "no PKNAIL survey family loaded for this opening category"); }
                         else if (outcome == OpeningOutcome.Failed) { vetoed = true; break; }
                     }
 
@@ -223,11 +226,13 @@ namespace PKNailForRevit.AiImport
                         break;
                     }
 
-                    // Openings are hosted DIRECTLY on the just-placed wall. The location is intrinsic to the
-                    // wall (distance measured along it), so re-basing the wall does NOT change it — pass it
-                    // through unchanged. Openings are best-effort: a benign placement failure is recorded and
-                    // skipped, but never rolls the whole import back (matching the survey path's policy). A
-                    // metering veto still stops+rolls back per Q12.
+                    // Openings host through the SAME proven 1.0 engine flow the survey-chain path uses:
+                    // activate the just-placed wall as the engine's reference wall, then drive
+                    // SurveyWallHostedObjectPrep -> SurveyWallHostedObject (family-def resolution + door
+                    // hinge/swing + window facing). Best-effort: a single un-hostable opening rolls back only
+                    // its own inner transaction (AbortPendingTransaction) and is recorded — never the whole
+                    // import. A metering veto still stops + rolls back per Q12.
+                    bool interiorFace = (model.Orientation == SurveyOrientationKind.Flipped);
                     for (int oi = 0; oi < wall.Openings.Count; oi++)
                     {
                         MappedOpening opening = wall.Openings[oi];
@@ -240,25 +245,60 @@ namespace PKNailForRevit.AiImport
                             break;
                         }
 
-                        long openId;
-                        CommandResult openResult = proj.CreateOpeningOnWall(
-                            wallId,
-                            opening.LocationFromNearEndMeters,
-                            new Distance(opening.WidthMeters, Distance.Units.MetricMeter),
-                            new Distance(opening.HeightMeters, Distance.Units.MetricMeter),
-                            new Distance(opening.SillHeightMeters, Distance.Units.MetricMeter),
-                            opening.Kind == OpeningKind.Door,
-                            out openId, ref msg);
+                        // Reject an opening that cannot fit its host wall rather than placing it off the end.
+                        if (!OpeningFitsWall(wall, opening, out string boundsReason))
+                        {
+                            report.SkipOpening(wall.Index, oi, boundsReason);
+                            continue;
+                        }
 
-                        if (openResult == CommandResult.Succeeded)
+                        // Make this wall the engine's active/reference wall (headless), honoring the scan's
+                        // interior/exterior and the opening's near-end == wall-start convention.
+                        if (proj.ActivateWallById(wallId, interiorFace, /*nearEndIsStart*/ true, ref msg)
+                            != CommandResult.Succeeded)
                         {
-                            report.OpeningsPlaced++;
+                            report.SkipOpening(wall.Index, oi, "could not activate host wall: " + msg);
+                            msg = string.Empty;
+                            proj.AbortPendingTransaction();
+                            continue;
                         }
-                        else
+
+                        try
                         {
-                            report.SkipOpening(wall.Index, oi,
-                                "CreateOpeningOnWall failed: " + (string.IsNullOrEmpty(msg) ? openResult.ToString() : msg));
+                            // FromModel makes the stored survey direction (near end) authoritative.
+                            OpeningOutcome outcome = PlaceOpening(proj, wall, opening, SurveyDirection.FromModel, report, ref msg);
+                            if (outcome == OpeningOutcome.Placed)
+                            {
+                                report.OpeningsPlaced++;
+                            }
+                            else if (outcome == OpeningOutcome.NoFamily)
+                            {
+                                // No PKNAIL survey family loaded (e.g. a stock template). Fall back to direct
+                                // hosting so the opening still appears; note that the AI's hinge/facing could
+                                // not be applied (that needs a PKNAIL family — use the PKNAIL template).
+                                proj.AbortPendingTransaction();
+                                if (HostOpeningDirect(proj, wallId, opening, ref msg))
+                                {
+                                    report.OpeningsPlaced++;
+                                    report.AddWarning($"wall[{wall.Index}].{opening.Kind}: hosted with a default family — "
+                                        + "no PKNAIL survey family loaded, so the AI orientation (hinge/facing) was not applied");
+                                }
+                                else
+                                {
+                                    report.SkipOpening(wall.Index, oi,
+                                        "no PKNAIL survey family and direct hosting failed: " + msg);
+                                }
+                            }
+                            else { proj.AbortPendingTransaction(); }  // Skipped/Failed already recorded; keep going
                         }
+                        catch (Exception hostEx)
+                        {
+                            // A hard engine throw (e.g. family cannot flip facing) leaves an open inner
+                            // transaction; discard just that and continue with the next opening.
+                            proj.AbortPendingTransaction();
+                            report.SkipOpening(wall.Index, oi, "opening hosting failed: " + hostEx.Message);
+                        }
+                        msg = string.Empty;
                     }
 
                     if (vetoed) { break; }
@@ -266,6 +306,47 @@ namespace PKNailForRevit.AiImport
                 if (vetoed) { break; }
             }
             return vetoed;
+        }
+
+        // Fallback direct hosting (no PKNAIL survey family available): place the opening straight onto the
+        // wall via CreateOpeningOnWall. The AI's hinge/facing cannot be applied without a PKNAIL family, so
+        // the caller records a warning. Returns true on success.
+        private static bool HostOpeningDirect(IProjectModel proj, long wallId, MappedOpening opening, ref string msg)
+        {
+            long openId;
+            CommandResult r = proj.CreateOpeningOnWall(
+                wallId,
+                opening.LocationFromNearEndMeters,
+                new Distance(opening.WidthMeters, Distance.Units.MetricMeter),
+                new Distance(opening.HeightMeters, Distance.Units.MetricMeter),
+                new Distance(opening.SillHeightMeters, Distance.Units.MetricMeter),
+                opening.Kind == OpeningKind.Door,
+                out openId, ref msg);
+            return r == CommandResult.Succeeded;
+        }
+
+        // #5: an opening must lie within its host wall's length (accounting for its half-width), or Revit
+        // would place it off the end / fail. Uses the wall's derived centerline length and the near-end
+        // location. Returns false with a reason when the opening cannot fit.
+        private static bool OpeningFitsWall(MappedWall wall, MappedOpening opening, out string reason)
+        {
+            reason = null;
+            double wallLen = wall.LengthMeters;
+            double loc = opening.LocationFromNearEndMeters;
+            double halfW = Math.Max(0.0, opening.WidthMeters) / 2.0;
+            const double tol = 1e-6;
+
+            if (loc < -tol || loc > wallLen + tol)
+            {
+                reason = $"opening location {loc:0.###} m is outside the {wallLen:0.###} m host wall";
+                return false;
+            }
+            if (loc - halfW < -tol || loc + halfW > wallLen + tol)
+            {
+                reason = $"opening (center {loc:0.###} m, width {opening.WidthMeters:0.###} m) extends past the {wallLen:0.###} m host wall";
+                return false;
+            }
+            return true;
         }
 
         // Building-wide minimum X / Y across all absolute wall endpoints (the re-base origin).
@@ -335,10 +416,10 @@ namespace PKNailForRevit.AiImport
             return true;
         }
 
-        private enum OpeningOutcome { Placed, Skipped, Failed }
+        private enum OpeningOutcome { Placed, Skipped, Failed, NoFamily }
 
         private OpeningOutcome PlaceOpening(IProjectModel proj, MappedWall wall, MappedOpening opening,
-                                            ImportReport report, ref string msg)
+                                            SurveyDirection dir, ImportReport report, ref string msg)
         {
             bool isDoor = opening.Kind == OpeningKind.Door;
             string category = isDoor ? FamilyCategory.Doors : FamilyCategory.Windows;
@@ -346,7 +427,7 @@ namespace PKNailForRevit.AiImport
             CommandContext ctx;
             WallHostedObjectSurveyParams hp;
 
-            if (!ok(proj.SurveyWallHostedObjectPrep(SurveyDirection.LeftToRight, category, out ctx, out hp, ref msg),
+            if (!ok(proj.SurveyWallHostedObjectPrep(dir, category, out ctx, out hp, ref msg),
                     report, $"SurveyWallHostedObjectPrep(wall {wall.Index})", msg))
             {
                 report.SkipOpening(wall.Index, opening.Kind, "SurveyWallHostedObjectPrep failed: " + msg);
@@ -360,8 +441,10 @@ namespace PKNailForRevit.AiImport
             int count = (hp.ProjectSurveyFamilyDefs != null) ? hp.ProjectSurveyFamilyDefs.Count : 0;
             if (count == 0)
             {
-                report.SkipOpening(wall.Index, opening.Kind, "no SurveyFamilyDefs available on host wall");
-                return OpeningOutcome.Skipped;
+                // No PKNAIL survey family for this category is loaded (e.g. a stock template). Let the caller
+                // decide: the survey-chain path skips; the absolute path falls back to direct hosting so the
+                // opening still appears. (Correct hinge/facing needs a PKNAIL family — see plan risk R4.)
+                return OpeningOutcome.NoFamily;
             }
             if (idx < 0 || idx >= count) { idx = 0; }
             hp.SurveyFamilyDefIdx = idx;

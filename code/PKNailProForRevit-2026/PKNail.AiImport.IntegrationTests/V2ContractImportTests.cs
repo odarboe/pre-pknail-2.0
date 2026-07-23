@@ -41,9 +41,11 @@ namespace PKNail.AiImport.IntegrationTests
             Assert.That(result.WallsPlaced, Is.EqualTo(4));
             Assert.That(proj.CreateWallAbsoluteCalls.Count, Is.EqualTo(4), "direct absolute placement, not survey chain");
             Assert.That(proj.SurveyWallCalls.Count, Is.EqualTo(0));
-            Assert.That(result.OpeningsPlaced, Is.EqualTo(2), "openings hosted directly on their walls");
-            Assert.That(proj.CreateOpeningOnWallCalls.Count, Is.EqualTo(2), "openings routed through CreateOpeningOnWall");
-            Assert.That(proj.SurveyHostedObjectCalls.Count, Is.EqualTo(0), "survey-chain opening path not used on the absolute path");
+            Assert.That(result.OpeningsPlaced, Is.EqualTo(2), "openings hosted on their walls via the engine flow");
+            // Openings host through the proven 1.0 engine flow: activate the wall, then SurveyWallHostedObject.
+            Assert.That(proj.ActivateWallByIdCalls.Count, Is.EqualTo(2), "each host wall activated first");
+            Assert.That(proj.SurveyHostedObjectCalls.Count, Is.EqualTo(2), "hosted via SurveyWallHostedObject");
+            Assert.That(proj.CreateOpeningOnWallCalls.Count, Is.EqualTo(0), "the simplified path is not used");
             Assert.That(proj.CommitTransactionCount, Is.EqualTo(1));
             Assert.That(proj.RollBackTransactionCount, Is.EqualTo(0));
         }
@@ -65,26 +67,29 @@ namespace PKNail.AiImport.IntegrationTests
         }
 
         [Test]
-        public void V2_Import_WindowAndDoorHostedDirectly_RoutedThroughCreateOpeningOnWall()
+        public void V2_Import_WindowAndDoorHostedViaEngine_OnCorrectWalls()
         {
             var proj = new RecordingProjectModel();
             ImportReport result = new AiModelImporter().Import(proj, LoadMappedV2());
 
             Assert.That(result.OpeningsPlaced, Is.EqualTo(2), "window on wall 2 + door on wall 3, both hosted");
             Assert.That(result.Skipped.Count, Is.EqualTo(0), "no openings skipped");
-            Assert.That(proj.CreateOpeningOnWallCalls.Count, Is.EqualTo(2));
+            Assert.That(proj.SurveyHostedObjectCalls.Count, Is.EqualTo(2));
+            Assert.That(proj.CreateOpeningOnWallCalls.Count, Is.EqualTo(0));
 
-            // Wall 2 = Window, wall 3 = Door. CreateWallAbsoluteCalls[i] is the returned id for wall i.
+            // Wall 2 = Window, wall 3 = Door. CreateWallAbsoluteCalls[i] is the returned id for wall i;
+            // openings host in wall order, so activation 0 -> wall 2, activation 1 -> wall 3.
             long wall2Id = proj.CreateWallAbsoluteCalls[2].ReturnedId;
             long wall3Id = proj.CreateWallAbsoluteCalls[3].ReturnedId;
+            Assert.That(proj.ActivateWallByIdCalls.Select(a => a.WallId), Is.EqualTo(new[] { wall2Id, wall3Id }));
 
-            var window = proj.CreateOpeningOnWallCalls.Single(o => o.WallElementId == wall2Id);
-            var door = proj.CreateOpeningOnWallCalls.Single(o => o.WallElementId == wall3Id);
+            WallHostedObjectSurveyParams window = proj.SurveyHostedObjectCalls[0];
+            WallHostedObjectSurveyParams door = proj.SurveyHostedObjectCalls[1];
 
-            Assert.That(window.IsDoor, Is.False, "wall 2 opening is a window");
-            Assert.That(door.IsDoor, Is.True, "wall 3 opening is a door");
-            Assert.That(window.LocationFromStartMeters, Is.EqualTo(2.525).Within(1e-4));
-            Assert.That(door.LocationFromStartMeters, Is.EqualTo(1.2).Within(1e-4));
+            Assert.That(window.FamilyCategory.IsWindows(), Is.True, "wall 2 opening is a window");
+            Assert.That(door.FamilyCategory.IsDoors(), Is.True, "wall 3 opening is a door");
+            Assert.That(window.Location.ValueMetricMeters, Is.EqualTo(2.525).Within(1e-4));
+            Assert.That(door.Location.ValueMetricMeters, Is.EqualTo(1.2).Within(1e-4));
         }
     }
 }

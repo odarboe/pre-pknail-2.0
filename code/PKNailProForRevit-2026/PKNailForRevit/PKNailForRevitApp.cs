@@ -318,6 +318,16 @@ namespace PKNailForRevit
         internal Result SetCoordinateSystemCommand_Txn(ExternalCommandData cmdData, ref string message)
         { return executeInTxn(setCoordinateSystemCommand_Execute, cmdData, cm_cmdNameActivateWall, ref message); }
 
+        // Per-element usage metering for the AI import (Q4 — mirror 1.0: RecordUsage before each placed
+        // wall/opening). Returns a delegate the importer invokes per element; false means the balance is
+        // exhausted and the import should stop. In BYPASS_LICENSE_CHECK/debug builds RecordUsage returns
+        // true (no metering), so this does not interfere with development imports.
+        internal Func<bool> CreateImportUsageRecorder(IProjectModel proj)
+        {
+            if (m_license == null) { return () => true; }
+            return () => m_license.RecordUsage(proj.DocumentSettings.ProjectName, m_appSettings.UserName);
+        }
+
         private Result setCoordinateSystemCommand_Execute(UIDocument uidoc, IProjectModel proj, ref string message)
         { return toRevitCmdResult(proj.SetCoordinateSystemFromWall()); }
 

@@ -68,6 +68,23 @@ namespace PKNailForRevit
 
             IProjectModel proj = new RevitDocument(cmdData.Application.Application, uiDoc.Document);
 
+            // Re-import guard (Q5): don't silently append a second building onto existing PKNAIL content.
+            if (proj.HasPKNailWalls())
+            {
+                DialogResult answer = MessageBox.Show(
+                    @"This document already contains PKNAIL walls." + Environment.NewLine + Environment.NewLine +
+                    @"Importing will ADD another building on top of the existing one. For a clean result, "
+                    + @"import into an empty project instead." + Environment.NewLine + Environment.NewLine +
+                    @"Append anyway?",
+                    @"Import AI Model", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                if (answer != DialogResult.Yes) { return Result.Cancelled; }
+            }
+
+            // The engine's opening-hosting flow derives its context from the active floor-plan view's level,
+            // so make a floor plan active before importing (imports are often launched from a 3D view). This
+            // is a view change, not a document edit, so it must happen before any transaction is opened.
+            EnsureFloorPlanActive(uiDoc);
+
             // Ensure the PKNail project parameters exist (works on any document, not just a PKNail
             // template). Runs in its own transaction, before the import transaction group.
             string prepMsg = string.Empty;
@@ -78,6 +95,12 @@ namespace PKNailForRevit
                 message = prepMsg;
                 return Result.Failed;
             }
+
+            // The engine hosts openings using wall-face geometry derived from a default 3D view; a fresh
+            // metric-template project may have none. Create one now so windows/doors can host (best-effort:
+            // if this fails, walls still import and the openings report a clear skip reason).
+            string viewMsg = string.Empty;
+            proj.EnsureDefault3DView(ref viewMsg);
 
             // Epic 10.3: default project metadata — name the PKNail project after the source file if it has
             // no name yet. Best-effort: metadata must never block the geometry import.
@@ -92,9 +115,10 @@ namespace PKNailForRevit
             }
             catch { /* metadata is non-critical; proceed with the import regardless */ }
 
-            // Per-element metering hook lives in PKLicense usage tracking. Default to "allowed" here; the
-            // real usage/consumption gate is wired through TheApp's licensing flow in product builds.
-            ImportReport report = new AiModelImporter().Import(proj, mapped, recordUsage: null);
+            // Per-element metering (Q4): record usage before each placed wall/opening via the app's license,
+            // exactly like the 1.0 survey commands. In debug/bypass builds this is a no-op that returns true.
+            Func<bool> recordUsage = TheApp.Instance.CreateImportUsageRecorder(proj);
+            ImportReport report = new AiModelImporter().Import(proj, mapped, recordUsage);
 
             if (report.Committed)
             {
@@ -111,6 +135,20 @@ namespace PKNailForRevit
 
             message = report.ToString();
             return Result.Failed;
+        }
+
+        // Make a floor-plan view active if one isn't already, so the engine can resolve its level context.
+        // Prefers the lowest-level plan (where the imported walls are placed). No-op if a valid plan is active.
+        private static void EnsureFloorPlanActive(UIDocument uiDoc)
+        {
+            if (uiDoc.ActiveView is ViewPlan cur && !cur.IsTemplate && cur.GenLevel != null) { return; }
+
+            ViewPlan plan = new FilteredElementCollector(uiDoc.Document)
+                .OfClass(typeof(ViewPlan)).Cast<ViewPlan>()
+                .Where(v => !v.IsTemplate && v.GenLevel != null)
+                .OrderBy(v => v.GenLevel.Elevation)
+                .FirstOrDefault();
+            if (plan != null) { uiDoc.ActiveView = plan; }
         }
     }
 }
