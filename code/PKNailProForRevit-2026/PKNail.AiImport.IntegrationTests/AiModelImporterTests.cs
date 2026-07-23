@@ -97,9 +97,10 @@ namespace PKNail.AiImport.IntegrationTests
             new AiModelImporter().Import(proj, LoadMappedSample());
 
             Assert.That(proj.AssignedLevelsData, Is.Not.Null);
-            Assert.That(proj.AssignedLevelsData.Levels.Count, Is.EqualTo(1));
+            LevelsData levels = proj.AssignedLevelsData!;
+            Assert.That(levels.Levels.Count, Is.EqualTo(1));
 
-            LevelDataItem level = proj.AssignedLevelsData.Levels[0];
+            LevelDataItem level = levels.Levels[0];
             Assert.That(level.Floor2CeilingElev.ValueMetricMeters, Is.EqualTo(2.566).Within(1e-3),
                 "Floor-to-ceiling ~2.566 m");
             Assert.That(level.Floor2FloorElev.ValueMetricMeters, Is.EqualTo(2.866).Within(1e-3));

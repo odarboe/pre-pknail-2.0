@@ -108,6 +108,22 @@ In GitHub → Settings → Branches → protect `main`: require the status check
 tests"** and **"PKNAIL 2.0 Revit integration tests"** to pass before merging. This makes the acceptance
 criterion enforceable: no Revit-side change can merge without the integration suite green.
 
+### Analyzer baseline & remaining warnings (Epic 11d)
+
+`.editorconfig` (solution root) suppresses **CA1416** — ~2,800 "reachable on all platforms" warnings that
+are not actionable (the add-in only ever runs on Windows under Revit) and drowned out real diagnostics.
+The AI-import bridge files (`AiImport/**`, `ImportAiModelCommand.cs`) opt into full `#nullable enable`
+with nullability warnings escalated to **errors**, so the bridge stays null-safe; the rest of the plugin
+is `<Nullable>annotations</Nullable>` (annotations without a warning flood).
+
+**Remaining warnings — triage (11d.3), fix opportunistically when touching the owning code:**
+
+| Warning | Where | Action |
+| ------- | ----- | ------ |
+| SYSLIB0041 / SYSLIB0021 / SYSLIB0014 | `PKLicenseSrc` (obsolete `Rfc2898DeriveBytes` / `AesManaged` / `WebRequest`) | Modernize the crypto/web calls when next touching licensing. |
+| CS8981 (`state` type name) | `Disto.cs` (legacy rangefinder) | Rename the lower-cased type if the Disto path is revisited. |
+| NETSDK1137 | `PKNailForRevit.csproj` uses `Microsoft.NET.Sdk.WindowsDesktop` | Switch to `Microsoft.NET.Sdk` (trivial, low priority). |
+
 ## Notes
 
 - The `.las` files under `PointCloud/` are **AI-engine sample inputs**, not plugin runtime inputs.

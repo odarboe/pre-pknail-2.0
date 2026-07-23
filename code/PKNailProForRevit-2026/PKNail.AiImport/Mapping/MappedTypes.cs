@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace PKNail.AiImport.Mapping;
 
 // Revit-free enums that mirror the PKNailForRevit plugin enums *by integer value*, so the Epic 3
@@ -58,7 +60,9 @@ public sealed record MappedWall(
     /// <summary>
     /// True when this wall carries absolute plan endpoints (v2). The Epic 3 bridge places these walls
     /// directly at their real coordinates instead of chaining them via the survey engine (v1 path).
+    /// When true, <see cref="Start"/> and <see cref="End"/> are guaranteed non-null.
     /// </summary>
+    [MemberNotNullWhen(true, nameof(Start), nameof(End))]
     public bool HasAbsoluteGeometry => Start != null && End != null;
 }
 

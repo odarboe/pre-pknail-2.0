@@ -1,0 +1,26 @@
+# PKNAIL 2.0 analyzer baseline (Epic 11d). Solution-root .editorconfig covering all projects here.
+root = true
+
+[*.cs]
+# CA1416 ("reachable on all platforms") fires ~2,800 times: the WinForms/Windows-only add-in is analyzed
+# as if it could run cross-platform. PKNAIL runs ONLY on Windows under Revit, so these are not actionable
+# and they drown out real diagnostics. Suppress them so genuine warnings surface.
+dotnet_diagnostic.CA1416.severity = none
+
+# The AI-import bridge is held to a higher bar than the legacy plugin: these files opt into #nullable
+# enable, and here nullability + common correctness warnings are ERRORS so regressions cannot slip in.
+[PKNailForRevit/AiImport/**.cs]
+dotnet_diagnostic.CS8600.severity = error
+dotnet_diagnostic.CS8601.severity = error
+dotnet_diagnostic.CS8602.severity = error
+dotnet_diagnostic.CS8603.severity = error
+dotnet_diagnostic.CS8604.severity = error
+dotnet_diagnostic.CS8625.severity = error
+
+[PKNailForRevit/ImportAiModelCommand.cs]
+dotnet_diagnostic.CS8600.severity = error
+dotnet_diagnostic.CS8601.severity = error
+dotnet_diagnostic.CS8602.severity = error
+dotnet_diagnostic.CS8603.severity = error
+dotnet_diagnostic.CS8604.severity = error
+dotnet_diagnostic.CS8625.severity = error

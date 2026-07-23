@@ -1,5 +1,8 @@
+#nullable enable
+
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -35,7 +38,7 @@ namespace PKNailForRevit.AiImport
         /// Returning <c>false</c> vetoes that placement and stops the import; per Q12 the default behaviour
         /// is an atomic rollback of everything placed so far.
         /// </param>
-        public ImportReport Import(IProjectModel proj, MappedBuilding model, Func<bool> recordUsage = null)
+        public ImportReport Import(IProjectModel proj, MappedBuilding model, Func<bool>? recordUsage = null)
         {
             if (proj == null) { throw new ArgumentNullException(nameof(proj)); }
             if (model == null) { throw new ArgumentNullException(nameof(model)); }
@@ -121,7 +124,7 @@ namespace PKNailForRevit.AiImport
         // The v1 survey-chain path, factored out unchanged from the original inline loop. Returns true if
         // the import was vetoed (a failure or metering stop) and the caller should roll back.
         private bool ImportSurveyChain(IProjectModel proj, MappedBuilding model, ImportReport report,
-                                       Func<bool> recordUsage, ref string msg)
+                                       Func<bool>? recordUsage, ref string msg)
         {
             bool vetoed = false;
             foreach (MappedLevel level in model.Levels)
@@ -174,7 +177,7 @@ namespace PKNailForRevit.AiImport
         // The v2 direct-absolute path: place each wall at its own re-based real coordinates, then host each
         // of its openings DIRECTLY on the just-placed wall (CreateOpeningOnWall). Openings are best-effort.
         private bool ImportAbsolute(IProjectModel proj, MappedBuilding model, ImportReport report,
-                                    Func<bool> recordUsage, ref string msg)
+                                    Func<bool>? recordUsage, ref string msg)
         {
             // Re-base: subtract the building-wide min X / min Y from every endpoint so the model sits near
             // the project origin instead of at its far-flung survey coordinates (e.g. Y ~ -100 m). The
@@ -200,10 +203,14 @@ namespace PKNailForRevit.AiImport
                         break;
                     }
 
-                    double sx = wall.Start.XMeters - offsetX;
-                    double sy = wall.Start.YMeters - offsetY;
-                    double ex = wall.End.XMeters - offsetX;
-                    double ey = wall.End.YMeters - offsetY;
+                    // ImportAbsolute is only entered when HasAbsoluteGeometry(model) holds, so every wall's
+                    // endpoints are non-null here.
+                    MappedPoint2D start = wall.Start!;
+                    MappedPoint2D end = wall.End!;
+                    double sx = start.XMeters - offsetX;
+                    double sy = start.YMeters - offsetY;
+                    double ex = end.XMeters - offsetX;
+                    double ey = end.YMeters - offsetY;
 
                     var thickness = new Distance(wall.ThicknessMeters, Distance.Units.MetricMeter);
                     var height = new Distance(level.Floor2CeilingMeters, Distance.Units.MetricMeter);
@@ -246,7 +253,7 @@ namespace PKNailForRevit.AiImport
                         }
 
                         // Reject an opening that cannot fit its host wall rather than placing it off the end.
-                        if (!OpeningFitsWall(wall, opening, out string boundsReason))
+                        if (!OpeningFitsWall(wall, opening, out string? boundsReason))
                         {
                             report.SkipOpening(wall.Index, oi, boundsReason);
                             continue;
@@ -328,7 +335,7 @@ namespace PKNailForRevit.AiImport
         // #5: an opening must lie within its host wall's length (accounting for its half-width), or Revit
         // would place it off the end / fail. Uses the wall's derived centerline length and the near-end
         // location. Returns false with a reason when the opening cannot fit.
-        private static bool OpeningFitsWall(MappedWall wall, MappedOpening opening, out string reason)
+        private static bool OpeningFitsWall(MappedWall wall, MappedOpening opening, [NotNullWhen(false)] out string? reason)
         {
             reason = null;
             double wallLen = wall.LengthMeters;
@@ -399,12 +406,10 @@ namespace PKNailForRevit.AiImport
                 wp.SurveyorCompassDirection = (CompassDirection)(int)model.FirstWallCompass;
 
                 // Orientation (interior vs exterior scan) is carried on the command context (Q-orientation).
-                if (ctx != null)
-                {
-                    ctx.SurveyOrientation = (model.Orientation == SurveyOrientationKind.Flipped)
-                        ? SurveyOrientation.Flipped
-                        : SurveyOrientation.NotFlipped;
-                }
+                // ctx is guaranteed non-null after a successful SurveyWallPrep (checked via ok() above).
+                ctx.SurveyOrientation = (model.Orientation == SurveyOrientationKind.Flipped)
+                    ? SurveyOrientation.Flipped
+                    : SurveyOrientation.NotFlipped;
             }
 
             if (!ok(proj.SurveyWall(ctx, wp, ref msg), report, $"SurveyWall(wall {wall.Index})", msg))

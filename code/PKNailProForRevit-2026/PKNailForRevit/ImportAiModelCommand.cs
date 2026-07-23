@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using System.Linq;
 using System.Text;
@@ -143,7 +145,7 @@ namespace PKNailForRevit
         {
             if (uiDoc.ActiveView is ViewPlan cur && !cur.IsTemplate && cur.GenLevel != null) { return; }
 
-            ViewPlan plan = new FilteredElementCollector(uiDoc.Document)
+            ViewPlan? plan = new FilteredElementCollector(uiDoc.Document)
                 .OfClass(typeof(ViewPlan)).Cast<ViewPlan>()
                 .Where(v => !v.IsTemplate && v.GenLevel != null)
                 .OrderBy(v => v.GenLevel.Elevation)

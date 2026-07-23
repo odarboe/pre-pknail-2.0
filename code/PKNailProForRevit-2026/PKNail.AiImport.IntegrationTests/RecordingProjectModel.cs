@@ -29,8 +29,8 @@ namespace PKNail.AiImport.IntegrationTests
             public double StartYMeters;
             public double EndXMeters;
             public double EndYMeters;
-            public Distance Thickness;
-            public Distance Height;
+            public Distance Thickness = null!;   // always set via the object initializer at record time
+            public Distance Height = null!;
             public int LevelIdx;
             public long ReturnedId;
         }
@@ -42,9 +42,9 @@ namespace PKNail.AiImport.IntegrationTests
         {
             public long WallElementId;
             public double LocationFromStartMeters;
-            public Distance Width;
-            public Distance Height;
-            public Distance SillHeight;
+            public Distance Width = null!;       // always set via the object initializer at record time
+            public Distance Height = null!;
+            public Distance SillHeight = null!;
             public bool IsDoor;
             public long ReturnedId;
         }
@@ -55,14 +55,14 @@ namespace PKNail.AiImport.IntegrationTests
         public int StartTransactionCount;
         public int CommitTransactionCount;
         public int RollBackTransactionCount;
-        public string TransactionName;
+        public string? TransactionName;
 
-        public LevelsData AssignedLevelsData;
-        public DocumentSettings AssignedDocumentSettings;
+        public LevelsData? AssignedLevelsData;
+        public DocumentSettings? AssignedDocumentSettings;
 
         // --- Forced-failure controls ------------------------------------------------
         /// <summary>When non-null, the named step returns this result instead of Succeeded.</summary>
-        public string FailAtStep;
+        public string? FailAtStep;
         public CommandResult FailWith = CommandResult.Failed;
 
         private CommandResult resultFor(string step)

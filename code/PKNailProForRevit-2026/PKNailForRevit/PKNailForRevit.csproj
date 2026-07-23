@@ -8,7 +8,9 @@
     <AssemblyName>PKNailForRevit</AssemblyName>
     <RootNamespace>PKNailForRevit</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <Nullable>disable</Nullable>
+    <!-- Epic 11d: annotations-only so the whole (legacy) plugin can use `?` without a nullable-warning
+         flood; the AI-import bridge files opt into full `#nullable enable` per-file for real null-safety. -->
+    <Nullable>annotations</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <ProjectGuid>{EB0835DD-2B0A-42DC-B64D-909938BDC421}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
