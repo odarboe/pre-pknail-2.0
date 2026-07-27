@@ -64,9 +64,15 @@ namespace PKNail.AiImport.IntegrationTests
         public string? FailAtStep;
         public CommandResult FailWith = CommandResult.Failed;
 
+        /// <summary>When non-null, the named step THROWS instead of returning — exercises the importer's
+        /// outer exception handler (real engine methods can throw, e.g. a family that cannot flip facing).</summary>
+        public string? ThrowAtStep;
+
         private CommandResult resultFor(string step)
         {
             Calls.Add(step);
+            if (ThrowAtStep != null && step.StartsWith(ThrowAtStep, StringComparison.Ordinal))
+            { throw new InvalidOperationException("forced throw at " + step); }
             if (FailAtStep != null && step.StartsWith(FailAtStep, StringComparison.Ordinal))
             { return FailWith; }
             return CommandResult.Succeeded;

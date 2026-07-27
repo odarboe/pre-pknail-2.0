@@ -198,5 +198,38 @@ namespace PKNail.AiImport.IntegrationTests
                 Assert.That(proj.Calls, Has.None.EqualTo(f), $"importer should not call {f}");
             }
         }
+
+        [Test]
+        public void SurveyChain_NoFamily_OpeningSkipped_StillCommits()
+        {
+            // v1 survey-chain path with no PKNAIL survey family: the single window is SKIPPED (the v1 path
+            // skips rather than falling back to direct hosting), but the 9 walls still import and commit.
+            var proj = new RecordingProjectModel { ProvideSurveyFamilyDefs = false };
+
+            ImportReport result = new AiModelImporter().Import(proj, LoadMappedSample());
+
+            Assert.That(result.Committed, Is.True, result.ToString());
+            Assert.That(result.WallsPlaced, Is.EqualTo(9));
+            Assert.That(result.OpeningsPlaced, Is.EqualTo(0), "the window is skipped without a PKNAIL family");
+            Assert.That(result.Skipped.Count, Is.EqualTo(1));
+            Assert.That(result.Skipped, Has.Some.Contain("no PKNAIL survey family"));
+            Assert.That(proj.CreateOpeningOnWallCalls.Count, Is.EqualTo(0), "the v1 path does NOT fall back to direct hosting");
+        }
+
+        [Test]
+        public void Import_StepThrows_CaughtAndReportedAsFailure_RolledBack()
+        {
+            // A step that THROWS (not just returns an error) is caught by Import's outer handler, recorded
+            // as a failure, and rolled back — the exception never propagates out of Import().
+            var proj = new RecordingProjectModel { ThrowAtStep = "SurveyWall" };
+
+            ImportReport result = new AiModelImporter().Import(proj, LoadMappedSample());
+
+            Assert.That(result.Committed, Is.False);
+            Assert.That(result.RolledBack, Is.True);
+            Assert.That(result.HasFailures, Is.True);
+            Assert.That(result.Failures, Has.Some.Contain("exception:"));
+            Assert.That(proj.CommitTransactionCount, Is.EqualTo(0));
+        }
     }
 }

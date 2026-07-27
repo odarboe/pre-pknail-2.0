@@ -265,5 +265,40 @@ namespace PKNail.AiImport.IntegrationTests
             Assert.That(proj.RollBackTransactionCount, Is.EqualTo(0), "the group is not rolled back");
             Assert.That(proj.CommitTransactionCount, Is.EqualTo(1));
         }
+
+        [Test]
+        public void Absolute_WallPlacementFails_RollsBackWholeImport()
+        {
+            // A hard WALL failure on the primary v2 path is atomic: the whole import rolls back (walls are
+            // the core; unlike best-effort openings). Parallels the v1 forced-failure test for the v2 path.
+            var proj = new RecordingProjectModel { FailAtStep = "CreateWallAbsolute", FailWith = CommandResult.Failed };
+
+            ImportReport result = new AiModelImporter().Import(proj, LoadMappedRealV2());
+
+            Assert.That(result.Committed, Is.False);
+            Assert.That(result.RolledBack, Is.True);
+            Assert.That(result.HasFailures, Is.True);
+            Assert.That(proj.CommitTransactionCount, Is.EqualTo(0));
+            Assert.That(proj.RollBackTransactionCount, Is.EqualTo(1));
+            Assert.That(result.WallsPlaced, Is.EqualTo(0), "the first wall failed, so none were placed");
+        }
+
+        [Test]
+        public void Absolute_MeteringVetoStopsAndRollsBack()
+        {
+            // Per Q12, a per-element metering veto stops the import and rolls the whole group back on the
+            // primary v2 path too. Allow 3 placements, then veto.
+            var proj = new RecordingProjectModel();
+            int budget = 3;
+            Func<bool> recordUsage = () => budget-- > 0;
+
+            ImportReport result = new AiModelImporter().Import(proj, LoadMappedRealV2(), recordUsage);
+
+            Assert.That(result.MeteringStopped, Is.True);
+            Assert.That(result.Committed, Is.False);
+            Assert.That(result.RolledBack, Is.True);
+            Assert.That(proj.CreateWallAbsoluteCalls.Count, Is.EqualTo(3), "only 3 placements were allowed");
+            Assert.That(proj.CommitTransactionCount, Is.EqualTo(0));
+        }
     }
 }
