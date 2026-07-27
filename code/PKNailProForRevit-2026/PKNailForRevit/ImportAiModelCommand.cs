@@ -68,7 +68,10 @@ namespace PKNailForRevit
 
             MappedBuilding mapped = AiModelMapper.Map(building);
 
-            IProjectModel proj = new RevitDocument(cmdData.Application.Application, uiDoc.Document);
+            // Concrete at the composition root: RevitDocument implements both the full IProjectModel (used
+            // for EnsureDocumentParameters / HasPKNailWalls / DocumentSettings below) and the focused
+            // IAiImportTarget the importer consumes.
+            RevitDocument proj = new RevitDocument(cmdData.Application.Application, uiDoc.Document);
 
             // Re-import guard (Q5): don't silently append a second building onto existing PKNAIL content.
             if (proj.HasPKNailWalls())

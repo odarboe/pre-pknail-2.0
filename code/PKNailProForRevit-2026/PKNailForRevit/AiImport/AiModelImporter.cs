@@ -11,7 +11,7 @@ using PKNail.AiImport.Mapping;
 namespace PKNailForRevit.AiImport
 {
     /// <summary>
-    /// Epic 3 bridge — drives an injected <see cref="IProjectModel"/> from a Revit-free
+    /// Epic 3 bridge — drives an injected <see cref="IAiImportTarget"/> from a Revit-free
     /// <see cref="MappedBuilding"/>. This is the ONLY place the meters→<see cref="Distance"/> conversion,
     /// the enum→plugin-type translation and the Revit transaction orchestration live; the
     /// <c>PKNail.AiImport</c> library stays Revit-free.
@@ -23,7 +23,7 @@ namespace PKNailForRevit.AiImport
     /// metering veto rolls the entire import back and reports it.</item>
     /// <item><see cref="Import"/> never throws; everything is captured into the returned
     /// <see cref="ImportReport"/>.</item>
-    /// <item>Only <see cref="IProjectModel"/> is touched — no <c>DrivableForm</c>/<c>Disto</c>/dialog types.</item>
+    /// <item>Only <see cref="IAiImportTarget"/> is touched — no <c>DrivableForm</c>/<c>Disto</c>/dialog types.</item>
     /// </list>
     /// </summary>
     public sealed class AiModelImporter
@@ -38,7 +38,7 @@ namespace PKNailForRevit.AiImport
         /// Returning <c>false</c> vetoes that placement and stops the import; per Q12 the default behaviour
         /// is an atomic rollback of everything placed so far.
         /// </param>
-        public ImportReport Import(IProjectModel proj, MappedBuilding model, Func<bool>? recordUsage = null)
+        public ImportReport Import(IAiImportTarget proj, MappedBuilding model, Func<bool>? recordUsage = null)
         {
             if (proj == null) { throw new ArgumentNullException(nameof(proj)); }
             if (model == null) { throw new ArgumentNullException(nameof(model)); }
@@ -100,7 +100,7 @@ namespace PKNailForRevit.AiImport
 
         // Move any warnings the project collected during placement into the report. EndImportWarningCapture
         // is idempotent, so calling this on both the normal and exception paths never double-counts.
-        private static void DrainWarnings(IProjectModel proj, ImportReport report)
+        private static void DrainWarnings(IAiImportTarget proj, ImportReport report)
         {
             foreach (string w in proj.EndImportWarningCapture()) { report.AddWarning(w); }
         }
@@ -123,7 +123,7 @@ namespace PKNailForRevit.AiImport
 
         // The v1 survey-chain path, factored out unchanged from the original inline loop. Returns true if
         // the import was vetoed (a failure or metering stop) and the caller should roll back.
-        private bool ImportSurveyChain(IProjectModel proj, MappedBuilding model, ImportReport report,
+        private bool ImportSurveyChain(IAiImportTarget proj, MappedBuilding model, ImportReport report,
                                        Func<bool>? recordUsage, ref string msg)
         {
             bool vetoed = false;
@@ -176,7 +176,7 @@ namespace PKNailForRevit.AiImport
 
         // The v2 direct-absolute path: place each wall at its own re-based real coordinates, then host each
         // of its openings DIRECTLY on the just-placed wall (CreateOpeningOnWall). Openings are best-effort.
-        private bool ImportAbsolute(IProjectModel proj, MappedBuilding model, ImportReport report,
+        private bool ImportAbsolute(IAiImportTarget proj, MappedBuilding model, ImportReport report,
                                     Func<bool>? recordUsage, ref string msg)
         {
             // Re-base: subtract the building-wide min X / min Y from every endpoint so the model sits near
@@ -318,7 +318,7 @@ namespace PKNailForRevit.AiImport
         // Fallback direct hosting (no PKNAIL survey family available): place the opening straight onto the
         // wall via CreateOpeningOnWall. The AI's hinge/facing cannot be applied without a PKNAIL family, so
         // the caller records a warning. Returns true on success.
-        private static bool HostOpeningDirect(IProjectModel proj, long wallId, MappedOpening opening, ref string msg)
+        private static bool HostOpeningDirect(IAiImportTarget proj, long wallId, MappedOpening opening, ref string msg)
         {
             long openId;
             CommandResult r = proj.CreateOpeningOnWall(
@@ -374,7 +374,7 @@ namespace PKNailForRevit.AiImport
             if (minY == double.MaxValue) { minY = 0.0; }
         }
 
-        private bool PlaceWall(IProjectModel proj, MappedBuilding model, MappedLevel level, MappedWall wall,
+        private bool PlaceWall(IAiImportTarget proj, MappedBuilding model, MappedLevel level, MappedWall wall,
                                ImportReport report, ref string msg)
         {
             CommandContext ctx;
@@ -423,7 +423,7 @@ namespace PKNailForRevit.AiImport
 
         private enum OpeningOutcome { Placed, Skipped, Failed, NoFamily }
 
-        private OpeningOutcome PlaceOpening(IProjectModel proj, MappedWall wall, MappedOpening opening,
+        private OpeningOutcome PlaceOpening(IAiImportTarget proj, MappedWall wall, MappedOpening opening,
                                             SurveyDirection dir, ImportReport report, ref string msg)
         {
             bool isDoor = opening.Kind == OpeningKind.Door;
@@ -486,7 +486,7 @@ namespace PKNailForRevit.AiImport
         // Merge the imported level data INTO the document's existing Revit levels (mapped bottom-up).
         // We update existing LevelDataItems (which carry ElementId + ProjectElev) rather than creating
         // bare ones, so the levels stay linked to real Revit Level elements and walls can host on them.
-        private LevelsData BuildLevelsData(IProjectModel proj, MappedBuilding model, ImportReport report)
+        private LevelsData BuildLevelsData(IAiImportTarget proj, MappedBuilding model, ImportReport report)
         {
             LevelsData levelsData = proj.LevelsData; // existing doc levels (ElementId + ProjectElev populated)
 
@@ -528,7 +528,7 @@ namespace PKNailForRevit.AiImport
             return levelsData;
         }
 
-        private void Rollback(IProjectModel proj, ImportReport report)
+        private void Rollback(IAiImportTarget proj, ImportReport report)
         {
             string msg = string.Empty;
             try

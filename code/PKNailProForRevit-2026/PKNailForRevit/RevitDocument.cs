@@ -13,7 +13,7 @@ namespace PKNailForRevit
 {
     // The AI-import surface (v2 absolute placement, engine activation, warning capture, the re-import
     // guard, and the RAII TransactionScope) lives in the partial file RevitDocument.AiImport.cs (Epic 11c).
-    public sealed partial class RevitDocument : IProjectModel
+    public sealed partial class RevitDocument : IProjectModel, IAiImportTarget
     {
         #region Data Members
         private Application m_revitApp;

@@ -124,6 +124,24 @@ is `<Nullable>annotations</Nullable>` (annotations without a warning flood).
 | CS8981 (`state` type name) | `Disto.cs` (legacy rangefinder) | Rename the lower-cased type if the Disto path is revisited. |
 | NETSDK1137 | `PKNailForRevit.csproj` uses `Microsoft.NET.Sdk.WindowsDesktop` | Switch to `Microsoft.NET.Sdk` (trivial, low priority). |
 
+### Opening-path strategy (Epic 11e.2)
+
+The v2 importer has **two** opening-placement paths, by design:
+
+1. **Primary — the 1.0 engine flow** (`ActivateWallById` → `SurveyWallHostedObjectPrep` →
+   `SurveyWallHostedObject`). Applies the AI's family-def resolution + door hinge/swing + window facing.
+   Requires a **PKNAIL survey family** to be loaded in the document (the shipped `PKNail *.rfa` families,
+   present in the PKNail template).
+2. **Fallback — `CreateOpeningOnWall`** (direct hosting). Used only when no PKNAIL survey family is
+   available (e.g. a stock metric template). The opening still appears, but the AI orientation
+   (hinge/facing) is **not** applied; the import report warns per opening.
+
+**Decision:** keep the fallback — it guarantees openings are never silently lost on a non-PKNAIL template,
+and it degrades honestly (a report warning, not a wrong-but-silent result). The remaining fidelity gap
+(orientation on stock templates) is closed by the **optional** family auto-load (Epic 11e.3): load a
+default PKNAIL window/door family when none is present, so the engine path runs everywhere. Until that
+lands, use the PKNAIL template for full-fidelity openings.
+
 ## Notes
 
 - The `.las` files under `PointCloud/` are **AI-engine sample inputs**, not plugin runtime inputs.
