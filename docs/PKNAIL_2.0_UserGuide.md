@@ -81,6 +81,13 @@ read for backward compatibility but cannot reliably close an orthogonal room on 
 
 - **Orthogonal, interior scans.** Tuned for interior SLAM datasets with orthogonal walls and limited
   complexity. Non-orthogonal / exterior scans are not a Phase-1 target.
+- **Near-square walls are placed exactly as delivered.** On the v2 absolute path the plugin places
+  `Start`/`End` verbatim — it does **not** square them up. If the AI engine exports a wall that is
+  *almost* axis-aligned (say 0.1° off), it stays that way in Revit, so corners may not meet and joins
+  can fail. The import report now flags this per wall, e.g.
+  `~ Levels[0].Walls[3].Endpoints: Wall is 0.113° off square; its far end sits 13.6 mm off axis-aligned.`
+  It is a **warning, not an error** — the import still runs. The fix belongs upstream: ask the AI engine
+  for axis-aligned coordinates. (Deliberately angled walls, more than 2° off square, are not reported.)
 - **Openings need a loaded family.** Doors/windows host against the first loadable family of the right
   category in the document. With no such family loaded, the opening is **skipped** (reported), not forced.
 - **`FamilyDefIdx` is always 0** from the AI engine, so non-default families can't yet be requested per

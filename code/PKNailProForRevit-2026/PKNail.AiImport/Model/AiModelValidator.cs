@@ -10,6 +10,20 @@ public static class AiModelValidator
     private const double Epsilon = 1e-6;
     private const double TwoPi = Math.PI * 2.0;
 
+    /// <summary>
+    /// Below this deviation from square (degrees) a wall counts as axis-aligned; anything smaller is
+    /// floating-point noise from the AI engine's coordinate export, not real skew.
+    /// </summary>
+    private const double OrthogonalNoiseFloorDeg = 0.01;
+
+    /// <summary>
+    /// Above this deviation from square (degrees) a wall is treated as <i>deliberately</i> angled rather
+    /// than as drift, and is not reported. Keeping the drift warning to a narrow band means genuinely
+    /// diagonal geometry stays quiet while the "meant to be square but isn't" case — the one Phase 1
+    /// cannot correct — is always surfaced.
+    /// </summary>
+    private const double OrthogonalDriftCeilingDeg = 2.0;
+
     public static ValidationReport Validate(DetectedBuilding building)
     {
         var report = new ValidationReport();
@@ -70,6 +84,25 @@ public static class AiModelValidator
                 : $"Must be positive: {w.LengthMeters}.");
         if (w.ThicknessMeters <= Epsilon)
             r.Error($"{path}.ThicknessMeters", $"Must be positive: {w.ThicknessMeters}.");
+
+        // Near-orthogonal drift on the v2 absolute path. Phase 1 targets orthogonal interiors, and the
+        // bridge places Start/End verbatim (the mapper's snapping only ever applied to the v1
+        // CornerAngleRad chain), so a wall that is *almost* square stays almost square in Revit: corners
+        // do not meet and joins fail. Nothing downstream corrects this, so say so at import time.
+        if (w.HasEndpoints && effectiveLength > Epsilon)
+        {
+            double deviationRad = Mapping.WallGeometry.OrthogonalDeviation(w.StartMeters!, w.EndMeters!);
+            double deviationDeg = deviationRad * 180.0 / Math.PI;
+            if (deviationDeg > OrthogonalNoiseFloorDeg && deviationDeg <= OrthogonalDriftCeilingDeg)
+            {
+                double offsetMm = effectiveLength * Math.Tan(deviationRad) * 1000.0;
+                r.Warn($"{path}.Endpoints",
+                    $"Wall is {deviationDeg:0.###}° off square; its far end sits {offsetMm:0.#} mm "
+                    + "off axis-aligned. Endpoints are placed verbatim (no orthogonal snapping on the v2 "
+                    + "path), so near-square walls may not meet cleanly. Ask the AI engine to emit "
+                    + "axis-aligned coordinates.");
+            }
+        }
 
         // CornerAngleRad is only a v1 concern (v2 derives the angle from endpoints).
         if (!w.HasEndpoints)

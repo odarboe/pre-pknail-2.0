@@ -39,6 +39,14 @@
     <None Include="..\..\..\docs\new_final_combined_pknail.json"
           Link="Fixtures\new_final_combined_pknail.json"
           CopyToOutputDirectory="PreserveNewest" />
+    <!-- Latest AI-engine exports, kept as a regression pair for the orthogonality guard:
+         v4.0 carries ~0.11° near-square drift; v4.1 is the corrected, axis-aligned export. -->
+    <None Include="..\..\..\docs\final_combined_pknail_v4.0_bug.json"
+          Link="Fixtures\final_combined_pknail_v4.0_bug.json"
+          CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\..\docs\final_combined_pknail_v4.1.json"
+          Link="Fixtures\final_combined_pknail_v4.1.json"
+          CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

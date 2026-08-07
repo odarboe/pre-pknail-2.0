@@ -20,6 +20,25 @@ internal static class WallGeometry
     }
 
     /// <summary>
+    /// How far this wall's bearing deviates from the nearest multiple of 90° in the plan frame, in
+    /// radians and always non-negative (range <c>[0, π/4]</c>). <c>0</c> means perfectly axis-aligned.
+    /// <para>
+    /// The v2 absolute path places <c>Start</c>/<c>End</c> verbatim — the mapper's orthogonal snapping
+    /// only ever applied to the v1 <c>CornerAngleRad</c> chain — so near-square drift from the AI engine
+    /// survives into Revit uncorrected. <see cref="Model.AiModelValidator"/> uses this to warn about it.
+    /// </para>
+    /// </summary>
+    public static double OrthogonalDeviation(DetectedPoint2D a, DetectedPoint2D b)
+    {
+        double dx = b.X - a.X, dy = b.Y - a.Y;
+        if (dx == 0.0 && dy == 0.0) { return 0.0; }
+
+        const double Quarter = System.Math.PI / 2.0;
+        double bearing = System.Math.Atan2(dy, dx);
+        return System.Math.Abs(bearing - (System.Math.Round(bearing / Quarter) * Quarter));
+    }
+
+    /// <summary>
     /// Winding sign of the wall loop using the start points: <c>+1</c> for CCW, <c>-1</c> for CW.
     /// Used to make the interior-angle computation independent of the order the AI engine walked the room.
     /// </summary>
