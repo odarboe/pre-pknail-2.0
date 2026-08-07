@@ -459,6 +459,18 @@ packages/
 !code/PKNailProForRevit-2026/RevitAPI/RevitAPIUI.dll
 !code/PKNailProForRevit-2026/RevitAPI/RevitAddInUtility.dll
 
+# Shipped evaluation build (/release/). Committed deliberately: this is the runnable artifact
+# PointKnown and its reviewers install into Revit 2026 without building anything. Binaries only —
+# no build intermediates, and the folder is rebuilt from source via
+# `dotnet build PKNailForRevit/PKNailForRevit.csproj -c Evaluation`.
+#
+# The `[Rr]elease/` rule near the top of this file exists to ignore bin/Release build output, but it
+# is unanchored so it also swallows this deliverable folder. Re-include it anchored at the repo root
+# (git cannot re-include a file whose parent DIRECTORY is excluded, so the directory must be
+# un-excluded first); bin/Release stays ignored because that pattern is not rooted.
+!/release/
+!release/**/*.dll
+
 # Mercurial VCS metadata (never belongs in git)
 .hg/
 docs/point_cloud/full_test_fille.las

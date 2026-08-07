@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--
+  PKNail Pro 2.0 - Revit 2026 add-in manifest (EVALUATION build).
+
+  EDIT THE <Assembly> LINE BELOW to the full path of PKNailForRevit.dll on your machine,
+  then copy this file to:   C:\ProgramData\Autodesk\Revit\Addins\2026\
+
+  See RUN-ME-FIRST.md in this folder for the 5-step walkthrough.
+-->
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>PKNail Pro</Name>
+    <Assembly>C:\PKNail-2.0-Evaluation\PKNailForRevit.dll</Assembly>
+    <AddInId>604B1052-F742-4951-8576-C261D1893108</AddInId>
+    <FullClassName>PKNailForRevit.PKNailForRevitApp</FullClassName>
+    <VendorId>PKWN</VendorId>
+  </AddIn>
+</RevitAddIns>

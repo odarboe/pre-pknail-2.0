@@ -1,0 +1,348 @@
+{
+  "SchemaVersion": "2.0",
+  "Units": "meters",
+  "AngleUnits": "radians",
+  "CoordinateSystem": {
+    "Frame": "plan",
+    "Handedness": "right",
+    "ZUp": true
+  },
+  "IsScanFromInterior": true,
+  "FirstWallCompassDirection": 0,
+  "Levels": [
+    {
+      "Name": "Level 1",
+      "ElevationMeters": 2.404008492616898,
+      "Floor2FloorMeters": 2.874448644849409,
+      "Floor2CeilingMeters": 2.5744486448494093,
+      "HasDropCeiling": false,
+      "DropCeilingHeightMeters": 0.0,
+      "TypicalWindowSillHeightMeters": 0.9,
+      "TypicalWindowHeadHeightMeters": 2.1,
+      "IsClosed": false,
+      "Walls": [
+        {
+          "StartMeters": {
+            "X": 5.566904850086809,
+            "Y": -102.09592447058198
+          },
+          "EndMeters": {
+            "X": 10.566895149913192,
+            "Y": -102.08607552941804
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 4.566905965606773,
+            "Y": -106.04705709881581
+          },
+          "EndMeters": {
+            "X": 10.716894034393228,
+            "Y": -106.03494290118418
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 4.2665990163960945,
+            "Y": -97.70168869034643
+          },
+          "EndMeters": {
+            "X": 11.179951904595683,
+            "Y": -97.68807082275902
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 8.030974121572154,
+            "Y": -102.6934976209
+          },
+          "EndMeters": {
+            "X": 10.566897540105483,
+            "Y": -102.6885023791
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 4.416901115519965,
+            "Y": -101.14213262823385
+          },
+          "EndMeters": {
+            "X": 5.566898884480035,
+            "Y": -101.13986737176616
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 10.57349879057983,
+            "Y": -104.44099350088369
+          },
+          "EndMeters": {
+            "X": 10.560301209420171,
+            "Y": -97.74100649911632
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 10.718426585880408,
+            "Y": -106.04099849647308
+          },
+          "EndMeters": {
+            "X": 10.715373414119593,
+            "Y": -104.4910015035269
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 5.5711842894063075,
+            "Y": -102.09099578042448
+          },
+          "EndMeters": {
+            "X": 5.562615710593693,
+            "Y": -97.74100421957552
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": [
+            {
+              "LocationFromStartMeters": 2.05,
+              "WidthMeters": 0.6000000000000001,
+              "HeightMeters": 1.9249999999999998,
+              "SillHeightMeters": 0.0,
+              "Kind": "Door",
+              "HingeSideIndex": 0,
+              "SwingDirectionIndex": 0,
+              "FacingOrientationIndex": 0,
+              "FamilyDefIdx": 0
+            },
+            {
+              "LocationFromStartMeters": 0.3225808823529402,
+              "WidthMeters": 0.6451617647058804,
+              "HeightMeters": 2.5744486448494093,
+              "SillHeightMeters": 0.0,
+              "Kind": "Door",
+              "HingeSideIndex": 0,
+              "SwingDirectionIndex": 0,
+              "FacingOrientationIndex": 0,
+              "FamilyDefIdx": 0
+            }
+          ]
+        },
+        {
+          "StartMeters": {
+            "X": 4.569706948231719,
+            "Y": -106.04099723545052
+          },
+          "EndMeters": {
+            "X": 4.564093051768282,
+            "Y": -103.19100276454948
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": [
+            {
+              "LocationFromStartMeters": 2.449999999999998,
+              "WidthMeters": 0.7999999999999998,
+              "HeightMeters": 2.5744486448494093,
+              "SillHeightMeters": 0.0,
+              "Kind": "Door",
+              "HingeSideIndex": 0,
+              "SwingDirectionIndex": 0,
+              "FacingOrientationIndex": 0,
+              "FamilyDefIdx": 0
+            }
+          ]
+        },
+        {
+          "StartMeters": {
+            "X": 4.4175643220428435,
+            "Y": -101.1409993457125
+          },
+          "EndMeters": {
+            "X": 4.4162356779571565,
+            "Y": -100.46648952483024
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 11.217687915293114,
+            "Y": -103.19099922398611
+          },
+          "EndMeters": {
+            "X": 11.216112084706888,
+            "Y": -102.39100077601388
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 4.171903431505703,
+            "Y": -96.96631212844963
+          },
+          "EndMeters": {
+            "X": 7.709467997065726,
+            "Y": -96.95934386187699
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 4.253059169186495,
+            "Y": -99.69114762624002
+          },
+          "EndMeters": {
+            "X": 5.566898725550348,
+            "Y": -99.68855963552133
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 4.416901115519965,
+            "Y": -100.46762149877658
+          },
+          "EndMeters": {
+            "X": 5.566898884480035,
+            "Y": -100.46535624230889
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 4.566900358174486,
+            "Y": -104.68446074223307
+          },
+          "EndMeters": {
+            "X": 4.936145079913292,
+            "Y": -104.68373340691413
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 10.566900630511284,
+            "Y": -103.22589831630711
+          },
+          "EndMeters": {
+            "X": 11.216899369488715,
+            "Y": -103.2246179539558
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 8.031562598147474,
+            "Y": -102.69099941798959
+          },
+          "EndMeters": {
+            "X": 8.030380725207802,
+            "Y": -102.09100058201042
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 5.3669,
+            "Y": -106.04099810846614
+          },
+          "EndMeters": {
+            "X": 5.3669,
+            "Y": -101.14026132797966
+          },
+          "ThicknessMeters": 0.2,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "Openings": [
+            {
+              "LocationFromStartMeters": 3.4000000000000004,
+              "WidthMeters": 0.6000000000000001,
+              "HeightMeters": 1.9249999999999998,
+              "SillHeightMeters": 0.0,
+              "Kind": "Door",
+              "HingeSideIndex": 0,
+              "SwingDirectionIndex": 0,
+              "FacingOrientationIndex": 0,
+              "FamilyDefIdx": 0
+            },
+            {
+              "LocationFromStartMeters": 2.3500000000000005,
+              "WidthMeters": 0.6000000000000001,
+              "HeightMeters": 1.9249999999999998,
+              "SillHeightMeters": 0.0,
+              "Kind": "Door",
+              "HingeSideIndex": 0,
+              "SwingDirectionIndex": 0,
+              "FacingOrientationIndex": 0,
+              "FamilyDefIdx": 0
+            },
+            {
+              "LocationFromStartMeters": 4.525,
+              "WidthMeters": 0.65,
+              "HeightMeters": 1.9249999999999998,
+              "SillHeightMeters": 0.0,
+              "Kind": "Door",
+              "HingeSideIndex": 0,
+              "SwingDirectionIndex": 0,
+              "FacingOrientationIndex": 0,
+              "FamilyDefIdx": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
