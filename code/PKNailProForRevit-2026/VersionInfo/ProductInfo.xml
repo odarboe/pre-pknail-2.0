@@ -2,12 +2,12 @@
 <ProductInfo>
   <ProductBaseName>PKNail Pro For Revit</ProductBaseName>
   <ProductFolderName>PKNailProForRevit</ProductFolderName>
-  <ProductRevitVersion>2017</ProductRevitVersion>
+  <ProductRevitVersion>2026</ProductRevitVersion>
   <ProductVendorName>PointKnown LLC</ProductVendorName>
   <ProductVendorURLBase>http://www.pointknown.com</ProductVendorURLBase>
   <ProductVendorSupportURLPath>/support</ProductVendorSupportURLPath>
   <ProductVendorLoginURLPath>/purchase</ProductVendorLoginURLPath>
   <ProductVendorESDURLPath>/esd</ProductVendorESDURLPath>
   <ProductVendorPurchaseURLPath>/purchase</ProductVendorPurchaseURLPath>
-  <ProductThisYear>2016</ProductThisYear>
+  <ProductThisYear>2026</ProductThisYear>
 </ProductInfo>

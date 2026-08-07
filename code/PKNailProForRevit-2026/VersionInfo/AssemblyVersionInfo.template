@@ -7,5 +7,5 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion(@"1.9.0.{BUILD_NUMBER}")]
-[assembly: AssemblyFileVersion(@"1.9.0.{BUILD_NUMBER}")]
+[assembly: AssemblyVersion(@"2.0.0.{BUILD_NUMBER}")]
+[assembly: AssemblyFileVersion(@"2.0.0.{BUILD_NUMBER}")]

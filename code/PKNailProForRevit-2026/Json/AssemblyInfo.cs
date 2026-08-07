@@ -12,9 +12,9 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle(@"Json")]
 [assembly: AssemblyDescription(@"")]
-[assembly: AssemblyProduct(@"PKNail Pro For Revit 2017")]
+[assembly: AssemblyProduct(@"PKNail Pro For Revit 2026")]
 [assembly: AssemblyCompany(@"PointKnown LLC")]
-[assembly: AssemblyCopyright(@"© 2009-2016 PointKnown LLC")]
+[assembly: AssemblyCopyright(@"© 2009-2026 PointKnown LLC")]
 [assembly: AssemblyConfiguration(@"")]
 [assembly: AssemblyTrademark(@"")]
 [assembly: AssemblyCulture(@"")]

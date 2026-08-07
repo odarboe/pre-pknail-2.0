@@ -13,9 +13,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle(@"PKLicense")]
 [assembly: AssemblyDescription(@"")]
 [assembly: AssemblyConfiguration(@"")]
-[assembly: AssemblyCopyright("© 2014-2016 PointKnown LLC")]
+[assembly: AssemblyCopyright("© 2014-2026 PointKnown LLC")]
 [assembly: AssemblyCompany(@"PointKnown LLC")]
-[assembly: AssemblyProduct(@"PKNail Pro For Revit 2017")]
+[assembly: AssemblyProduct(@"PKNail Pro For Revit 2026")]
 [assembly: AssemblyTrademark(@"")]
 [assembly: AssemblyCulture(@"")]
 
