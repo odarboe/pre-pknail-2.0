@@ -454,3 +454,4 @@ packages/
 # Mercurial VCS metadata (never belongs in git)
 .hg/
 docs/point_cloud/full_test_fille.las
+docs/TestFile_TwoRooms.las
