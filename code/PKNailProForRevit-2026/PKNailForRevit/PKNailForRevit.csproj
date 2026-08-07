@@ -46,6 +46,27 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
 
+  <!-- Evaluation: an optimized, Release-quality build for third-party review (independent consultants,
+       client acceptance testing) on machines that have no PKNail license.
+
+       Identical to Release EXCEPT that it defines BYPASS_LICENSE_CHECK and BYPASS_UPDATE_CHECK:
+         * BYPASS_LICENSE_CHECK  - PKLicense reports valid without activation, and RecordUsage always
+           returns true. Without this the ribbon's CommandsAvailability gate (which requires
+           IsLicenseValid) leaves every PKNail button - including "Import AI Model" - greyed out, so
+           the plugin cannot be exercised at all on an unlicensed machine.
+         * BYPASS_UPDATE_CHECK   - no phone-home to the PointKnown update service from a reviewer's box.
+       The splash screen is deliberately NOT bypassed, so an Evaluation build still looks and behaves
+       like the shipping product.
+
+       Release / Deploy / Deploy64 are untouched and remain fully licensed and metered. Never ship an
+       Evaluation build to customers - it performs no licensing or usage accounting. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Evaluation'">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Evaluation\</OutputPath>
+    <DefineConstants>TRACE;BYPASS_LICENSE_CHECK;BYPASS_UPDATE_CHECK</DefineConstants>
+  </PropertyGroup>
+
   <!-- Local DLL references -->
   <ItemGroup>
     <!-- NuGet packages -->

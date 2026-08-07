@@ -1,30 +1,31 @@
 # PKNAIL 2.0 — Build Setup
 
-The repository does **not** commit vendor binaries. Before the first build, populate two local-only
-reference folders under `code/PKNailProForRevit-2026/`. Both are git-ignored.
+**Exactly one file must be provisioned by hand before the plugin will build: `PLUSManaged.dll`.**
+Everything else a build needs is in the repository.
 
-## 1. Revit 2026 API assemblies → `RevitAPI/`
+## 1. Revit 2026 API assemblies → `RevitAPI/` — *already committed*
 
-Copy from your local Revit install (`C:\Program Files\Autodesk\Revit 2026\`):
+`RevitAPI.dll`, `RevitAPIUI.dll` and `RevitAddInUtility.dll` are committed (see the allow-list at the
+bottom of `.gitignore`), so `git clone` + `dotnet build` works on a machine with **no Revit install** —
+which is what lets reviewers and CI build the plugin. They are referenced with `<Private>False</Private>`
+because Revit supplies them at runtime; they are reference assemblies only, never redistributed.
 
-```
-RevitAPI/
-  RevitAPI.dll
-  RevitAPIUI.dll
-  RevitAddInUtility.dll
-```
+If you ever need to refresh them, copy from `C:\Program Files\Autodesk\Revit 2026\`.
 
-`PKNailForRevit.csproj` references these with `<Private>False</Private>` (Revit supplies them at runtime).
-
-## 2. SoftwareKey licensing SDK → `Tools/SoftwareKey/`
+## 2. SoftwareKey licensing SDK → `Tools/SoftwareKey/` — **you must provide this**
 
 ```
 Tools/SoftwareKey/
   PLUSManaged.dll
 ```
 
-Obtain `PLUSManaged.dll` from the PointKnown SoftwareKey SDK (it is **not** redistributable and is not on
-NuGet). On existing dev machines it is also present in prior PKNail working copies.
+`PLUSManaged.dll` is **not redistributable** and is not on NuGet, so it stays git-ignored. Obtain it from
+the PointKnown SoftwareKey SDK; on existing dev machines it is also present in prior PKNail working
+copies. Without it the plugin fails to compile with `CS0246: 'com' could not be found` (the `PKLicenseSrc`
+files reference the SoftwareKey namespaces).
+
+The Revit-free `PKNail.AiImport` library and its unit tests do **not** need this file and build straight
+from a clean clone.
 
 ## 3. Build
 
@@ -33,6 +34,34 @@ cd code/PKNailProForRevit-2026
 dotnet build PKNailForRevit/PKNailForRevit.csproj -c Debug      # main plugin (0 errors expected)
 dotnet test  PKNail.AiImport.Tests/PKNail.AiImport.Tests.csproj # fast Revit-free unit tests
 ```
+
+### Build configurations
+
+| Config | Optimized | Licensing | Use it for |
+| --- | --- | --- | --- |
+| `Debug` | no | **bypassed** | day-to-day development (also skips splash + update check) |
+| `Evaluation` | yes | **bypassed** | **third-party review / client acceptance testing** |
+| `Release` | yes | enforced + metered | shipping to customers |
+| `Deploy`, `Deploy64` | yes | enforced + metered | legacy release lanes |
+
+**`Evaluation` exists because a `Release` build cannot be exercised without a license.** The ribbon's
+`CommandsAvailability` gate requires `IsLicenseValid`, so on an unlicensed machine every PKNail button —
+including **Import AI Model** — is greyed out and the plugin cannot be tested at all. `Evaluation` is
+byte-for-byte Release-quality (`Optimize=true`, `pdbonly`) but defines `BYPASS_LICENSE_CHECK` and
+`BYPASS_UPDATE_CHECK`, so a reviewer can install it and run an import immediately. The splash screen is
+deliberately left on so it still behaves like the shipping product.
+
+```
+dotnet build PKNailForRevit/PKNailForRevit.csproj -c Evaluation
+# -> PKNailForRevit/bin/Evaluation/net8.0-windows/
+```
+
+`Evaluation` is intentionally **not** registered in `PKNailForRevit.sln`; build it via the `.csproj`
+command above. (Half-wiring a new configuration across all 15 solution projects would let Visual Studio
+silently skip projects, which is a worse failure than the config simply not appearing in the dropdown.)
+
+> ⚠️ **Never ship an `Evaluation` build to a customer** — it performs no licensing and no usage
+> accounting. `Release`, `Deploy` and `Deploy64` are untouched and remain fully licensed and metered.
 
 The plugin currently emits ~1400 `CA1416` "WinForms is Windows-only" analyzer warnings; these are benign
 (the add-in only ever runs on Windows under Revit). New 2.0 code in `PKNail.AiImport` builds clean with

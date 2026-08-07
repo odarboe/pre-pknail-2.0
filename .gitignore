@@ -451,6 +451,14 @@ packages/
 *.pdb
 *.class
 
+# Vendored Revit 2026 API assemblies — reference-only (<Private>False</Private>; Revit supplies them at
+# runtime). Committed deliberately so `git clone` + `dotnet build` works for reviewers and CI without a
+# local Revit install. NOTE: Tools/SoftwareKey/PLUSManaged.dll stays ignored — it is NOT redistributable
+# and must be provisioned per DevDoc/BuildSetup-2.0.md.
+!code/PKNailProForRevit-2026/RevitAPI/RevitAPI.dll
+!code/PKNailProForRevit-2026/RevitAPI/RevitAPIUI.dll
+!code/PKNailProForRevit-2026/RevitAPI/RevitAddInUtility.dll
+
 # Mercurial VCS metadata (never belongs in git)
 .hg/
 docs/point_cloud/full_test_fille.las

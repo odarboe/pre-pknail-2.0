@@ -14,6 +14,14 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <!-- 'Evaluation' is the Release-quality, licence-bypassed config used for third-party review
+       (see PKNailForRevit.csproj). The SDK only turns on optimization for a config literally named
+       'Release', so opt in explicitly here. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Evaluation'">
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+
   <ItemGroup>
     <!-- Expose internal helpers (e.g. AiModelMapper.SnapCornerAngle) to the unit tests only. -->
     <InternalsVisibleTo Include="PKNail.AiImport.Tests" />
