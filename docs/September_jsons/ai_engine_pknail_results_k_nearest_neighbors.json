@@ -1,0 +1,183 @@
+{
+  "SchemaVersion": "2.0",
+  "Units": "meters",
+  "AngleUnits": "radians",
+  "CoordinateSystem": {
+    "Frame": "plan",
+    "Handedness": "right",
+    "ZUp": true,
+    "XAxisRealWorld": "unknown",
+    "YAxisRealWorld": "unknown"
+  },
+  "IsScanFromInterior": true,
+  "FirstWallCompassDirection": 0,
+  "Levels": [
+    {
+      "Name": "Level 1",
+      "ElevationMeters": 2.404021,
+      "Floor2FloorMeters": 2.874592,
+      "Floor2CeilingMeters": 2.574592,
+      "HasDropCeiling": false,
+      "DropCeilingHeightMeters": 0.0,
+      "TypicalWindowSillHeightMeters": 0.9,
+      "TypicalWindowHeadHeightMeters": 2.1,
+      "IsClosed": false,
+      "Walls": [
+        {
+          "StartMeters": {
+            "X": 4.542848,
+            "Y": -103.112828
+          },
+          "EndMeters": {
+            "X": 5.577894,
+            "Y": -103.08934
+          },
+          "ThicknessMeters": 0.165,
+          "LocationLine": "Centerline",
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 4.610992,
+            "Y": -106.115671
+          },
+          "EndMeters": {
+            "X": 10.72953,
+            "Y": -105.976822
+          },
+          "ThicknessMeters": 0.15,
+          "LocationLine": "Centerline",
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 4.421219,
+            "Y": -97.75313
+          },
+          "EndMeters": {
+            "X": 10.539757,
+            "Y": -97.614281
+          },
+          "ThicknessMeters": 0.15,
+          "LocationLine": "Centerline",
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 4.464287,
+            "Y": -99.65097
+          },
+          "EndMeters": {
+            "X": 5.499333,
+            "Y": -99.627481
+          },
+          "ThicknessMeters": 0.15,
+          "LocationLine": "Centerline",
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 4.49697,
+            "Y": -101.091155
+          },
+          "EndMeters": {
+            "X": 5.532016,
+            "Y": -101.067667
+          },
+          "ThicknessMeters": 0.15,
+          "LocationLine": "Centerline",
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 4.610992,
+            "Y": -106.115671
+          },
+          "EndMeters": {
+            "X": 4.421219,
+            "Y": -97.75313
+          },
+          "ThicknessMeters": 0.15,
+          "LocationLine": "Centerline",
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 4.520035,
+            "Y": -102.107549
+          },
+          "EndMeters": {
+            "X": 10.638573,
+            "Y": -101.9687
+          },
+          "ThicknessMeters": 0.15,
+          "LocationLine": "Centerline",
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 5.646038,
+            "Y": -106.092182
+          },
+          "EndMeters": {
+            "X": 5.456265,
+            "Y": -97.729641
+          },
+          "ThicknessMeters": 0.223,
+          "LocationLine": "Centerline",
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 8.011426,
+            "Y": -102.761489
+          },
+          "EndMeters": {
+            "X": 11.260589,
+            "Y": -102.687755
+          },
+          "ThicknessMeters": 0.15,
+          "LocationLine": "Centerline",
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 10.72953,
+            "Y": -105.976822
+          },
+          "EndMeters": {
+            "X": 10.539757,
+            "Y": -97.614281
+          },
+          "ThicknessMeters": 0.15,
+          "LocationLine": "Centerline",
+          "LevelOffset": 0.0,
+          "Openings": []
+        },
+        {
+          "StartMeters": {
+            "X": 10.665212,
+            "Y": -103.142592
+          },
+          "EndMeters": {
+            "X": 11.270599,
+            "Y": -103.128854
+          },
+          "ThicknessMeters": 0.15,
+          "LocationLine": "Centerline",
+          "LevelOffset": 0.0,
+          "Openings": []
+        }
+      ]
+    }
+  ]
+}
