@@ -1,0 +1,96 @@
+{
+  "SchemaVersion": "2.1",
+  "Units": "meters",
+  "AngleUnits": "radians",
+  "CoordinateSystem": { "Frame": "plan", "Handedness": "right", "ZUp": true },
+  "IsScanFromInterior": true,
+  "FirstWallCompassDirection": 0,
+  "Levels": [
+    {
+      "Name": "Ground",
+      "ElevationMeters": 0.6,
+      "Floor2FloorMeters": 2.75,
+      "Floor2CeilingMeters": 2.45,
+      "HasDropCeiling": false,
+      "DropCeilingHeightMeters": 0.0,
+      "TypicalWindowSillHeightMeters": 0.9,
+      "TypicalWindowHeadHeightMeters": 2.1,
+      "Walls": [
+        {
+          "Id": "W1",
+          "StartMeters": { "X": 100.0, "Y": 50.0 },
+          "EndMeters": { "X": 106.0, "Y": 50.0 },
+          "ThicknessMeters": 0.2,
+          "HeightMeters": 2.45,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "InteriorSide": "Left",
+          "Comment": "thickness measured (both faces scanned); 96% scanned",
+          "Openings": [
+            { "Id": "W1-N1", "Kind": "Window", "OpeningType": "Casement", "LocationFromStartMeters": 1.75,
+              "WidthMeters": 1.2, "HeightMeters": 1.2, "SillHeightMeters": 0.9, "Comment": "all edges scanned" },
+            { "Id": "W1-N2", "Kind": "Window", "OpeningType": "Casement", "LocationFromStartMeters": 4.75,
+              "WidthMeters": 1.2, "HeightMeters": 1.2, "SillHeightMeters": 0.9 }
+          ]
+        },
+        {
+          "Id": "W2",
+          "StartMeters": { "X": 106.0, "Y": 50.0 },
+          "EndMeters": { "X": 106.0, "Y": 54.0 },
+          "ThicknessMeters": 0.2,
+          "HeightMeters": 2.45,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "InteriorSide": "Left",
+          "Openings": [
+            { "Id": "W2-D1", "Kind": "Door", "OpeningType": "Hinged", "LocationFromStartMeters": 2.0,
+              "WidthMeters": 0.9, "HeightMeters": 2.1, "SillHeightMeters": 0.0,
+              "HingeSideIndex": 0, "SwingDirectionIndex": 1, "Comment": "front door; seen from both sides" }
+          ]
+        },
+        {
+          "Id": "W3",
+          "StartMeters": { "X": 106.0, "Y": 54.0 },
+          "EndMeters": { "X": 100.0, "Y": 54.0 },
+          "ThicknessMeters": 0.2,
+          "HeightMeters": 2.45,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "InteriorSide": "Left",
+          "Openings": [
+            { "Id": "W3-N1", "Kind": "Window", "OpeningType": "Sliding", "LocationFromStartMeters": 3.0,
+              "WidthMeters": 2.4, "HeightMeters": 1.0, "SillHeightMeters": 1.1 }
+          ]
+        },
+        {
+          "Id": "W4",
+          "StartMeters": { "X": 100.0, "Y": 54.0 },
+          "EndMeters": { "X": 100.0, "Y": 50.0 },
+          "ThicknessMeters": 0.2,
+          "HeightMeters": 2.45,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "InteriorSide": "Left",
+          "Comment": "thickness assumed (one face scanned)",
+          "Openings": []
+        },
+        {
+          "Id": "W5",
+          "StartMeters": { "X": 103.5, "Y": 50.0 },
+          "EndMeters": { "X": 103.5, "Y": 54.0 },
+          "ThicknessMeters": 0.1,
+          "HeightMeters": 2.45,
+          "LocationLine": "Centerline",
+          "LevelOffsetMeters": 0.0,
+          "InteriorSide": "Left",
+          "Comment": "interior partition; Left = the west room",
+          "Openings": [
+            { "Id": "W5-D1", "Kind": "Door", "OpeningType": "Hinged", "LocationFromStartMeters": 3.0,
+              "WidthMeters": 0.8, "HeightMeters": 2.1, "SillHeightMeters": 0.0,
+              "HingeSideIndex": 1, "SwingDirectionIndex": 1 }
+          ]
+        }
+      ]
+    }
+  ]
+}

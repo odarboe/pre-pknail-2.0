@@ -47,6 +47,24 @@
     <None Include="..\..\..\docs\final_combined_pknail_v4.1.json"
           Link="Fixtures\final_combined_pknail_v4.1.json"
           CopyToOutputDirectory="PreserveNewest" />
+    <!-- Epic 13: contract v2.1 example handed to the AI-engine team (docs/ai_engine_pknail_schema_v2.1.md). -->
+    <None Include="..\..\..\docs\ai_engine_pknail_results.v2.1.example.json"
+          Link="Fixtures\ai_engine_pknail_results.v2.1.example.json"
+          CopyToOutputDirectory="PreserveNewest" />
+    <!-- Epic 13: the October 2026 AI-engine + manual-check exports (independent walls, T-junctions, no loop
+         order). Direct Build must draw every wall and opening in each of them. -->
+    <None Include="..\..\..\docs\October5\New\*.json"
+          LinkBase="Fixtures\October5"
+          CopyToOutputDirectory="PreserveNewest" />
+    <!-- The run that failed in Revit on 2026-10-12 (doors narrower than the default family can build). -->
+    <None Include="..\..\..\docs\October5\1_*.json"
+          LinkBase="Fixtures\October5"
+          CopyToOutputDirectory="PreserveNewest" />
+    <!-- The 2026-11-06 Revit check: 4 sliding doors (FamilyDefIdx 4) + 3 hinged doors. Direct Build must
+         carry the family index to Revit and hang the hinged doors on the jambs of the expected plan. -->
+    <None Include="..\..\..\docs\October31\1_v2_ai_pknail_v2_doortypes.json"
+          Link="Fixtures\October31\1_v2_ai_pknail_v2_doortypes.json"
+          CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

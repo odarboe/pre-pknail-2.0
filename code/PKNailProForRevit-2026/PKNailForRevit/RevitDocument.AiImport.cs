@@ -35,6 +35,18 @@ namespace PKNailForRevit
                 m_doc.startTransaction(name);
             }
 
+            // Epic 13: an inner transaction with its own failure preprocessor. ClearAfterRollback makes a
+            // preprocessor-requested rollback silent: Revit shows no error dialog afterwards, so a failing
+            // element never interrupts the import (the preprocessor records why instead).
+            internal TransactionScope(RevitDocument doc, string name, IFailuresPreprocessor fp)
+            {
+                m_doc = doc;
+                m_doc.startTransaction(name, fp);
+                FailureHandlingOptions opts = m_doc.m_txn.GetFailureHandlingOptions();
+                opts.SetClearAfterRollback(true);
+                m_doc.m_txn.SetFailureHandlingOptions(opts);
+            }
+
             // Commit the inner transaction. Returns false if Revit did not report Committed.
             internal bool Commit()
             {

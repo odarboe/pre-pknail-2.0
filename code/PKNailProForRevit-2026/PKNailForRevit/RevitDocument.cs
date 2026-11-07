@@ -6503,7 +6503,7 @@ namespace PKNailForRevit
             // over all the angles, whenever this happens, it is intended
             // There is a failure named "BuiltinFailures.InaccurateFailures.InaccurateWall"
             // but once again it does not match
-            protected static Guid sm_inaccurateWallFailureGuid = new Guid(@"fb1d4583-6b62-4ccb-9cb8-7c2e849b4d43");
+            internal static Guid sm_inaccurateWallFailureGuid = new Guid(@"fb1d4583-6b62-4ccb-9cb8-7c2e849b4d43");
 
             public failuresPreprocessor(RevitDocument revitDoc, System.Threading.AutoResetEvent txnErrorSignal)
             {

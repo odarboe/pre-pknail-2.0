@@ -9,6 +9,7 @@ using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
+using PKNail.AiImport.DirectBuild;
 using PKNail.AiImport.Model;
 using PKNail.AiImport.Mapping;
 using PKNailForRevit.AiImport;
@@ -16,10 +17,14 @@ using PKNailForRevit.AiImport;
 namespace PKNailForRevit
 {
     /// <summary>
-    /// Epic 3 ribbon entry point — "Import AI Model (JSON)". Picks a frozen-contract JSON file, validates
-    /// it, maps it (both Revit-free), then drives a live <see cref="RevitDocument"/> through
-    /// <see cref="AiModelImporter"/>. All Revit work happens here; the model/mapping/import-bridge layers
-    /// are unit/integration testable without Revit.
+    /// Epic 3 ribbon entry point — "Import AI Model (JSON)". Picks an AI-engine JSON file, validates and
+    /// plans it (Revit-free), then drives a live <see cref="RevitDocument"/>:
+    /// <list type="bullet">
+    /// <item>files whose walls carry coordinates (contract v2/v2.1) go through Epic 13 <b>Direct Build</b>
+    /// (<see cref="DirectBuildImporter"/>): native walls/openings exactly as the JSON describes them;</item>
+    /// <item>v1 files (length + corner-angle chain, no coordinates) keep the survey-chain path
+    /// (<see cref="AiModelImporter"/>).</item>
+    /// </list>
     /// </summary>
     [Transaction(TransactionMode.Manual)]
     public class ImportAiModelCommand : IExternalCommand
@@ -54,7 +59,10 @@ namespace PKNailForRevit
                 return Result.Failed;
             }
 
-            ValidationReport validation = AiModelValidator.Validate(building);
+            // Epic 13: any wall with coordinates ⇒ Direct Build. There, a bad wall/opening is skipped and
+            // reported instead of blocking the file, so only file-level problems stop the import.
+            bool directBuild = building.Levels.SelectMany(l => l.Walls).Any(w => w.HasEndpoints);
+            ValidationReport validation = AiModelValidator.Validate(building, elementIssuesAreWarnings: directBuild);
             if (!validation.IsValid)
             {
                 var sb = new StringBuilder();
@@ -66,7 +74,10 @@ namespace PKNailForRevit
                 return Result.Failed;
             }
 
-            MappedBuilding mapped = AiModelMapper.Map(building);
+            // Revit-free planning: Direct Build resolves every final coordinate up front; the v1 path maps
+            // onto the survey-chain parameters.
+            DirectBuildPlan? plan = directBuild ? DirectBuildPlanner.Plan(building) : null;
+            MappedBuilding? mapped = directBuild ? null : AiModelMapper.Map(building);
 
             // Concrete at the composition root: RevitDocument implements both the full IProjectModel (used
             // for EnsureDocumentParameters / HasPKNailWalls / DocumentSettings below) and the focused
@@ -88,6 +99,7 @@ namespace PKNailForRevit
             // The engine's opening-hosting flow derives its context from the active floor-plan view's level,
             // so make a floor plan active before importing (imports are often launched from a 3D view). This
             // is a view change, not a document edit, so it must happen before any transaction is opened.
+            // (Direct Build does not need it, but a plan view is also where the reviewer wants to land.)
             EnsureFloorPlanActive(uiDoc);
 
             // Ensure the PKNail project parameters exist (works on any document, not just a PKNail
@@ -105,7 +117,7 @@ namespace PKNailForRevit
             // metric-template project may have none. Create one now so windows/doors can host (best-effort:
             // if this fails, walls still import and the openings report a clear skip reason).
             string viewMsg = string.Empty;
-            proj.EnsureDefault3DView(ref viewMsg);
+            if (!directBuild) { proj.EnsureDefault3DView(ref viewMsg); }
 
             // Epic 10.3: default project metadata — name the PKNail project after the source file if it has
             // no name yet. Best-effort: metadata must never block the geometry import.
@@ -123,7 +135,9 @@ namespace PKNailForRevit
             // Per-element metering (Q4): record usage before each placed wall/opening via the app's license,
             // exactly like the 1.0 survey commands. In debug/bypass builds this is a no-op that returns true.
             Func<bool> recordUsage = TheApp.Instance.CreateImportUsageRecorder(proj);
-            ImportReport report = new AiModelImporter().Import(proj, mapped, recordUsage);
+            ImportReport report = directBuild
+                ? new DirectBuildImporter().Import(proj, plan!, recordUsage)
+                : new AiModelImporter().Import(proj, mapped!, recordUsage);
 
             if (report.Committed)
             {

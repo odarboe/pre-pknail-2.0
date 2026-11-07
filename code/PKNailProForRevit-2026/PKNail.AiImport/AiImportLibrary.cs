@@ -17,4 +17,10 @@ public static class AiImportLibrary
     /// a <c>SchemaVersion</c> field will be validated against this once the AI engine emits it.
     /// </summary>
     public const string TargetContractVersion = "1.0";
+
+    /// <summary>
+    /// Every contract version this library reads: the frozen v1 sample, the v2 absolute-endpoint
+    /// contract and the additive v2.1 (Epic 13: optional ids/heights/comments, no loop-order rule).
+    /// </summary>
+    public static readonly IReadOnlyList<string> SupportedContractVersions = new[] { "1.0", "2.0", "2.1" };
 }

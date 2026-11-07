@@ -36,6 +36,16 @@ namespace PKNailForRevit
                                           bool isDoor, out long openingElementId, ref string msg);
         CommandResult ActivateWallById(long wallId, bool interiorFace, bool nearEndIsStart, ref string msg);
 
+        // --- Epic 13 Direct Build: native Revit walls/openings straight from the AI geometry ---
+        // No survey engine, no active/reference wall, no PKNAIL survey families required. Each call runs in
+        // its own inner transaction inside the import transaction group.
+        CommandResult CreateWallDirect(DirectWallSpec spec, out long wallElementId, ref string msg);
+
+        /// <summary>Places a door/window centred on the wall. <paramref name="note"/> receives non-fatal
+        /// remarks (e.g. "fixed-size family: measured size not applied"); empty when there are none.</summary>
+        CommandResult CreateOpeningDirect(long wallElementId, DirectOpeningSpec spec,
+                                          out long openingElementId, out string note, ref string msg);
+
         // --- v1 survey-chain placement (kept for the length+angle contract) ---
         CommandResult SurveyWallPrep(SurveyDirection dir, out CommandContext cmdContext,
                                      out WallSurveyParams wsParams, ref string msg);

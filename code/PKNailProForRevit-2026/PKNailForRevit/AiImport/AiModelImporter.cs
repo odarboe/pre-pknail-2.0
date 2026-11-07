@@ -573,6 +573,7 @@ namespace PKNailForRevit.AiImport
         private readonly List<string> m_skipped = new List<string>();
         private readonly List<string> m_failures = new List<string>();
         private readonly List<string> m_warnings = new List<string>();
+        private readonly List<string> m_adjustments = new List<string>();
 
         public IReadOnlyList<string> Skipped { get { return m_skipped; } }
         public IReadOnlyList<string> Failures { get { return m_failures; } }
@@ -580,6 +581,13 @@ namespace PKNailForRevit.AiImport
         /// <summary>Revit warnings collected during placement (Epic 7) — e.g. "insert conflicts with joined
         /// wall". These did NOT stop the import; they are surfaced for the reviewer, not clicked through.</summary>
         public IReadOnlyList<string> Warnings { get { return m_warnings; } }
+
+        /// <summary>Epic 13: geometric changes Direct Build made to the AI data (squared walls, closed gaps,
+        /// openings slid inside their wall, levels created). Empty on the survey-engine paths.</summary>
+        public IReadOnlyList<string> Adjustments { get { return m_adjustments; } }
+
+        /// <summary>Which import path produced this report: "Survey engine" (v1/v2 engine) or "Direct Build".</summary>
+        public string Mode { get; internal set; } = "Survey engine";
 
         public bool HasFailures { get { return m_failures.Count > 0; } }
         public bool HasWarnings { get { return m_warnings.Count > 0; } }
@@ -596,6 +604,12 @@ namespace PKNailForRevit.AiImport
         internal void SkipOpening(int wallIndex, OpeningKind kind, string reason)
         { m_skipped.Add($"wall[{wallIndex}].{kind}: {reason}"); }
 
+        internal void AddSkipped(string reason)
+        { m_skipped.Add(reason); }
+
+        internal void AddAdjustment(string change)
+        { m_adjustments.Add(change); }
+
         internal void AddFailure(string reason)
         { m_failures.Add(reason); }
 
@@ -605,11 +619,12 @@ namespace PKNailForRevit.AiImport
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("AI import: ")
+            sb.Append("AI import (").Append(Mode).Append("): ")
               .Append(Committed ? "COMMITTED" : (RolledBack ? "ROLLED BACK" : "incomplete"))
               .Append("; walls placed=").Append(WallsPlaced)
               .Append(", openings placed=").Append(OpeningsPlaced)
               .Append(", skipped=").Append(m_skipped.Count)
+              .Append(", adjustments=").Append(m_adjustments.Count)
               .Append(", warnings=").Append(m_warnings.Count)
               .Append(", failures=").Append(m_failures.Count);
             if (MeteringStopped) { sb.Append(" (metering stopped)"); }
@@ -622,6 +637,7 @@ namespace PKNailForRevit.AiImport
             }
             foreach (string f in m_failures) { sb.Append(Environment.NewLine).Append("  ! ").Append(f); }
             foreach (string s in m_skipped) { sb.Append(Environment.NewLine).Append("  - ").Append(s); }
+            foreach (string a in m_adjustments) { sb.Append(Environment.NewLine).Append("  * ").Append(a); }
             foreach (string w in m_warnings) { sb.Append(Environment.NewLine).Append("  ~ ").Append(w); }
             return sb.ToString();
         }

@@ -149,6 +149,34 @@ namespace PKNail.AiImport.IntegrationTests
             return result;
         }
 
+        // --- Epic 13 Direct Build ---------------------------------------------------
+        /// <summary>Each Direct Build wall, with the Revit element id the fake handed back.</summary>
+        public readonly List<(DirectWallSpec Spec, long Id)> CreateWallDirectCalls = new List<(DirectWallSpec, long)>();
+
+        /// <summary>Each Direct Build opening and its host wall id.</summary>
+        public readonly List<(long WallId, DirectOpeningSpec Spec)> CreateOpeningDirectCalls = new List<(long, DirectOpeningSpec)>();
+
+        /// <summary>Test knob: the non-fatal note CreateOpeningDirect returns (e.g. a fixed-size family).</summary>
+        public string OpeningNoteToReturn = string.Empty;
+
+        public CommandResult CreateWallDirect(DirectWallSpec spec, out long wallElementId, ref string msg)
+        {
+            CommandResult result = resultFor("CreateWallDirect");
+            wallElementId = m_nextWallId++;
+            CreateWallDirectCalls.Add((spec, wallElementId));
+            return result;
+        }
+
+        public CommandResult CreateOpeningDirect(long wallElementId, DirectOpeningSpec spec,
+                                                 out long openingElementId, out string note, ref string msg)
+        {
+            CommandResult result = resultFor("CreateOpeningDirect");
+            openingElementId = m_nextOpeningId++;
+            note = OpeningNoteToReturn;
+            CreateOpeningDirectCalls.Add((wallElementId, spec));
+            return result;
+        }
+
         // --- Wall activation / re-import guard (1.0-adaptation) ----------------------
         /// <summary>Records each headless wall activation the absolute opening path performs.</summary>
         public sealed class ActivateCall
@@ -207,8 +235,25 @@ namespace PKNail.AiImport.IntegrationTests
         public LevelsData LevelsData
         {
             get { return m_levelsData; }
-            set { m_levelsData = value; AssignedLevelsData = value; Calls.Add("set_LevelsData"); }
+            set
+            {
+                // Mirror RevitDocument.updateDocFromLevelsData: an item with no ElementId becomes a new Revit
+                // level, and the item receives that level's id.
+                foreach (LevelDataItem item in value.Levels)
+                {
+                    if (string.IsNullOrEmpty(item.ElementId))
+                    {
+                        item.ElementId = (m_nextLevelId++).ToString();
+                        CreatedLevelNames.Add(item.Name);
+                    }
+                }
+                m_levelsData = value; AssignedLevelsData = value; Calls.Add("set_LevelsData");
+            }
         }
+        private long m_nextLevelId = 9001;
+
+        /// <summary>Names of the levels the setter "created" (items that arrived without an ElementId).</summary>
+        public readonly List<string> CreatedLevelNames = new List<string>();
 
         private static LevelsData CreateSeedLevels()
         {

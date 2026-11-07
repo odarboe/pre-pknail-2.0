@@ -26,6 +26,9 @@ public sealed class DetectedBuilding
 
 public sealed class DetectedLevel
 {
+    /// <summary>v2 (optional): display name, e.g. "Level 1". Used when Direct Build creates a new Revit level.</summary>
+    public string? Name { get; set; }
+
     /// <summary>Structural storey height, meters.</summary>
     public double Floor2FloorMeters { get; set; }
 
@@ -90,9 +93,34 @@ public sealed class DetectedWall
     [JsonIgnore]
     public bool HasEndpoints => StartMeters != null && EndMeters != null;
 
-    /// <summary>Elevation delta of this face above the floor datum, <b>meters</b> (JSON key "LevelOffset", no suffix).</summary>
+    private double _levelOffsetMeters;
+
+    /// <summary>Elevation delta of this face above the floor datum, <b>meters</b> (v1 JSON key "LevelOffset", no suffix).</summary>
     [JsonPropertyName("LevelOffset")]
-    public double LevelOffsetMeters { get; set; }
+    public double LevelOffsetMeters { get => _levelOffsetMeters; set => _levelOffsetMeters = value; }
+
+    /// <summary>v2 alias for <see cref="LevelOffsetMeters"/> (JSON key `LevelOffsetMeters`, per the v2 schema).</summary>
+    [JsonPropertyName("LevelOffsetMeters")]
+    public double LevelOffsetMetersV2 { get => _levelOffsetMeters; set => _levelOffsetMeters = value; }
+
+    /// <summary>v2: <c>"Centerline"</c> (default), <c>"InteriorFace"</c> or <c>"ExteriorFace"</c>.</summary>
+    public string? LocationLine { get; set; }
+
+    /// <summary>v2.1 (optional): stable wall id from the AI engine (e.g. <c>"W7"</c>). Written to the Revit Mark.</summary>
+    public string? Id { get; set; }
+
+    /// <summary>v2.1 (optional): measured wall height, meters. Absent ⇒ the level's floor-to-ceiling height.</summary>
+    public double? HeightMeters { get; set; }
+
+    /// <summary>v2.1 (optional): free-text note (thickness source, scan coverage…). Written to Revit Comments.</summary>
+    public string? Comment { get; set; }
+
+    /// <summary>
+    /// v2.1 (optional): which side of the wall is the interior, seen walking from Start to End:
+    /// <c>"Left"</c> or <c>"Right"</c>. Door swing/hinge are defined relative to this side. Absent ⇒ the
+    /// plugin assumes the side facing the middle of the floor plan.
+    /// </summary>
+    public string? InteriorSide { get; set; }
 
     public List<DetectedOpening> Openings { get; set; } = new();
 }
@@ -126,14 +154,23 @@ public sealed class DetectedOpening
     public bool ResolvedIsDoor =>
         Kind != null ? Kind.Equals("Door", System.StringComparison.OrdinalIgnoreCase) : IsLikelyDoor;
 
-    /// <summary>Door only — HingeSide: 0=Left, 1=Right.</summary>
-    public int HingeSideIndex { get; set; }
+    /// <summary>Door only — HingeSide: 0=Left, 1=Right. <c>null</c> = not provided by the AI engine.</summary>
+    public int? HingeSideIndex { get; set; }
 
-    /// <summary>Door only — SwingDirection: 0=Out, 1=In.</summary>
-    public int SwingDirectionIndex { get; set; }
+    /// <summary>Door only — SwingDirection: 0=Out, 1=In. <c>null</c> = not provided by the AI engine.</summary>
+    public int? SwingDirectionIndex { get; set; }
 
-    /// <summary>Window only — SurveyorRelation: 0=Interior, 1=Exterior.</summary>
-    public int FacingOrientationIndex { get; set; }
+    /// <summary>Window only — SurveyorRelation: 0=Interior, 1=Exterior. <c>null</c> = not provided.</summary>
+    public int? FacingOrientationIndex { get; set; }
+
+    /// <summary>v2.1 (optional): stable opening id (e.g. <c>"W7-N1"</c>). Written to the Revit Mark.</summary>
+    public string? Id { get; set; }
+
+    /// <summary>v2.1 (optional): door/window type, e.g. <c>"Hinged"</c>, <c>"Sliding"</c>, <c>"Casement"</c> (Q16).</summary>
+    public string? OpeningType { get; set; }
+
+    /// <summary>v2.1 (optional): free-text note (confidence, seen from…). Written to Revit Comments.</summary>
+    public string? Comment { get; set; }
 
     /// <summary>Index into the project's family-def list. v1 always emits 0 (Jira plan §5 item 4 / Q3).</summary>
     public int FamilyDefIdx { get; set; }
