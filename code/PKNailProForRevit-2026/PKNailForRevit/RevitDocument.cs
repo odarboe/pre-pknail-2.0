@@ -72,11 +72,43 @@ namespace PKNailForRevit
                 @"PKNail Wall Type Unknown Width"
             };
 
+        // Names of the definitions in the embedded PKNail shared parameter file, once it has been read.
+        private static System.Collections.Generic.HashSet<string> sm_sharedParamNames = null;
+
+        // Names of every parameter bound to the project, shared or not.
+        private System.Collections.Generic.HashSet<string> boundParameterNames()
+        {
+            System.Collections.Generic.HashSet<string> names =
+                new System.Collections.Generic.HashSet<string>(StringComparer.Ordinal);
+            DefinitionBindingMapIterator it = doc.ParameterBindings.ForwardIterator();
+            while (it.MoveNext())
+            { if (it.Key != null) { names.Add(it.Key.Name); } }
+            return names;
+        }
+
         // IProjectModel interface implementation
         // Binds any missing PKNail shared parameters to the document so the add-in works on projects that
         // were NOT created from a PKNail template (the 2017-era templates lose bindings on 2026 upgrade).
+        // A parameter counts as present when one of that NAME is bound, shared or not: the PKNail template
+        // defines some of them as its own project parameters, and binding the shared definition next to
+        // those would leave two parameters with one name (LookupParameter then returns either, which is
+        // how the Capture family list came up empty after an import). Does nothing, and opens no
+        // transaction, when every parameter is already there.
         public CommandResult EnsureDocumentParameters(ref string msg)
         {
+            System.Collections.Generic.HashSet<string> boundNames;
+            try
+            {
+                boundNames = boundParameterNames();
+                if (sm_sharedParamNames != null && sm_sharedParamNames.IsSubsetOf(boundNames))
+                { return CommandResult.Succeeded; }
+            }
+            catch (Exception ex)
+            {
+                msg = @"Failed to bind PKNail parameters: " + ex.Message;
+                return CommandResult.Failed;
+            }
+
             string previousSharedParamFile = app.SharedParametersFilename;
             try
             {
@@ -98,11 +130,22 @@ namespace PKNailForRevit
                     BuiltInCategory.OST_Walls, BuiltInCategory.OST_Doors,
                     BuiltInCategory.OST_Windows, BuiltInCategory.OST_GenericModel);
 
+                System.Collections.Generic.HashSet<string> sharedNames =
+                    new System.Collections.Generic.HashSet<string>(StringComparer.Ordinal);
+                System.Collections.Generic.List<Definition> missing = new System.Collections.Generic.List<Definition>();
+                foreach (Definition def in group.Definitions)
+                {
+                    sharedNames.Add(def.Name);
+                    if (!boundNames.Contains(def.Name)) { missing.Add(def); }
+                }
+                sm_sharedParamNames = sharedNames;
+                if (missing.Count == 0) { return CommandResult.Succeeded; }
+
                 using (Transaction t = new Transaction(doc, @"Bind PKNail Parameters"))
                 {
                     t.Start();
                     BindingMap bindings = doc.ParameterBindings;
-                    foreach (Definition def in group.Definitions)
+                    foreach (Definition def in missing)
                     {
                         if (bindings.Contains(def)) { continue; }
                         bool isType = sm_typeParamNames.Contains(def.Name);
@@ -5550,8 +5593,6 @@ namespace PKNailForRevit
 
             private static ElementFilter getCategoryFilter(Document doc, string familyCategory)
             {
-                Parameter p = getCategoryParameter(doc);
-                ParameterValueProvider pvp = new ParameterValueProvider(p.Id);
                 string familyCategoryFilterVal = familyCategory;
                 string altFamilyCategoryFilterVal = null;
                 if (familyCategory.IsWalls())
@@ -5575,25 +5616,33 @@ namespace PKNailForRevit
                     altFamilyCategoryFilterVal = FamilyCategory.LinesAlt;
                 }
 
-                FilterStringRule rule = new FilterStringRule(pvp, new FilterStringEquals(), familyCategoryFilterVal);
-                ElementParameterFilter familyCategoryFilter = new ElementParameterFilter(rule);
-                if (altFamilyCategoryFilterVal != null)
+                // Normally there is one "PKNail Family Category" parameter. A document that carries two of
+                // that name (see PKNailParameter.getParameterbyName) holds the values in only one of them,
+                // so a type matches if either one has the wanted value.
+                List<ElementFilter> filters = new List<ElementFilter>();
+                foreach (Parameter p in getCategoryParameters(doc))
                 {
-                    FilterStringRule altRule = new FilterStringRule(pvp, new FilterStringEquals(), altFamilyCategoryFilterVal);
-                    ElementParameterFilter altFamilyCategoryFilter = new ElementParameterFilter(altRule);
-                    return new LogicalOrFilter(familyCategoryFilter, altFamilyCategoryFilter);
+                    ParameterValueProvider pvp = new ParameterValueProvider(p.Id);
+                    FilterStringRule rule = new FilterStringRule(pvp, new FilterStringEquals(), familyCategoryFilterVal);
+                    filters.Add(new ElementParameterFilter(rule));
+                    if (altFamilyCategoryFilterVal != null)
+                    {
+                        FilterStringRule altRule = new FilterStringRule(pvp, new FilterStringEquals(), altFamilyCategoryFilterVal);
+                        filters.Add(new ElementParameterFilter(altRule));
+                    }
                 }
-                else
-                { return familyCategoryFilter; }
+                return (filters.Count == 1) ? filters[0] : new LogicalOrFilter(filters);
             }
 
-            private static Parameter getCategoryParameter(Document doc)
+            private static IList<Parameter> getCategoryParameters(Document doc)
             {
                 // Grab an arbitrary wall type for the purpose of getting the parameter
                 FilteredElementCollector wtcoll = new FilteredElementCollector(doc);
                 wtcoll.WhereElementIsElementType().OfCategory(BuiltInCategory.OST_Walls);
-                Parameter retval = PKNailParameter.FamilyCategory.GetParameterObject(wtcoll.FirstElement());
-                if (retval == null)  { throw new HardException(@"Parameter ""PKNail Family Category"" is undefined in WallType"); }
+                Element wt = wtcoll.FirstElement();
+                IList<Parameter> retval = (wt != null) ? PKNailParameter.FamilyCategory.GetParameterObjects(wt) : null;
+                if (retval == null || retval.Count == 0)
+                { throw new HardException(@"Parameter ""PKNail Family Category"" is undefined in WallType"); }
                 return retval;
             }
         }

@@ -644,6 +644,18 @@ namespace PKNailForRevit
             return Result.Succeeded;
         }
 
+        // The PKNail tools keep their data in project parameters. A project that has not been through
+        // "Import AI Model" can lack some of them (the 2026 PKNail template does), and every tool then
+        // stops with 'Parameter "PKNail ..." is undefined'. Bind the missing ones before the command's
+        // transaction group opens; this does nothing once they exist. If binding fails the command still
+        // runs and reports the missing parameter itself.
+        private static void ensureProjectParameters(IProjectModel proj)
+        {
+            if (proj == null) { return; }
+            string ignored = @"";
+            proj.EnsureDocumentParameters(ref ignored);
+        }
+
         private delegate Result ExecuteCmdWithDirection(UIDocument uidoc, IProjectModel proj, SurveyDirection dir, ref string message);
 
         private Result executeInTxn(ExecuteCmdWithDirection exec, ExternalCommandData cmdData, string txnName, ref string msg)
@@ -656,6 +668,7 @@ namespace PKNailForRevit
             if (cmdData.Application != null) { setAppContext(cmdData.Application); }
 
             IProjectModel proj = projectModel();
+            ensureProjectParameters(proj);
 
             if (proj != null)
             {
@@ -755,6 +768,7 @@ namespace PKNailForRevit
             if (cmdData.Application != null) { setAppContext(cmdData.Application); }
 
             IProjectModel proj = projectModel();
+            ensureProjectParameters(proj);
 
             if (proj != null)
             {

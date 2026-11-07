@@ -100,6 +100,13 @@ namespace PKNailForRevit
             return getParameterbyName(boundElement, m_name);
         }
 
+        // Every parameter on the element with this name. Normally one; see getParameterbyName for how a
+        // document ends up with two.
+        internal IList<Parameter> GetParameterObjects(Element boundElement)
+        {
+            return boundElement.GetParameters(sm_prefix + m_name);
+        }
+
         internal static Parameter GetNamedParameter(Element boundElement, string paramName)
         {
             return getParameterbyName(boundElement, paramName);
@@ -125,7 +132,31 @@ namespace PKNailForRevit
         protected static Parameter getParameterbyName(Element boundElement, string paramName)
         {
             string fullParamName = sm_prefix + paramName;
-            return (boundElement.LookupParameter(fullParamName));
+            Parameter retval = boundElement.LookupParameter(fullParamName);
+
+            // An element can carry two parameters with this name: a PKNail template or family defines its own
+            // (not shared) and the shared parameter of the same name was bound to the project as well.
+            // LookupParameter then returns either one. If it picked an empty one while its namesake holds
+            // the data, use the namesake; otherwise keep what LookupParameter returned.
+            if (retval != null && !hasValue(retval))
+            {
+                foreach (Parameter p in boundElement.GetParameters(fullParamName))
+                { if (hasValue(p)) { return p; } }
+            }
+
+            return retval;
+        }
+
+        private static bool hasValue(Parameter p)
+        {
+            switch (p.StorageType)
+            {
+                case StorageType.String: return !string.IsNullOrEmpty(p.AsString());
+                case StorageType.Integer: return p.AsInteger() != 0;
+                case StorageType.Double: return p.HasValue && p.AsDouble() != 0.0;
+                case StorageType.ElementId: return p.AsElementId() != ElementId.InvalidElementId;
+                default: return false;
+            }
         }
     }
 }
