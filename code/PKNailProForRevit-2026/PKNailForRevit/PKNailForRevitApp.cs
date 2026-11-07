@@ -648,12 +648,15 @@ namespace PKNailForRevit
         // "Import AI Model" can lack some of them (the 2026 PKNail template does), and every tool then
         // stops with 'Parameter "PKNail ..." is undefined'. Bind the missing ones before the command's
         // transaction group opens; this does nothing once they exist. If binding fails the command still
-        // runs and reports the missing parameter itself.
+        // runs and reports the missing parameter itself. The tools also read wall-face geometry through a
+        // default (non-perspective) 3D view; a stock template may only have a perspective one, which
+        // stopped Activate Wall with "No default 3D view in document", so one is created when missing.
         private static void ensureProjectParameters(IProjectModel proj)
         {
             if (proj == null) { return; }
             string ignored = @"";
             proj.EnsureDocumentParameters(ref ignored);
+            proj.EnsureDefault3DView(ref ignored);
         }
 
         private delegate Result ExecuteCmdWithDirection(UIDocument uidoc, IProjectModel proj, SurveyDirection dir, ref string message);

@@ -122,9 +122,11 @@ namespace PKNailForRevit
 
             // The engine hosts openings using wall-face geometry derived from a default 3D view; a fresh
             // metric-template project may have none. Create one now so windows/doors can host (best-effort:
-            // if this fails, walls still import and the openings report a clear skip reason).
+            // if this fails, walls still import and the openings report a clear skip reason). Direct Build
+            // does not need it, but the 1.0 tools used on the imported walls afterwards (Activate Wall,
+            // Capture) do, so it is created on both paths.
             string viewMsg = string.Empty;
-            if (!directBuild) { proj.EnsureDefault3DView(ref viewMsg); }
+            proj.EnsureDefault3DView(ref viewMsg);
 
             // Epic 10.3: default project metadata — name the PKNail project after the source file if it has
             // no name yet. Best-effort: metadata must never block the geometry import.
