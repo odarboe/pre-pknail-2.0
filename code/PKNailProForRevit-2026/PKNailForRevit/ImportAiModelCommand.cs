@@ -113,6 +113,13 @@ namespace PKNailForRevit
                 return Result.Failed;
             }
 
+            // Epic 11e.3: a project with no PKNAIL door/window families (any stock Revit template) gets the
+            // shipped ones, so the AI's door types (sliding, pocket, ...) can be built as such. Best-effort:
+            // if the family files are missing the import uses the project's own families and says so.
+            string familyNote;
+            string familyMsg = string.Empty;
+            bool familiesOk = proj.EnsureSurveyFamilies(out familyNote, ref familyMsg) == CommandResult.Succeeded;
+
             // The engine hosts openings using wall-face geometry derived from a default 3D view; a fresh
             // metric-template project may have none. Create one now so windows/doors can host (best-effort:
             // if this fails, walls still import and the openings report a clear skip reason).
@@ -138,6 +145,9 @@ namespace PKNailForRevit
             ImportReport report = directBuild
                 ? new DirectBuildImporter().Import(proj, plan!, recordUsage)
                 : new AiModelImporter().Import(proj, mapped!, recordUsage);
+
+            if (!string.IsNullOrEmpty(familyNote)) { report.AddAdjustment(familyNote); }
+            if (!familiesOk) { report.AddWarning(familyMsg + @"; the project's own door/window families were used."); }
 
             if (report.Committed)
             {

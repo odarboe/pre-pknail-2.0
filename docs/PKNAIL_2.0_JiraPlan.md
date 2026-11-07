@@ -404,6 +404,12 @@ net8.0 test project + in-process `IProjectModel` fake exist.
 | 14  | 11d | Nullable + analyzer baseline (hardening)       | Bridge null-annotated; ~1,400-warning noise baselined                     | commit |
 | 15  | 11c | Transaction scope + RevitDocument decomposition | RAII transaction scope; AI-import surface isolated from the God class    | commit |
 | 16  | 11e | Interface segregation + opening-path consolidation | Segregated import interface; opening-path strategy documented          | commit |
+| 17  | 12a | **Opening position fix** (Bug 1)              | Paired windows/doors land at the JSON centers (±1 mm); pairs stay adjacent | commit |
+| 18  | 12b | Opening data validation (Bugs 1+2)            | Overlap + missing-door-orientation warnings in the import report          | commit |
+| 19  | 12c | Door type & orientation (Bug 2)               | Sliding / swing-in / hinge honored; family chosen by type, not index 0 (**Q16-gated**) | commit |
+| 20  | 12d | Fallback-path fidelity (Bugs 1+2)             | Stock-template openings get correct size + hinge/swing (or auto-load PKNAIL families) | commit |
+| 21  | 12e | Face/interior side on free-direction v2 walls | Swing/facing correct regardless of wall drawing direction                 | commit |
+| 22  | 13  | **Direct Build import** (v2/v2.1 files)        | AI walls/openings drawn natively, no survey engine; nothing dropped; contract v2.1 to the AI team | commit |
 
 Each epic below has: **Goal · Stories · Deliverables · Automated tests · How to verify (manual) ·
 Acceptance criteria · Commit gate.**
@@ -433,6 +439,9 @@ Acceptance criteria · Commit gate.**
 > | 10 Coord system/origin | ✅ committed | deterministic re-based origin (documented in report) + default project name; Set Coord Sys stays a manual step (Q13) |
 > | 8 Packaging | ✅ committed | manifest updated for 2.0 (Revit 2026, new upgrade code, ships `PKNail.AiImport.dll`) + user/dev docs. **MSI build + code-signing + clean-VM install remain PointKnown release steps** (no WiX toolset in the dev env). |
 > | 11 Production Hardening | 📋 planned | Senior-architect review 2026-07-23. **11a (Revit CI) + 11b (activation-geometry tests) are release-blocking**; 11c–11e are incremental. |
+> | 12 Opening bug fixes | 📋 planned (2026-10-03) | Bug 1 double windows misaligned; Bug 2 all doors use the default type. Root causes + plan in **Epic 12**. Repro data: commit `83b6afd` (September AI-engine JSONs). |
+> | 13 Direct Build | 🔧 built + tested, **awaiting manual Revit confirmation** (2026-10-13) | v2/v2.1 files bypass the survey engine; 137 unit + 71 integration tests green. First Revit run found the door-size dialog problem; fixed in 13.8, re-test pending. Supersedes 12a/12b/12d for v2 files (see Epic 13). Contract v2.1 sent to the AI team (Q16). |
+> | 13b Revit-check fixes | 🔧 built + tested, **awaiting manual Revit confirmation** (2026-11-06) | Family chosen from `OpeningType` / `FamilyDefIdx` (Q20), hinge convention flipped (Q19), no duplicate PKNail parameters, parameters bound before any command. 157 unit + 72 integration tests green. |
 >
 > Epics 4/5/6 were delivered as part of the v2-contract and bridge commits (the real data required
 > absolute placement) rather than as separate commits. The audit gaps #1–#5 (opening-engine reuse,
@@ -1022,6 +1031,392 @@ AI orientation with **no** fallback warning.
 
 ---
 
+## EPIC 12 — Opening Bug Fixes (double windows, door types) — 2026-10-03
+
+**Goal:** Fix the two opening defects reported against the September AI-engine output (committed in
+`83b6afd`: `docs/Sept17/`, `docs/September15/`, `docs/September_jsons/`, `docs/final_combined_pknail_v5.json`).
+
+- **Bug 1:** double windows (two openings side by side on one wall) don't land next to each other.
+- **Bug 2:** every door uses the same default door type, even when the real door is sliding or swings inward.
+
+**Two opening paths (from Epic 6/11e).** Which one runs decides which root causes apply. The import
+report shows the fallback warning *"hosted with a default family — no PKNAIL survey family loaded"*
+whenever the fallback ran.
+
+- **Engine path:** used when PKNAIL door/window families are loaded. It runs `ActivateWallById` →
+  `SurveyWallHostedObjectPrep` → `SurveyWallHostedObject`.
+- **Fallback path:** used on stock templates. It runs `CreateOpeningOnWall`.
+
+### Root-cause analysis (verified in code)
+
+**Bug 1 — positions**
+
+| # | Path | Cause | Evidence | Effect on a pair |
+| -- | ---- | ----- | -------- | ---------------- |
+| 1A | Engine | **The AI sends the center; the engine expects the near edge.** v2 `LocationFromStartMeters` is the opening **centre** ([schema v2:82](ai_engine_pknail_schema_v2.md)). The 1.0 engine treats `Location` as the **near edge** and adds `width/2` unless the family has *Family Measure Location Centered = Yes* ([RevitDocument.cs:5776-5779]). The importer passes the center straight through ([AiModelImporter.cs:457]). | `September15` wall[1]: 0.65 m + 2.151 m windows meant to touch end up **~0.70 m apart**. `v5` wall[1]: an equal-width pair stays 0.149 m apart but the whole pair moves **+0.344 m**. | Each opening moves by its **own** half-width, so pairs of unequal width split apart. |
+| 1B | Fallback | **The size is never applied.** Width and height are only set if the family exposes them as *instance* parameters ([RevitDocument.AiImport.cs:228-237]); standard Revit families use *type* parameters. Every opening gets the first type's default size. | All windows have the same default width. | Centers are correct, but default widths make pairs overlap or leave gaps. |
+| 1C | Engine | **Measured from a different point.** The engine measures from the **wall-face corner**; the JSON measures from the **centerline start**. Where a perpendicular wall joins, the face corner is trimmed by about half that wall's thickness (6–10 cm). | Same offset for every opening on the wall. | The pair moves together; secondary, but it counts against the ~1″ accuracy goal. |
+| 1D | Data | **The AI's own openings overlap.** | `September15` wall[0]: a door and a window overlap by 0.33 m. Wall[1]: two windows overlap by 5 cm. | The plugin can't fix bad input; it should warn. |
+
+**Bug 2 — door type**
+
+| # | Path | Cause | Evidence |
+| -- | ---- | ----- | -------- |
+| 2A | Contract | **The JSON can't say which door type.** There's no door-type field, and `FamilyDefIdx` is always 0 (§5 item 4, Q3). Every door resolves to the first PKNAIL door family in Family Order ([AiModelImporter.cs:445-455]). The engine already supports `LateralOrientationType.Sliding`; it just never receives it. | All files: `FamilyDefIdx=0`, `Kind="Door"` only. |
+| 2B | Data | **Orientation fields are missing, so doors default to Left / swing Out.** `Sept17`, `September15` and `v5` have no `HingeSideIndex` / `SwingDirectionIndex`. The mapper defaults them to 0 ([AiModelMapper.cs:100-101]), so a door that swings inward imports swinging **out**. The DTO uses `int` rather than `int?`, so a missing field can't be detected. | Only some `September_jsons` models emit `SwingDirectionIndex=1`. |
+| 2C | Fallback | **The fallback ignores type and orientation.** It places the first door type in the document for every door and never applies hinge or swing ([RevitDocument.AiImport.cs:195-237]). | Same door everywhere on stock templates. |
+| 2D | Engine (unconfirmed) | **The interior side may be wrong on some walls.** v2 walls run in arbitrary directions, but `ActivateWallById` gets the same interior/exterior face choice for every wall (`IsScanFromInterior`). On walls drawn the "other" way round, swing and facing may come out mirrored. Opposite parallel walls in `Sept17` (wall[1] vs wall[3]) both run west→east. | Needs a Revit check (12e). |
+
+### Run order
+
+**12a → 12b → 12d → 12e**, plus **12c once Q16 is answered**.
+
+- 12a and 12b have no outside dependencies.
+- 12c needs the AI-engine contract change (Q16).
+- 12d may be replaced by 11e.3 (auto-load the PKNAIL families), depending on Q14.
+
+Each sub-epic is one focused commit under the standard §2 gate.
+
+---
+
+### Epic 12a — Opening position fix (Bug 1A + 1C)
+
+**Stories**
+- 12a.1 **Convert center to near edge in the bridge.** In `AiModelImporter.PlaceOpening`, after the
+  family def is chosen:
+  - If the def is *not* `IsMeasureLocationCentered`, pass `hp.Location = center − width/2`.
+  - Otherwise pass the center unchanged.
+
+  This happens at the bridge boundary only; the 1.0 engine is not touched. The v1 survey-chain path
+  keeps today's near-end semantics; check that against the v1 contract before changing it.
+- 12a.2 **Measure from the face corner.** Extend `ActivateWallById` to return the signed distance along
+  the wall from the **centerline start** to the **near face corner**. The importer subtracts it so the
+  location is measured from the same point the engine uses. Put the projection math in the Revit-free
+  `WallActivationGeometry` helper so it is unit-tested (follows 11b).
+- 12a.3 **Fixed-width families.** When the selected family has a fixed width
+  (`FixedDimensions.Width`), use the family's width for the half-width offset and record a warning
+  that the AI width was not applied.
+
+**Automated tests**
+- Unit: center→edge conversion for centered and non-centered defs; the face-corner projection
+  (perpendicular join, no join, reversed endpoints).
+- Integration (`RecordingProjectModel`): import `September15/step7_pknail_with_windows.json` and
+  `final_combined_pknail_v5.json`. For every wall with two or more openings, assert that the
+  reconstructed center (recorded `hp.Location` + `width/2` + corner offset) equals the JSON center
+  within 1 mm, and that the gaps between neighbours are preserved.
+
+**How to verify (manual)**
+1. Import `final_combined_pknail_v5.json` on the PKNAIL template.
+2. In plan view, dimension wall[1]'s two windows. The gap should be **0.149 m** and the first window's
+   center **2.282 m** from the wall start.
+3. Repeat with `September15/step7_pknail_with_windows.json` wall[1]. The windows should touch (the JSON
+   overlaps them by 5 cm, which 12b reports).
+
+**Acceptance criteria:** every opening center is within 1 mm of the JSON; pairs keep their JSON
+spacing.
+
+**Commit:** `fix(pknail-2.0/openings): place v2 openings at the JSON centre (centre→near-edge + face offset)`.
+
+---
+
+### Epic 12b — Opening data validation (Bug 1D + 2B)
+
+**Stories**
+- 12b.1 **Overlap warnings.** `AiModelValidator` warns when two openings on the same wall overlap
+  (edge gap < 0), naming the wall, both indices and the overlap in mm. This is a warning, not an
+  error. The policy (skip / clamp / warn only) is decided in Q17.
+- 12b.2 **Make absence detectable.** Change `HingeSideIndex`, `SwingDirectionIndex` and
+  `FacingOrientationIndex` to `int?` in `DetectedOpening`. The mapper still defaults to 0.
+- 12b.3 **Missing-orientation warnings.** When a door has no hinge or swing value, the validator warns
+  *"door orientation not provided — defaulted to Left/Out"*.
+- 12b.4 Extend `ImportReport` to show these warnings next to the Revit warnings.
+
+**Automated tests:** validator unit tests (overlap, touching, gap, and a missing swing field); a
+deserialize test confirming that a missing field gives `null`; a regression run over every committed
+September JSON with the expected warning counts.
+
+**How to verify (manual):** import `September15/step7_pknail_with_windows.json`. The report lists the
+wall[0] door/window overlap, the wall[1] window overlap, and the doors whose orientation defaulted.
+
+**Acceptance criteria:** bad or missing opening data is never silent.
+
+**Commit:** `feat(pknail-2.0/validation): warn on overlapping openings + missing door orientation`.
+
+---
+
+### Epic 12c — Door type & orientation (Bug 2A + 2B) · **Q16-gated**
+
+**Stories**
+- 12c.1 **Contract v2.1 (needs AI-engine team sign-off).**
+  - Add an optional per-opening `OpeningType` string:
+    - doors: `"Hinged"`, `"DoubleHinged"`, `"Sliding"`, `"Pocket"`, `"Bifold"`
+    - windows: `"Fixed"`, `"Casement"`, `"Sliding"`, …
+  - Make `HingeSideIndex` and `SwingDirectionIndex` **required for doors**.
+  - Deprecate `FamilyDefIdx`. It's a document-specific index the AI can't know.
+  - Update `ai_engine_pknail_schema_v2.md` and add a fixture.
+- 12c.2 **Choose the family by type.** Map `OpeningType` to a family def using the PKNAIL family
+  parameters the engine already reads (*Family Lateral Orientation* = `Hinged` / `Sliding`) plus a
+  settings name map (for example `Sliding` → "PK Sliding Door").
+  - Order: an exact name-map match, then the first def with a matching `LateralOrientationTypeVal`,
+    then index 0 with a warning.
+  - `FamilyDefIdx` is used only when `OpeningType` is missing (keeps v2.0 behaviour).
+- 12c.3 **Report which family was used.** The import report lists the family chosen for each door,
+  so a reviewer can spot defaults.
+- 12c.4 Ship or confirm PKNAIL sliding and double-door families in the PKNAIL template (coordinate
+  with 11e.3).
+
+**Automated tests**
+- Unit: mapper and resolver (each type; unknown type → default with a warning).
+- Integration: the fake exposes several `ProjectSurveyFamilyDefs`. Assert the chosen
+  `SurveyFamilyDefIdx`, and that a door with `SwingDirectionIndex=1` reaches `SetFacingOrientation(1)`.
+
+**How to verify (manual):** import a v2.1 fixture with one hinged swing-in door and one sliding door.
+In Revit, check the family/type of each and the swing side.
+
+**Acceptance criteria:** door family and swing match the JSON; defaults are reported, never silent.
+
+**Commit:** `feat(pknail-2.0/openings): resolve door family by OpeningType + honour swing/hinge`.
+
+---
+
+### Epic 12d — Fallback-path fidelity (Bug 1B + 2C)
+
+**Decision (Q14):** either (a) implement 11e.3, auto-loading the shipped PKNAIL families so the engine
+path always runs and the fallback becomes rare (**recommended**), or (b) fix the fallback in place.
+
+**Stories (option b, or as a backstop under a)**
+- 12d.1 **Apply the size.** In `CreateOpeningOnWall`, select or duplicate a family **type** whose
+  Width/Height match the AI values, the way the engine's `getFamilySymbol` does
+  ([RevitDocument.cs:6349]), instead of setting instance parameters.
+- 12d.2 **Apply orientation.** Apply hinge and swing with `flipHand` / `flipFacing`, using the same
+  rules as `wallHostedInstanceDefinition.construct` ([RevitDocument.cs:6069-6083]).
+- 12d.3 Choose the door family by `OpeningType` name match when 12c has landed.
+
+**Automated tests:** integration tests asserting the fake's `CreateOpeningOnWall` receives the
+width/height/hinge/swing values. The Revit lane (11a) checks the type's width.
+
+**How to verify (manual):** on a stock metric template, import `final_combined_pknail_v5.json`. The
+windows have the JSON widths and the wall[10] doors are mirrored correctly.
+
+**Commit:** `fix(pknail-2.0/openings): fallback hosting applies size + hinge/swing`.
+
+---
+
+### Epic 12e — Face/interior side on free-direction v2 walls (Bug 2D)
+
+**Stories**
+- 12e.1 **Reproduce.** In Revit, import `Sept17/step7_pknail_with_windows_v2.json` and record the
+  door swing and window facing on walls drawn in opposite directions.
+- 12e.2 If the bug is confirmed, **work out the interior side per wall from geometry** (the side facing
+  the building / room centroid, or the side matching the AI's `FacingOrientationIndex`) rather than one
+  constant for the whole import. Implement it as a Revit-free helper in `WallActivationGeometry`.
+
+**Automated tests:** unit tests for the interior-side helper on a rectangle with walls drawn both ways.
+
+**How to verify (manual):** all inward-swinging doors swing into the room on every wall.
+
+**Commit:** `fix(pknail-2.0/openings): derive the interior face per wall for v2 walls`.
+
+---
+
+## EPIC 13 — Direct Build import (v2/v2.1 files) — 2026-10-12
+
+**Goal:** draw the AI-engine JSON in Revit exactly as delivered — every wall and opening, as native
+Revit elements — without forcing the data through the 1.0 survey engine, and without anyone editing
+the JSON or deleting walls to make an import succeed.
+
+**Why (decided with the user 2026-10-12, Q18).** The v2 engine path (`CreateWallAbsolute` →
+`ActivateWallById` → `SurveyWallHostedObject`) assumed a connected survey chain and PKNAIL survey
+families. The real October exports (`docs/October5/New/`) are 13–19 independent segments with
+T-junctions. Their ends already meet within 1 mm and no file closes a loop. The trouble was the engine
+path, not the data:
+
+- the opening flow expects the near edge, measures from the wall face and needs PKNAIL families (Epic 12 Bugs 1A/1B/1C/2C);
+- one element-level validation error blocked the whole file, and one failed wall rolled everything back;
+- every wall went on level index 0 at the level ceiling height; the AI's level elevation and per-wall data were dropped.
+
+Direct Build plans everything Revit-free, then calls plain Revit API methods. The `v3test/` Dynamo
+scripts proved the approach. This brings it inside the add-in so licensing, metering, one-undo import
+and the import report still apply.
+
+**Stories (all delivered)**
+- 13.1 **Contract v2.1 (additive).** Optional wall `Id`, `HeightMeters`, `InteriorSide`, `Comment`;
+  opening `Id`, `OpeningType`, `Comment`; level `Name`. `LevelOffsetMeters` (the v2 key) is now read.
+  `HingeSideIndex`/`SwingDirectionIndex`/`FacingOrientationIndex` are `int?` so "not provided" is
+  detectable (covers 12b.2). Supported versions: 1.0, 2.0, 2.1. AI-team instructions:
+  [ai_engine_pknail_schema_v2.1.md](ai_engine_pknail_schema_v2.1.md) + example JSON.
+- 13.2 **Lenient validation policy.** `AiModelValidator.Validate(b, elementIssuesAreWarnings: true)`:
+  a bad wall/opening becomes a "will be skipped" warning; a bad optional value is "ignored"; file-level
+  problems still block.
+- 13.3 **`WallNetworkCleaner`** (Revit-free): square up walls within 2° of an axis; extend/trim a loose
+  end ≤ 10 cm along its own line onto a neighbour's centerline (L-corners, T-junctions); flag collinear
+  overlaps as possible duplicates. Never deletes, never moves a wall sideways, reports every change.
+- 13.4 **`DirectBuildPlanner`** (Revit-free): levels re-based so the lowest sits at 0 (explicit
+  `ElevationMeters`, else stacked storey heights); plan re-based to the building min X/Y (Epic 10.1);
+  openings re-anchored to the tidied walls, slid inside if they overhang, overlaps flagged (Q17: warn
+  only); interior side from `InteriorSide`, else toward the plan centroid; labels = AI ids, else
+  `W{n}` / `W{n}-D{k}` / `W{n}-N{k}`.
+- 13.5 **`OpeningOrientation`** (Revit-free): windows face the exterior; door swing/hinge follow the AI
+  when provided, else the family default. The two Revit family conventions are constants to confirm in
+  the manual test (Q19).
+- 13.6 **Revit bridge.** `IAiImportTarget.CreateWallDirect` / `CreateOpeningDirect`
+  (`RevitDocument.DirectBuild.cs`) and `DirectBuildImporter`: levels matched by elevation or created
+  through the 1.0 `LevelsData` mechanism (level + floor plan); walls on their centerline with Mark,
+  Comments and the PKNAIL `WallState` marker; openings at their centre using a duplicated type of the
+  measured size (`PKNail AI Door 760 x 1990`) from the first wall-hosted family, or a plain rectangular
+  opening when no family is loaded. One transaction group, per-element metering (Q4), atomic rollback
+  on a wall failure or metering veto (Q12), openings best-effort.
+- 13.7 **Routing + report.** `ImportAiModelCommand` sends any file with wall coordinates to Direct
+  Build; v1 files keep the survey chain. `ImportReport` gains `Mode` and `Adjustments` (`*` lines).
+- 13.8 **No Revit dialogs; honest counts (fix from the 2026-10-12 Revit run).** The first manual run of
+  `October5/1_ai_pknail_v2 (1).json` showed four doors (571–678 mm) that the default
+  "Door-Passage-Single-Flush" family cannot be built at ("Profile sketch is empty", "Can't make type").
+  Revit raised a blocking dialog and "Delete Type" had to be pressed, and the report could still count
+  those doors as placed. Now every Direct Build element uses its own failure preprocessor: Revit errors
+  are recorded and only that element is rolled back silently (`ClearAfterRollback`). A door/window
+  falls back to the nearest existing type within 10 cm (`OpeningFallback`), else a plain opening of the
+  exact size, and the report says which. Success is only counted when the element exists after commit.
+  A wall Revit rejects now rolls the import back with Revit's error text instead of a dialog (Q12).
+
+**Effect on Epic 12.** For v2/v2.1 files, 12a (centre vs near edge, face offset), 12b (overlap and
+missing-orientation warnings) and 12d (fallback size/handing) are **superseded**: Direct Build places
+at the centre, sizes the type, and reports both cases. 12c (choose the family by `OpeningType`) and the
+door-handing part of 12e remain, now on the Direct Build path. The old v2 engine path
+(`AiModelImporter.ImportAbsolute`) is kept in code and tests but no longer called by the command.
+
+**Automated tests**
+- Unit (`PKNail.AiImport.Tests`): `WallNetworkCleanerTests`, `DirectBuildPlannerTests` (every October
+  export: nothing dropped, openings inside walls, re-based), `OpeningOrientationTests`, `ContractV21Tests`
+  (v2.1 fields, nullable orientation, lenient policy, the AI-team example file).
+- Integration (`PKNail.AiImport.IntegrationTests`): `DirectBuildImportTests` — every October export
+  imports whole in one undo step with no survey-engine calls; coordinates and units; openings on the
+  right wall at their centre; metering once per element; veto, wall failure and exception roll back; an
+  unhostable opening is skipped while the import commits; multi-level creation with a name clash; the
+  example file's ids, types and door handing reach Revit.
+- `OpeningFallbackTests` (nearest-type rule), and the two `October5/1_*.json` files from the failed
+  Revit run added to the October regression set. The Revit-only part of 13.8 (failure preprocessor,
+  fallback chain) cannot run headless; it is covered by manual step 8.
+
+**How to verify (manual)**
+1. Close Revit, then build: `dotnet build PKNailForRevit/PKNailForRevit.csproj -c Debug`.
+2. Start Revit 2026, new project (metric template). Add-Ins → PKNail Pro → Import AI Model →
+   `docs/October5/New/Orleans_ai_pknail_v2.json`. Report: `AI import (Direct Build): COMMITTED`,
+   walls placed = 19, openings placed = 13, failures = 0.
+3. Floor plan: walls meet cleanly at corners and T-junctions; no wall missing compared with the JSON.
+4. Select a window: Mark = `W1-N1` style label; its type is `PKNail AI Window <w> x <h>` matching the
+   JSON size in mm. Dimension its centre from the wall start: it matches `LocationFromStartMeters`.
+5. Press Undo once: the whole import disappears.
+6. New project, import `docs/ai_engine_pknail_results.v2.1.example.json`. Door `W2-D1` (east wall) must
+   swing **into** the room with the hinge on the **left** as seen from inside; door `W5-D1` (partition)
+   swings into the west room with the hinge on the **right** as seen from the west room. Windows face
+   outward. This confirms Q19.
+7. Repeat step 2 with `Carlisle_manual_check_pknail_v2.json`: the report lists the W18 squaring
+   (`*` line) and the W15/W18 possible duplicate (`~` line); both walls are drawn.
+8. New project, import `docs/October5/1_ai_pknail_v2 (1).json`. **No Revit error dialog appears.** The
+   report has a `~` line for each of W7-D1, W7-D2, W7-D3 and W10-D1 saying Revit could not build the
+   door family at that size and what was placed instead (nearest type or a plain opening). Each of
+   those four positions shows a door or an opening in the plan.
+
+**Acceptance criteria:** every October export imports with 0 failures and walls/openings equal to the
+JSON counts; every change appears in the report; a single Undo removes the import; Q19 confirmed.
+
+**Commit:** `feat(pknail-2.0/direct-build): draw v2/v2.1 AI files natively + contract v2.1 for the AI team`.
+
+---
+
+## EPIC 13b — Fixes from the 2026-11-06 Revit check
+
+**Source:** `BUG_SUMMARY.md` from the Revit check of `docs/October31/1_v2_ai_pknail_v2_doortypes.json`
+(Revit 2026.4, PKNAIL template). All 13 openings were within 1 mm of their expected centres. Five
+problems were reported; each was checked against the code and the two model dumps before fixing.
+
+| # | Reported | Verified cause | Fix |
+|---|---|---|---|
+| 1 | All doors `M_Single-Flush`, all windows `M_Fixed`; the 4 sliding doors are swing doors | `pickOpeningSymbol` took the first wall-hosted type; `FamilyDefIdx` / `OpeningType` never reached Revit (Q18) | 13b.1 |
+| 2 | Capture family list empty after an import | `EnsureDocumentParameters` used `bindings.Contains(def)`, which does not see the template's own (not shared) parameters of the same name, so it bound a second "PKNail Family Category" etc. `LookupParameter` then returned the empty one | 13b.2 |
+| 3 | Capture / Wall fail without an import: `Parameter "PKNail Settings" is undefined` | Only the import command bound the missing parameters; the 2026 template carries 6 of the 18 names in the shared parameter file | 13b.3 |
+| 4 | Hinges mirrored on the 3 hinged doors, swing sides right | `HandPointsAwayFromHinge` had the wrong value (Q19) | 13b.4 |
+| 5 | Door trim overlaps wall 11 by about 25 mm | Family geometry, not placement: the door is on its measured centre, 49 mm from the wall face | No code change. May differ once the door is the PKNAIL "Single" family (13b.1) |
+
+Not reproduced and not changed: the door offsets and empty passages seen on the other PC. Those
+symptoms match the old survey path (`Cannot locate point in face wall`), so that PC is probably
+running an older build.
+
+**Stories**
+- 13b.1 **Choose the family (12c.2 on the Direct Build path, Q20).** `OpeningFamilyResolver`
+  (Revit-free): `OpeningType` first (same name ignoring case and spaces, then the aliases
+  `Hinged` = "Single" and `DoubleHinged` = "Double", then the first hinged / sliding family), else
+  `FamilyDefIdx`; an index outside the list uses the first family and says so. The list is built by the
+  1.0 `ReconcileSurveyFamilyTypeDefs`, so it is the Capture list. A project without PKNAIL survey
+  families keeps the first wall-hosted family and reports once if the file asked for a specific one. A
+  survey family that has no hinge or no swing (sliding, pocket, opening) keeps its default handing; a
+  size it cannot be built at falls back to its own nearest type, never to another family.
+- 13b.2 **No duplicate parameters.** `EnsureDocumentParameters` skips a definition when a parameter of
+  that name is already bound, and opens no transaction when nothing is missing. Protection for
+  documents that already hold duplicates: `PKNailParameter` uses the namesake that holds a value when
+  `LookupParameter` returns an empty one, and the family-category filter matches on every parameter of
+  that name. Existing duplicates are not removed.
+- 13b.3 **Bind before any PKNAIL command.** `executeInTxn` calls `EnsureDocumentParameters` first.
+- 13b.4 **Hinge convention.** `HandPointsAwayFromHinge = false`.
+- 13b.5 **Report clean-up (from the first re-run, 2026-11-06, on `Default-Multi-discipline.rte`).** That
+  run showed 19 warnings for 5 facts. Revit warnings raised by an attempt that is rolled back are now
+  dropped (the attempt is reported once with its error); multi-line Revit texts are one line. The
+  failure line names the wall thickness, and says the family does not fit the wall when a type placed
+  elsewhere in the same import fails there. This corrects 13.8: "Door-Passage-Single-Flush" does not
+  fail at 571–678 mm widths, it fails in 100 mm walls. In both runs every failed door was on W7 or W10
+  (100 mm), every door on a 110/115 mm wall was built, and the 530 mm type built on W4 failed on W7.
+- 13b.6 **Verify the cut.** After a door/window is placed, the wall's solid is probed at the middle of
+  the opening. If the family left the wall solid, the measured opening is cut behind it and the report
+  says so. Added because two windows on W2 looked uncut in the 3D view of that run. **Confirmed by the
+  second re-run:** the report said both W2 windows had not cut the wall, and the cut behind them fixed
+  the view. They were the only two instances that needed no flip after creation, so the instance is now
+  hosted after regenerating its (freshly resized) type and directly at its final height; the probe stays
+  as the backstop. If the next report has no "did not cut the wall" line, that was the cause.
+- 13b.7 **Load the PKNAIL families when the project has none (11e.3, Q14).** Both re-runs were made on
+  Revit's `Default-Multi-discipline.rte`, which has one door family and no sliding door, so the four
+  sliding doors could not be sliding and four doors on 100 mm walls became plain openings. The import
+  now loads the shipped PKNAIL door families when the project has no PKNAIL door family, and likewise
+  for windows (`RevitDocument.EnsureSurveyFamilies`), and tags their types with the template's
+  `PKNail Family Category` / `PKNail Family Order`, so `FamilyDefIdx` means the same on any template.
+  Family files are found next to or above the add-in (`RevitFiles\Imperial|Metric`) or in the installed
+  library (`%ProgramData%\PointKnown\PKNail Pro For Revit <year>\Libraries\US Imperial|US Metric`),
+  chosen by the project's unit system. A project that already has PKNAIL families of a kind is not
+  touched. The report lists what was loaded (`*` line); if the files are missing it says so (`~` line)
+  and the project's own families are used.
+
+**Automated tests:** `OpeningFamilyResolverTests`; `OpeningOrientationTests` (the three doors of the
+check file); `DirectBuildPlannerTests` and `DirectBuildImportTests` on the check file (family index,
+handing and centres reach the plan and Revit). 157 unit + 72 integration tests green. 13b.2, 13b.3 and
+the Revit side of 13b.1 touch the Revit API and cannot run headless; they are covered by the manual
+steps.
+
+**How to verify (manual)**
+1. Close Revit, build `dotnet build PKNailForRevit/PKNailForRevit.csproj -c Debug`, start Revit 2026.
+2. New project from `PKNailProForRevit.rte`. **Before importing**, click PKNail Pro → **Wall**. It must
+   start instead of failing with `Parameter "PKNail Settings" is undefined`. Cancel it.
+3. Import `docs/October31/1_v2_ai_pknail_v2_doortypes.json`. Walls placed = 14, openings placed = 13.
+   The 4 sliding doors (walls 3, 5, 6, 7) are `PKNail Sliding`; the 3 hinged doors are `PKNail Single`;
+   the windows are `PKNail Fixed`. Compare the hinged doors with `expected_plan.png`: wall 9 door hinged
+   on the east jamb swinging north; wall 6 doors hinged at the jambs nearest wall 5, swinging east.
+4. Activate a wall (**Wall**), then **Capture → Door**: the family list shows Single, Double, Opening,
+   Sliding Glass, Sliding, Pocket.
+5. Run the RevitDump add-in: the binding list has no name twice.
+6. Open the project saved from the earlier check (the one with duplicate parameters): **Capture → Door**
+   lists the families there too.
+7. New project from a stock metric template, same import: doors are `M_Single-Flush`, windows `M_Fixed`,
+   and the report has one `~` line saying the project has no PKNAIL door families (the file asks for
+   door family 4; the windows ask for the default, so they add no line).
+8. New project from the imperial `Default-Multi-discipline.rte`, same import: the report has a `*` line
+   "Loaded the PKNAIL families Single, Double, Opening, Sliding Glass, Sliding, Pocket, Fixed, Double
+   Hung". The 4 sliding doors are `PKNail Sliding`, the 3 hinged doors `PKNail Single`, the windows
+   `PKNail Fixed`; no door is a plain opening and there is no "did not cut the wall" line. If a PKNAIL
+   family cannot be built in a 100 mm wall either, its `~` line says so and that is the next thing to
+   fix.
+
+**Commit:** `fix(pknail-2.0/direct-build): choose the door/window family, fix hinge side + duplicate PKNail parameters`.
+
+---
+
 ## 4b. Risk Register (Senior C# Architect)
 
 | #  | Risk | Likelihood × Impact | Mitigation |
@@ -1041,6 +1436,8 @@ AI orientation with **no** fallback warning.
 | R13 | **God class + fragile manual transactions.** `RevitDocument.cs` is 7,497 lines implementing a 41-member interface; `m_txn`/`m_txnGrp` are mutable fields, nesting throws, and `AbortPendingTransaction` is a manual patch for dangling transactions (we hit exactly that in the openings work). | Med × High | **Epic 11c**: `IDisposable` transaction scope (rollback-on-dispose); incrementally isolate the AI-import surface into a partial/service. Do not big-bang. |
 | R14 | **No null-safety on the bridge + warning noise.** `PKNailForRevit` is `<Nullable>disable</Nullable>` (so `AiModelImporter` gets no null-safety) and emits ~1,400 CA1416/SYSLIB warnings that mask real ones. | Med × Med | **Epic 11d**: nullable annotations on the bridge; analyzer baseline that suppresses benign CA1416 and treats new 2.0-code warnings as errors. |
 | R15 | **Fat interface + dual opening paths.** The import depends on a 41-member `IProjectModel` (ISP violation; the fake must implement all of it), and two opening paths now coexist (engine primary + `CreateOpeningOnWall` fallback), with the fallback dropping AI orientation on stock templates. | Med × Med | **Epic 11e**: segregate an `IAiImportTarget`; document the opening-path strategy; optionally auto-load PKNAIL families to remove the fallback's fidelity gap (also closes R4 on stock templates). |
+| R16 | **Opening location semantics differ by layer.** The v2 JSON gives the centre from the centerline start; the 1.0 engine expects the near edge from the face corner. Wrong conversion puts each opening off by its own half-width (Bug 1). | High × Med | **Epic 12a**: convert at the bridge boundary only; a regression test on every committed fixture asserts centres within 1 mm. |
+| R17 | **The contract can't express door type or required orientation.** `FamilyDefIdx` is a document-specific index the AI can't know, and missing orientation fields silently become Left/Out (Bug 2). | High × Med | **Epic 12b** makes absence visible now; **Epic 12c** adds `OpeningType` in contract v2.1 (Q16). |
 
 ---
 
@@ -1122,6 +1519,23 @@ These are real mismatches between the delivered JSON and what the plugin needs. 
 | Q11 | Suppress auto-save during headless import on an unsaved/new project? | Epic 3 | **✅ Yes** — suppress until the project has a path (auto-save can pop a blocking `TaskDialog` mid/after import — [PKNailForRevitApp.cs:664, 1365-1428]). |
 | Q12 | Partial-import failure policy: atomic rollback of the whole group, or commit-so-far/resumable? | Epic 3 | **✅ Atomic rollback** of the single import `TransactionGroup` (one undo entry). Simpler + idempotent re-import (Q5). Revisit only if large imports make full re-run too costly. |
 | Q13 | Coordinate system on import: default CS + user runs `Set Coord Sys` after, or auto-set from first wall? | Epic 10 | **✅ Default CS for Phase 1**, user runs `Set Coord Sys` after (interactive `PickObject` can't run headlessly). Auto-set from first wall is a Phase-2 enhancement. |
+
+### Epic 12 open questions — OPEN (2026-10-03)
+
+| #   | Question | Blocks | Status |
+| --- | --- | --- | --- |
+| Q14 | Which opening path does the reported Revit run hit: the engine path (PKNAIL families loaded) or the fallback (report shows *"hosted with a default family"*)? Fix the fallback in place, or auto-load the PKNAIL families (11e.3)? | 12d priority | **Auto-load implemented (13b.7, 2026-11-06), awaiting user confirmation in Revit.** |
+| Q15 | Is a "double window" two separate windows (as the JSON sends today) or one double-window family? Should touching or overlapping same-height windows be merged? | 12a scope | **OPEN.** Plan assumes two separate windows, no merge. |
+| Q16 | Approve the contract v2.1 request to the AI-engine team: `OpeningType` per opening, and `HingeSideIndex` / `SwingDirectionIndex` required for doors? | 12c | **✅ APPROVED (user, 2026-10-12)** and widened: v2.1 also drops the loop-order rule and adds wall `Id`/`HeightMeters`/`InteriorSide`/`Comment`, opening `Id`/`Comment`, level `Name`. Spec: [ai_engine_pknail_schema_v2.1.md](ai_engine_pknail_schema_v2.1.md). |
+| Q17 | Policy for openings that overlap in the JSON: warn only, skip the second, or clamp? | 12b | **Implemented as warn only** on the Direct Build path (both placed, reported). Confirm. |
+
+### Epic 13 decisions (2026-10-12)
+
+| #   | Question | Blocks | Status |
+| --- | --- | --- | --- |
+| Q18 | Replace the v2 engine path with a Direct Build path (native Revit API, no survey engine) as the default for files with wall coordinates? | Epic 13 | **✅ YES (user, 2026-10-12).** v1 keeps the survey chain. Direct Build ignores `FamilyDefIdx` (deprecated) and sizes a type from the first wall-hosted family: a deliberate departure from Q3 for v2 files until 12c selects families by `OpeningType`. |
+| Q19 | Revit family conventions used to apply AI door handing: the leaf swings toward `FacingOrientation`; `HandOrientation` points from hinge to latch. | Epic 13 gate | **Half answered by the 2026-11-06 Revit check.** Swing: confirmed (`DoorSwingsTowardFacing = true`). Hinge: all three hinged doors came out mirrored, so `HandPointsAwayFromHinge` is now `false` (the hand points at the hinge, which is also what the 1.0 flip rule implies). The hinge was judged by eye on `M_Single-Flush`; **re-confirm in Revit on the PKNAIL "Single" family** (Epic 13b manual step 3). |
+| Q20 | Should Direct Build honour `FamilyDefIdx` after all? Q18 ignored it on purpose; the 2026-11-06 Revit check reported it as a bug (4 sliding doors built as swing doors). | Epic 13b | **Implemented as 12c.2 says, awaiting user confirmation:** `OpeningType` chooses the PKNAIL family first; `FamilyDefIdx` is used when `OpeningType` is absent or matches nothing; a project with no PKNAIL survey families keeps the Q18 behaviour (first wall-hosted family). Side effect to confirm: older v2 files (all `FamilyDefIdx = 0`) now get the first PKNAIL door/window family ("Single" / "Fixed") in a PKNAIL template instead of the stock `M_Single-Flush` / `M_Fixed`. The v2.1 note to the AI team still says "do not send `FamilyDefIdx`"; prefer `OpeningType`. |
 
 > **Q2/Q3 action:** before coding Epics 2/6, trace the exact PKNAIL 1.0 code paths (`SurveyWallPrep`
 > first-wall handling; `SurveyFamilyDefIdx` / `ProjectSurveyFamilyDefs` resolution and default family
