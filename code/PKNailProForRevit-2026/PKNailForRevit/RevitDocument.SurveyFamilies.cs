@@ -40,6 +40,10 @@ namespace PKNailForRevit
             new shippedSurveyFamily(@"PKNail Double Hung.rfa", @"Double Hung", FamilyCategory.Windows, 2, @"None", @"Facing"),
         };
 
+        // The 1.0 "active wall" indicator: a generic-model arrow the Activate Wall / Wall / Capture tools place
+        // beside the active wall. Also only in the PKNAIL template; without it those tools show nothing.
+        private static readonly string[] sm_shippedSpriteFamilies = { @"PKNail Survey Sprite LR.rfa", @"PKNail Survey Sprite RL.rfa" };
+
         // A family already in the project is left exactly as it is.
         private sealed class keepProjectFamily : IFamilyLoadOptions
         {
@@ -51,8 +55,8 @@ namespace PKNailForRevit
         }
 
         // Loads the shipped PKNAIL door families when the project has no PKNAIL door family, and likewise
-        // for windows. A project that already has survey families of a kind (the PKNAIL template, or a
-        // customised one) is not touched for that kind. Call after EnsureDocumentParameters and before the
+        // for windows, plus the survey sprites when they are missing. A project that already has survey
+        // families of a kind (the PKNAIL template, or a customised one) is not touched for that kind. Call after EnsureDocumentParameters and before the
         // import transaction group; runs in its own transaction. `note` says what was loaded (empty when
         // nothing was needed). A failure is not fatal: the import then uses the project's own families.
         public CommandResult EnsureSurveyFamilies(out string note, ref string msg)
@@ -67,9 +71,12 @@ namespace PKNailForRevit
                     if (FamilyCategoryUtils.GetAllTypesInCategory(doc, category).Count == 0)
                     { wanted.AddRange(sm_shippedSurveyFamilies.Where(f => f.Category == category)); }
                 }
-                if (wanted.Count == 0) { return CommandResult.Succeeded; }
+                List<string> wantedSprites = sm_shippedSpriteFamilies
+                    .Where(f => findFamily(Path.GetFileNameWithoutExtension(f)) == null).ToList();
+                if (wanted.Count == 0 && wantedSprites.Count == 0) { return CommandResult.Succeeded; }
 
-                string folder = shippedFamilyFolder(wanted[0].File, out string searched);
+                string probe = wanted.Count > 0 ? wanted[0].File : wantedSprites[0];
+                string folder = shippedFamilyFolder(probe, out string searched);
                 if (folder == null)
                 {
                     msg += @"The PKNAIL door/window family files were not found (looked in " + searched + @")";
@@ -115,6 +122,15 @@ namespace PKNailForRevit
                         loaded.Add(f.Name);
                     }
 
+                    foreach (string spriteFile in wantedSprites)
+                    {
+                        string path = Path.Combine(folder, spriteFile);
+                        if (!System.IO.File.Exists(path)) { continue; }
+                        doc.LoadFamily(path, new keepProjectFamily(), out Family sprite);
+                        if (sprite != null || findFamily(Path.GetFileNameWithoutExtension(spriteFile)) != null)
+                        { loaded.Add(Path.GetFileNameWithoutExtension(spriteFile).Replace(@"PKNail ", @"")); }
+                    }
+
                     if (loaded.Count == 0) { t.RollBack(); }
                     else if (t.Commit() != TransactionStatus.Committed)
                     {
@@ -132,7 +148,7 @@ namespace PKNailForRevit
                 // The lists read before this point are stale now.
                 m_surveyFamilyDefs.Clear();
                 note = @"Loaded the PKNAIL families " + string.Join(@", ", loaded)
-                       + @" into this project (it had none of that kind), from " + folder;
+                       + @" into this project (it had none of those), from " + folder;
                 return CommandResult.Succeeded;
             }
             catch (Exception e)

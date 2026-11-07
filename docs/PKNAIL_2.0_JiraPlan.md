@@ -1382,7 +1382,9 @@ running an older build.
   library (`%ProgramData%\PointKnown\PKNail Pro For Revit <year>\Libraries\US Imperial|US Metric`),
   chosen by the project's unit system. A project that already has PKNAIL families of a kind is not
   touched. The report lists what was loaded (`*` line); if the files are missing it says so (`~` line)
-  and the project's own families are used.
+  and the project's own families are used. The two survey-sprite families (the arrow the Activate Wall /
+  Wall / Capture tools place beside the active wall) are loaded the same way when missing; without them
+  those tools show no active-wall marker on a stock template.
 
 **Automated tests:** `OpeningFamilyResolverTests`; `OpeningOrientationTests` (the three doors of the
 check file); `DirectBuildPlannerTests` and `DirectBuildImportTests` on the check file (family index,
@@ -1534,8 +1536,8 @@ These are real mismatches between the delivered JSON and what the plugin needs. 
 | #   | Question | Blocks | Status |
 | --- | --- | --- | --- |
 | Q18 | Replace the v2 engine path with a Direct Build path (native Revit API, no survey engine) as the default for files with wall coordinates? | Epic 13 | **✅ YES (user, 2026-10-12).** v1 keeps the survey chain. Direct Build ignores `FamilyDefIdx` (deprecated) and sizes a type from the first wall-hosted family: a deliberate departure from Q3 for v2 files until 12c selects families by `OpeningType`. |
-| Q19 | Revit family conventions used to apply AI door handing: the leaf swings toward `FacingOrientation`; `HandOrientation` points from hinge to latch. | Epic 13 gate | **Half answered by the 2026-11-06 Revit check.** Swing: confirmed (`DoorSwingsTowardFacing = true`). Hinge: all three hinged doors came out mirrored, so `HandPointsAwayFromHinge` is now `false` (the hand points at the hinge, which is also what the 1.0 flip rule implies). The hinge was judged by eye on `M_Single-Flush`; **re-confirm in Revit on the PKNAIL "Single" family** (Epic 13b manual step 3). |
-| Q20 | Should Direct Build honour `FamilyDefIdx` after all? Q18 ignored it on purpose; the 2026-11-06 Revit check reported it as a bug (4 sliding doors built as swing doors). | Epic 13b | **Implemented as 12c.2 says, awaiting user confirmation:** `OpeningType` chooses the PKNAIL family first; `FamilyDefIdx` is used when `OpeningType` is absent or matches nothing; a project with no PKNAIL survey families keeps the Q18 behaviour (first wall-hosted family). Side effect to confirm: older v2 files (all `FamilyDefIdx = 0`) now get the first PKNAIL door/window family ("Single" / "Fixed") in a PKNAIL template instead of the stock `M_Single-Flush` / `M_Fixed`. The v2.1 note to the AI team still says "do not send `FamilyDefIdx`"; prefer `OpeningType`. |
+| Q19 | Revit family conventions used to apply AI door handing: the leaf swings toward `FacingOrientation`; `HandOrientation` points from hinge to latch. | Epic 13 gate | **✅ CONFIRMED (2026-11-07).** Swing: `DoorSwingsTowardFacing = true`. Hinge: `HandPointsAwayFromHinge = false` (the hand points at the hinge). Checked on the PKNAIL "Single" family in the L1 plan of the 1_v2 import: wall 9 door hinged on the east jamb swinging north, both wall 6 doors hinged on the jamb nearest wall 5 swinging east, as in `expected_plan.png`. |
+| Q20 | Should Direct Build honour `FamilyDefIdx` after all? Q18 ignored it on purpose; the 2026-11-06 Revit check reported it as a bug (4 sliding doors built as swing doors). | Epic 13b | **✅ YES (user, 2026-11-07; verified in Revit: 4 × PKNail Sliding, 3 × PKNail Single, 6 × PKNail Fixed, centres within 1 mm).** Implemented as 12c.2 says: `OpeningType` chooses the PKNAIL family first; `FamilyDefIdx` is used when `OpeningType` is absent or matches nothing; a project with no PKNAIL survey families keeps the Q18 behaviour (first wall-hosted family). Side effect to confirm: older v2 files (all `FamilyDefIdx = 0`) now get the first PKNAIL door/window family ("Single" / "Fixed") in a PKNAIL template instead of the stock `M_Single-Flush` / `M_Fixed`. The v2.1 note to the AI team still says "do not send `FamilyDefIdx`"; prefer `OpeningType`. |
 
 > **Q2/Q3 action:** before coding Epics 2/6, trace the exact PKNAIL 1.0 code paths (`SurveyWallPrep`
 > first-wall handling; `SurveyFamilyDefIdx` / `ProjectSurveyFamilyDefs` resolution and default family
