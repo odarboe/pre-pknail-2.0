@@ -4,6 +4,38 @@
 **Example file:** [`ai_engine_pknail_results.v2.1.example.json`](ai_engine_pknail_results.v2.1.example.json)
 (two rooms, a partition with a T-junction, three windows, two doors).
 
+## Update 2026-11-07: `OpeningType` now chooses the door/window family
+
+The add-in build of 2026-11-07 reads `OpeningType` and builds each opening from the PKNAIL family of
+that name. Nothing else in the contract changes; `SchemaVersion` stays `"2.1"`.
+
+| You send `OpeningType` | Revit builds | Notes |
+|---|---|---|
+| `Hinged` | PKNail Single | swing door; uses `HingeSideIndex` / `SwingDirectionIndex` |
+| `DoubleHinged` | PKNail Double | swing pair |
+| `Sliding` (door) | PKNail Sliding | no hinge or swing; send the two indices anyway or omit them |
+| `SlidingGlass` | PKNail Sliding Glass | patio-type sliding door |
+| `Pocket` | PKNail Pocket | |
+| `Opening` | PKNail Opening | a doorway with no leaf |
+| `Fixed` (window) | PKNail Fixed | plain frame and glass |
+| `DoubleHung` (window) | PKNail Double Hung | sash window; **use this when you cannot tell the window type** |
+| anything else (`Bifold`, `Casement`, `Awning`, …) | the first family of the kind, and the import report says so | no PKNAIL family exists for these yet |
+
+Rules:
+
+- Spelling is forgiving: case, spaces and hyphens are ignored (`DoubleHung`, `Double Hung`,
+  `double-hung` are the same).
+- Send `OpeningType` on **every** door and window. Without it the add-in falls back to `FamilyDefIdx`
+  (0 = Single / Fixed), which is the old v2.0 behaviour and gives the plainest families.
+- `FamilyDefIdx` keeps working for old files but is not needed once `OpeningType` is sent. If both are
+  present, `OpeningType` wins.
+- Door handing is unchanged and confirmed in Revit on 2026-11-07: `SwingDirectionIndex` 1 = In,
+  `HingeSideIndex` 1 = Right, both as seen standing on the interior side facing the wall (section 3).
+- Door width is not a constraint any more: 530–865 mm doors were built as sent in 100–115 mm walls.
+
+Reference run: `1_v2_ai_pknail_v2_doortypes.json` with `"OpeningType": "DoubleHung"` on its windows
+imports as 4 PKNail Sliding, 3 PKNail Single and 6 PKNail Double Hung, every centre within 1 mm.
+
 ## Why this change
 
 The PKNAIL Revit add-in now draws your file directly as native Revit walls, doors and windows
@@ -38,7 +70,7 @@ elements correctly instead of guessing.
 | Wall | `InteriorSide` | `"Left"` / `"Right"` | Interior side, seen walking from Start to End | Orients doors and windows (section 3) |
 | Wall | `Comment` | string | e.g. `"thickness assumed (one face scanned); 87% scanned"` | Revit **Comments** |
 | Opening | `Id` | string | Unique in the file, e.g. `"W7-D1"` | Revit **Mark** |
-| Opening | `OpeningType` | string | Doors: `Hinged`, `DoubleHinged`, `Sliding`, `Pocket`, `Bifold`. Windows: `Fixed`, `Casement`, `Sliding`, `Awning`, `DoubleHung` | Picks the PKNAIL door/window family of that name (a type with no matching family uses the default family and is reported). Also written to Revit **Comments** |
+| Opening | `OpeningType` | string | Doors: `Hinged`, `DoubleHinged`, `Sliding`, `SlidingGlass`, `Pocket`, `Opening`. Windows: `Fixed`, `DoubleHung`. (`Bifold`, `Casement`, `Awning` are accepted but have no PKNAIL family yet) | Picks the PKNAIL door/window family of that name (see the 2026-11-07 update table). Also written to Revit **Comments** |
 | Opening | `Comment` | string | e.g. `"confirmed: all edges scanned"` | Revit **Comments** |
 | Level | `Name` | string | e.g. `"Ground"` | Name of a level we create |
 | Level | `ElevationMeters` | number | Floor elevation in your frame | Levels are re-based so the lowest is at 0 |
